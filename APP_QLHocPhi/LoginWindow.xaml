@@ -1,0 +1,96 @@
+﻿<Window x:Class="APP_QLHocPhi.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uc="clr-namespace:APP_QLHocPhi.UserControlSF"
+        
+        xmlns:local="clr-namespace:APP_QLHocPhi"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+        Background="{DynamicResource MaterialDesign.Brush.Background}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        Name="loginWindow"  
+    
+    ResizeMode="NoResize"
+    WindowStyle="None"
+    Title="Đăng nhập" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <uc:UserControlBarUC Tag="{Binding Title, ElementName=loginWindow}"></uc:UserControlBarUC>
+        </Grid>
+        
+
+        <materialDesign:Card Grid.Row="1" Width="300" Height="260" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid Margin="4">
+                <Grid.Resources>
+                    <Style TargetType="Grid">
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <materialDesign:PackIcon Kind="AccountKeyOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40" Height="40"/>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <TextBox
+                      VerticalAlignment="Center"
+                      materialDesign:HintAssist.Hint="Tên đăng nhập"
+                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                      />
+                </Grid>
+                <Grid Grid.Row="2">
+                    <PasswordBox
+                          x:Name="FloatingPasswordBox"
+                          materialDesign:HintAssist.Foreground="Green"
+                          materialDesign:HintAssist.Hint="Mật Khẩu"
+                          materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                  />
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Button Width="100"
+                                    HorizontalAlignment="Center"
+                                    Content="Đăng nhập"
+                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                    Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                                    ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" />
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Button Width="100"
+                                    Content="Thoát"
+                                    Background="Red"
+                                    HorizontalAlignment="Center"
+                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                    Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                                    ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</Window>
