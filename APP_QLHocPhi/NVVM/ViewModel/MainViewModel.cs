@@ -16,6 +16,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand LoadedWindowCommand { get; set; }
 
+        public ICommand StudentCommand { get; set; }
+
         //tất cả sẽ được sử lí trong đây    
         public MainViewModel()
         {
@@ -43,7 +45,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 };
 
                 login.Show();
-            });           
+            });
+
+            StudentCommand = new RelayCommand<object>((p) => { return true; }, (p) => {AddStudent wd = new AddStudent(); wd.ShowDialog(); });
+
         }
     }
 }
