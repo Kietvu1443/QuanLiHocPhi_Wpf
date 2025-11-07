@@ -1,0 +1,128 @@
+﻿<Window x:Class="APP_QLHocPhi.SchoolFeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:APP_QLHocPhi"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:APP_QLHocPhi.UserControlSF"
+        TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+        Background="{DynamicResource MaterialDesign.Brush.Background}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        x:Name="window"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        mc:Ignorable="d"
+        Title="Quản lí học phí"
+        Height="450"
+        Width="850">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}"></uc:UserControlBarUC>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--các elemenent biding trong selected item-->
+                <materialDesign:Card Grid.Row="0"
+                                     Margin="5">
+                    <WrapPanel Margin="0 0 0 10">
+                        <TextBox Text="{Binding MSSV}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Mã sinh viên"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Text="{Binding DisplayName}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Họ và tên"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Text="{Binding ClassName}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Lớp"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Text="{Binding MajorName}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Ngành"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Text="{Binding MoneyName}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Số tiền phải đóng"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <DatePicker Width="120"
+                                    Margin="5 5 15 5"
+                                    SelectedDate="{Binding MoneyDate}"
+                                    materialDesign:HintAssist.Hint="Ngày đóng"
+                                    materialDesign:TextFieldAssist.HasClearButton="True"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                    </WrapPanel>
+                </materialDesign:Card>
+
+                <materialDesign:Card Grid.Row="1"
+                                     Margin="5">
+                    <WrapPanel>
+                        <Button Command="{Binding AddCommand}"
+                                Content="Thêm"
+                                Margin="5"
+                                Width="100"></Button>
+                        <Button Command="{Binding RemoveCommand}"
+                                Content="Xoá"
+                                Margin="5"
+                                Width="100"></Button>
+                        <Button Command="{Binding EditCommand}"
+                                Content="Sửa"
+                                Margin="5"
+                                Width="100"></Button>
+                    </WrapPanel>
+                </materialDesign:Card>
+
+
+                <materialDesign:Card Grid.Row="2"
+                                     Margin="5"
+                                     VerticalAlignment="Stretch">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ListView ItemsSource="{Binding List}"
+                                  SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="STT"
+                                                    DisplayMemberBinding="{Binding STT}" />
+                                    <GridViewColumn Header="Mã sinh viên"
+                                                    DisplayMemberBinding="{Binding MSSV}" />
+                                    <GridViewColumn Header="Họ và tên"
+                                                    DisplayMemberBinding="{Binding DisplayName}" />
+                                    <GridViewColumn Header="Lớp"
+                                                    DisplayMemberBinding="{Binding ClassName}" />
+                                    <GridViewColumn Header="Ngành"
+                                                    DisplayMemberBinding="{Binding MajoName}" />
+                                    <GridViewColumn Header="Số tiền phải đóng"
+                                                    DisplayMemberBinding="{Binding MoneyName}" />
+                                    <GridViewColumn Header="Ngày nộp"
+                                                    DisplayMemberBinding="{Binding MoneyDate}" />
+
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </ScrollViewer>
+                </materialDesign:Card>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>

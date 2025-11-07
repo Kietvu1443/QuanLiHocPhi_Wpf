@@ -16,6 +16,12 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand LoadedWindowCommand { get; set; }
 
+        public ICommand AddStudentCommand { get; set; }
+
+        public ICommand DashBoardCommand { get; set; }
+
+        public ICommand SchoolFeeCommand { get; set; }
+
         public ICommand StudentCommand { get; set; }
 
         //tất cả sẽ được sử lí trong đây    
@@ -47,7 +53,14 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 login.Show();
             });
 
-            StudentCommand = new RelayCommand<object>((p) => { return true; }, (p) => {AddStudent wd = new AddStudent(); wd.ShowDialog(); });
+            AddStudentCommand = new RelayCommand<object>((p) => { return true; }, (p) => { AddStudentWindow wd = new AddStudentWindow(); wd.ShowDialog(); });
+
+            DashBoardCommand = new RelayCommand<object>((p) => { return true; }, (p) => { DashBoardWindow wd = new DashBoardWindow(); wd.ShowDialog(); });
+
+            SchoolFeeCommand = new RelayCommand<object>((p) => { return true; }, (p) => { SchoolFeeWindow wd = new SchoolFeeWindow(); wd.ShowDialog(); });
+
+            StudentCommand = new RelayCommand<object>((p) => { return true; }, (p) => { StudentWindow wd = new StudentWindow(); wd.ShowDialog(); });
+
 
         }
     }

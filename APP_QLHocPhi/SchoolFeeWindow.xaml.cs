@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace APP_QLHocPhi
 {
     /// <summary>
-    /// Interaction logic for AddStudent.xaml
+    /// Interaction logic for SchoolFeeWindow.xaml
     /// </summary>
-    public partial class AddStudent : Window
+    public partial class SchoolFeeWindow : Window
     {
-        public AddStudent()
+        public SchoolFeeWindow()
         {
             InitializeComponent();
         }
