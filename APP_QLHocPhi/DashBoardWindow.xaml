@@ -39,50 +39,109 @@
                 <!--các elemenent biding trong selected item-->
                 <materialDesign:Card Grid.Row="0"
                                      Margin="5">
-                    <WrapPanel Margin="0 0 0 10">
-                        <TextBox Text="{Binding MSSV}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Mã sinh viên"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding DisplayName}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Họ và tên"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding ClassName}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Lớp"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MajorName}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Ngành"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MoneyName}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="QRcode"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                    <WrapPanel>
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                                   Text="Tổng Quan" />
                     </WrapPanel>
                 </materialDesign:Card>
 
                 <materialDesign:Card Grid.Row="1"
                                      Margin="5">
                     <WrapPanel>
-                        <Button Command="{Binding AddCommand}"
-                                Content="Thêm"
-                                Margin="5"
-                                Width="100"></Button>
-                        <Button Command="{Binding RemoveCommand}"
-                                Content="Xoá"
-                                Margin="5"
-                                Width="100"></Button>
-                        <Button Command="{Binding EditCommand}"
-                                Content="Sửa"
-                                Margin="5"
-                                Width="100"></Button>
+                        <materialDesign:Card Width="200"
+                                             Padding="0"
+                                             Margin="10"
+                                             Background="#03a9f4"
+                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Margin="16,16,16,4"
+                                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                           Text="Số lượng học sinh"
+                                           TextWrapping="Wrap" />
+                                <Separator Grid.Row="1"
+                                           Style="{StaticResource MaterialDesignLightSeparator}" />
+                                <TextBlock Grid.Row="2"
+                                           Margin="16,0,16,8"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                           Text="PlaceHolder" />
+                                <StackPanel Grid.Row="2"
+                                            Margin="16,0,16,8"
+                                            HorizontalAlignment="Right"
+                                            Orientation="Horizontal">
+                                </StackPanel>
+                            </Grid>
+                        </materialDesign:Card>
+
+                        <materialDesign:Card Width="200"
+                                             Padding="0"
+                                             Margin="10"
+                                             Background="#03a9f4"
+                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Margin="16,16,16,4"
+                                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                           Text="Số lượng học sinh đã đóng"
+                                           TextWrapping="Wrap" />
+                                <Separator Grid.Row="1"
+                                           Style="{StaticResource MaterialDesignLightSeparator}" />
+                                <TextBlock Grid.Row="2"
+                                           Margin="16,0,16,8"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                           Text="PlaceHolder" />
+                                <StackPanel Grid.Row="2"
+                                            Margin="16,0,16,8"
+                                            HorizontalAlignment="Right"
+                                            Orientation="Horizontal">
+                                </StackPanel>
+                            </Grid>
+                        </materialDesign:Card>
+                        <materialDesign:Card Width="200"
+                                             Padding="0"
+                                             Margin="10"
+                                             Background="#03a9f4"
+                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Margin="16,16,16,4"
+                                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                           Text="Số lượng học sinh chưa đóng"
+                                           TextWrapping="Wrap" />
+                                <Separator Grid.Row="1"
+                                           Style="{StaticResource MaterialDesignLightSeparator}" />
+                                <TextBlock Grid.Row="2"
+                                           Margin="16,0,16,8"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                           Text="PlaceHolder" />
+                                <StackPanel Grid.Row="2"
+                                            Margin="16,0,16,8"
+                                            HorizontalAlignment="Right"
+                                            Orientation="Horizontal">
+                                </StackPanel>
+                            </Grid>
+                        </materialDesign:Card>
                     </WrapPanel>
                 </materialDesign:Card>
 
@@ -107,8 +166,6 @@
                                                     DisplayMemberBinding="{Binding MajoName.DisplayName}" />
                                     <GridViewColumn Header="QRCode"
                                                     DisplayMemberBinding="{Binding QRcode}" />
-                                    
-
                                 </GridView>
                             </ListView.View>
                         </ListView>

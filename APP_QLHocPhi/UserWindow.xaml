@@ -1,4 +1,4 @@
-﻿<Window x:Class="APP_QLHocPhi.AddStudentWindow"
+﻿<Window x:Class="APP_QLHocPhi.UserWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,7 +16,7 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         mc:Ignorable="d"
-        Title="Thêm học sinh"
+        Title="Quản lí học phí"
         Height="450"
         Width="850">
     <Grid>
@@ -40,37 +40,18 @@
                 <materialDesign:Card Grid.Row="0"
                                      Margin="5">
                     <WrapPanel Margin="0 0 0 10">
-                        <TextBox Text="{Binding MSSV}"
+           
+                        <TextBox Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5 5 15 5"
                                  VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Mã sinh viên"
+                                 materialDesign:HintAssist.Hint="Tên đăng nhập"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <ComboBox Margin="5 5 15 0" ItemsSource="{Binding Role}" SelectedItem="{Binding SelectedRole,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Quyền"></ComboBox>
                         <TextBox Text="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5 5 15 5"
                                  VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Họ và tên"
+                                 materialDesign:HintAssist.Hint="Tên hiển thị"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding ClassName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Lớp"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Ngành"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Số tiền phải đóng"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <DatePicker Width="120"
-                                    Margin="5 5 15 5"
-                                    SelectedDate="{Binding MoneyDate,UpdateSourceTrigger=PropertyChanged}"
-                                    materialDesign:HintAssist.Hint="Ngày đóng"
-                                    materialDesign:TextFieldAssist.HasClearButton="True"
-                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                     </WrapPanel>
                 </materialDesign:Card>
 
@@ -89,6 +70,10 @@
                                 Content="Sửa"
                                 Margin="5"
                                 Width="100"></Button>
+                        <Button Command="{Binding EditCommand}"
+                                Content="Đổi MK"
+                                Margin="5"
+                                Width="100"></Button>
                     </WrapPanel>
                 </materialDesign:Card>
 
@@ -103,19 +88,13 @@
                                 <GridView>
                                     <GridViewColumn Header="STT"
                                                     DisplayMemberBinding="{Binding STT,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Mã sinh viên"
-                                                    DisplayMemberBinding="{Binding MSSV,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Họ và tên"
+                                    <GridViewColumn Header="Tên đăng nhập"
+                                                    Width="150"
+                                                    DisplayMemberBinding="{Binding UserName,UpdateSourceTrigger=PropertyChanged}" />
+                                    <GridViewColumn Header="Vai Trò"
+                                                    DisplayMemberBinding="{Binding Role.DisplayName,UpdateSourceTrigger=PropertyChanged}" />
+                                    <GridViewColumn Header="Tên hiền thị"
                                                     DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Lớp"
-                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Ngành"
-                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Số tiền phải đóng"
-                                                    DisplayMemberBinding="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Ngày nộp"
-                                                    DisplayMemberBinding="{Binding MoneyDate,UpdateSourceTrigger=PropertyChanged}" />
-
                                 </GridView>
                             </ListView.View>
                         </ListView>

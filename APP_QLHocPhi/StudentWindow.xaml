@@ -40,37 +40,36 @@
                 <materialDesign:Card Grid.Row="0"
                                      Margin="5">
                     <WrapPanel Margin="0 0 0 10">
-                        <TextBox Text="{Binding MSSV}"
+                        <TextBox Text="{Binding MSSV,UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5 5 15 5"
                                  VerticalAlignment="Center"
                                  materialDesign:HintAssist.Hint="Mã sinh viên"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding DisplayName}"
+                        <TextBox Text="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5 5 15 5"
                                  VerticalAlignment="Center"
                                  materialDesign:HintAssist.Hint="Họ và tên"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding ClassName}"
+                        <TextBox Text="{Binding ClassName,UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5 5 15 5"
                                  VerticalAlignment="Center"
                                  materialDesign:HintAssist.Hint="Lớp"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MajorName}"
+                        <TextBox Text="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5 5 15 5"
                                  VerticalAlignment="Center"
                                  materialDesign:HintAssist.Hint="Ngành"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MoneyName}"
+                        <TextBox Text="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5 5 15 5"
                                  VerticalAlignment="Center"
                                  materialDesign:HintAssist.Hint="Số tiền phải đóng"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <DatePicker Width="120"
-                                    Margin="5 5 15 5"
-                                    SelectedDate="{Binding MoneyDate}"
-                                    materialDesign:HintAssist.Hint="Ngày đóng"
-                                    materialDesign:TextFieldAssist.HasClearButton="True"
-                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                        <TextBox Text="{Binding QrCode,UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Qr Code"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                     </WrapPanel>
                 </materialDesign:Card>
 
@@ -102,19 +101,19 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="STT"
-                                                    DisplayMemberBinding="{Binding STT}" />
+                                                    DisplayMemberBinding="{Binding STT,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Mã sinh viên"
-                                                    DisplayMemberBinding="{Binding MSSV}" />
+                                                    DisplayMemberBinding="{Binding MSSV,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Họ và tên"
-                                                    DisplayMemberBinding="{Binding DisplayName}" />
+                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Lớp"
-                                                    DisplayMemberBinding="{Binding ClassName}" />
+                                                    DisplayMemberBinding="{Binding ClassName,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Ngành"
-                                                    DisplayMemberBinding="{Binding MajoName}" />
+                                                    DisplayMemberBinding="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Số tiền phải đóng"
-                                                    DisplayMemberBinding="{Binding MoneyName}" />
-                                    <GridViewColumn Header="Ngày nộp"
-                                                    DisplayMemberBinding="{Binding MoneyDate}" />
+                                                    DisplayMemberBinding="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}" />
+                                    <GridViewColumn Header="QrCode"
+                                                    DisplayMemberBinding="{Binding QrCode,UpdateSourceTrigger=PropertyChanged}" />
 
                                 </GridView>
                             </ListView.View>

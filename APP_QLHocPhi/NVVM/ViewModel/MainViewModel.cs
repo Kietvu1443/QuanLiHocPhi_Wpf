@@ -24,6 +24,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand StudentCommand { get; set; }
 
+        public ICommand UserCommand { get; set; }
+
         //tất cả sẽ được sử lí trong đây    
         public MainViewModel()
         {
@@ -60,6 +62,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             SchoolFeeCommand = new RelayCommand<object>((p) => { return true; }, (p) => { SchoolFeeWindow wd = new SchoolFeeWindow(); wd.ShowDialog(); });
 
             StudentCommand = new RelayCommand<object>((p) => { return true; }, (p) => { StudentWindow wd = new StudentWindow(); wd.ShowDialog(); });
+
+            UserCommand = new RelayCommand<object>((p) => { return true; }, (p) => { UserWindow wd = new UserWindow(); wd.ShowDialog(); });
 
 
         }
