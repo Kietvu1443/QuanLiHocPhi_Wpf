@@ -17,7 +17,7 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
-        Title="Phần mềm quản lí điểm"
+        Title="Phần mềm quản lí học phí"
         Height="450"
         Width="1000"
         Name="mainWindow">

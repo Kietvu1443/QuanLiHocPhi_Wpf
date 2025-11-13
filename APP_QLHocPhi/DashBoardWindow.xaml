@@ -16,7 +16,7 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         mc:Ignorable="d"
-        Title="Quản lí học phí"
+        Title="Tổng quan"
         Height="450"
         Width="850">
     <Grid>
