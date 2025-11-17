@@ -1,4 +1,5 @@
-﻿using APP_QLHocPhi.ViewModel;
+﻿using APP_QLHocPhi.Models;
+using APP_QLHocPhi.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +66,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             UserCommand = new RelayCommand<object>((p) => { return true; }, (p) => { UserWindow wd = new UserWindow(); wd.ShowDialog(); });
 
-
+            MessageBox.Show(DataProvider.Ins.DB.Users.First().Role);
         }
     }
 }

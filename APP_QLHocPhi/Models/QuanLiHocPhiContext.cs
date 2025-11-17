@@ -9,6 +9,9 @@ namespace APP_QLHocPhi.Models;
 public partial class QuanLiHocPhiContext : DbContext
 {
     public QuanLiHocPhiContext()
+    : base(new DbContextOptionsBuilder<QuanLiHocPhiContext>()
+        .UseSqlServer("Server=localhost,1433;Database=QuanLiHocPhi;User Id=sa;Password=1413Kiet;TrustServerCertificate=True;")
+        .Options)
     {
     }
 
@@ -33,7 +36,7 @@ public partial class QuanLiHocPhiContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=localhost,1433;Initial Catalog=QuanLiHocPhi;Persist Security Info=True;User ID=sa;Password=1413Kiet;Encrypt=True");
+        => optionsBuilder.UseSqlServer("Data Source=localhost,1433;Initial Catalog=QuanLiHocPhi;Persist Security Info=True;User ID=sa;Password=1413Kiet;Encrypt=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
