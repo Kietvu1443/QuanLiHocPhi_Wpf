@@ -1,4 +1,5 @@
-﻿using APP_QLHocPhi.ViewModel;
+﻿using APP_QLHocPhi.Models;
+using APP_QLHocPhi.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,30 +30,33 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         //tất cả sẽ được sử lí trong đây    
         public MainViewModel()
         {
-            LoadedWindowCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            LoadedWindowCommand = new RelayCommand<Window>((p) => { return true; }, (p) =>
             {
-                //Isloaded = true;
-                //LoginWindow loginWindow = new LoginWindow();
-                //loginWindow.ShowDialog();
-
-                var main = Application.Current.MainWindow as Window;
-                main?.Hide();
-
-                var login = new LoginWindow
+                Isloaded = true;
+                if(p== null)
                 {
-                    Owner = main,
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                    Topmost = true
-                };
+                    return;
+                }
+                p.Hide();
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.ShowDialog();
+                p.Show();
 
-                // Khi login đóng (dù là bấm X hay login thành công)
-                login.Closed += (s, e) =>
+                var LoginVM = loginWindow.DataContext as LoginViewModel;
+
+                if(loginWindow.DataContext == null)
                 {
-                    main?.Show();
-                    main?.Activate();
-                };
-
-                login.Show();
+                    return;
+                }
+                if (LoginVM.IsLogin)
+                {
+                    p.Show();
+                }
+                else
+                {
+                    p.Close();
+                }
+             
             });
 
             AddStudentCommand = new RelayCommand<object>((p) => { return true; }, (p) => { AddStudentWindow wd = new AddStudentWindow(); wd.ShowDialog(); });
@@ -65,7 +69,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             UserCommand = new RelayCommand<object>((p) => { return true; }, (p) => { UserWindow wd = new UserWindow(); wd.ShowDialog(); });
 
-
+            //MessageBox.Show(DataProvider.Ins.DB.Users.First().Role);
         }
     }
 }

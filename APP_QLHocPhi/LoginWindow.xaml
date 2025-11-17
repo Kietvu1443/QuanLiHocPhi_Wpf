@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:APP_QLHocPhi.UserControlSF"
-        
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:APP_QLHocPhi"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -14,7 +14,8 @@
         TextElement.FontSize="14"
         WindowStartupLocation="CenterScreen"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        Name="loginWindow"  
+        Name="loginWindow"
+        DataContext="{StaticResource LoginVM}"
     
     ResizeMode="NoResize"
     WindowStyle="None"
@@ -52,17 +53,23 @@
                     <TextBox
                       VerticalAlignment="Center"
                       materialDesign:HintAssist.Hint="Tên đăng nhập"
+                      Text="{Binding Id}"
                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                       />
                 </Grid>
                 <Grid Grid.Row="2">
-                    <PasswordBox
-                          x:Name="FloatingPasswordBox"
-                          materialDesign:HintAssist.Foreground="Green"
-                          materialDesign:HintAssist.Hint="Mật Khẩu"
-                          materialDesign:TextFieldAssist.UnderlineBrush="Green"
-                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                  />
+                    <PasswordBox x:Name="FloatingPasswordBox"
+                                 materialDesign:HintAssist.Foreground="Green"
+                                 materialDesign:HintAssist.Hint="Mật Khẩu"
+                                 materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                                 Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PasswordChanged">
+                                <i:InvokeCommandAction Command="{Binding PasswordChangedCommand}"
+                                                       CommandParameter="{Binding ElementName=FloatingPasswordBox}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </PasswordBox>
                 </Grid>
                 <Grid Grid.Row="3">
                     <Grid>
@@ -73,17 +80,21 @@
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
                             <Button Width="100"
+                                    IsDefault="True"
                                     HorizontalAlignment="Center"
                                     Content="Đăng nhập"
+                                    Command="{Binding LoginCommand}"
+                                    CommandParameter="{Binding ElementName=loginWindow}"
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                     Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
                                     ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" />
                         </Grid>
                         <Grid Grid.Column="1">
                             <Button Width="100"
-                                    Command="{Binding DataContext.CloseWindowCommand, ElementName=myControlBar}"
-                                    CommandParameter="{Binding ElementName=myControlBar}"
+                                    Command="{Binding CloseCommand}"
+                                    CommandParameter="{Binding ElementName=loginWindow}"
                                     Content="Thoát"
+                               
                                     Background="Red"
                                     HorizontalAlignment="Center"
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
