@@ -3,6 +3,7 @@
                     xmlns:viewmodel="clr-namespace:APP_QLHocPhi.NVVM.ViewModel">
 
     <viewmodel:MainViewModel x:Key="MainVM"></viewmodel:MainViewModel>
+    <viewmodel:LoginViewModel x:Key="LoginVM"></viewmodel:LoginViewModel>
 
     
 </ResourceDictionary>
