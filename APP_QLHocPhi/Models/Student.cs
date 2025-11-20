@@ -44,6 +44,9 @@ public partial class Student
     [StringLength(50)]
     public string Lop { get; set; }
 
+    [StringLength(100)]
+    public string Nganh { get; set; }
+
     [StringLength(50)]
     public string TrangThai { get; set; }
 
