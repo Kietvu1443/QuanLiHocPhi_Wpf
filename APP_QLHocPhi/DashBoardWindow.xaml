@@ -9,6 +9,9 @@
         TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
         Background="{DynamicResource MaterialDesign.Brush.Background}"
         TextElement.FontWeight="Medium"
+        
+        DataContext="{StaticResource DashboardVM}"
+        
         TextElement.FontSize="14"
         WindowStartupLocation="CenterScreen"
         FontFamily="{materialDesign:MaterialDesignFont}"
@@ -71,7 +74,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                           Text="PlaceHolder" />
+                                           Text="{Binding TotalStudent}" />
                                 <StackPanel Grid.Row="2"
                                             Margin="16,0,16,8"
                                             HorizontalAlignment="Right"
@@ -103,7 +106,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                           Text="PlaceHolder" />
+                                           Text="{Binding PaidCount}" />
                                 <StackPanel Grid.Row="2"
                                             Margin="16,0,16,8"
                                             HorizontalAlignment="Right"
@@ -134,7 +137,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                           Text="PlaceHolder" />
+                                           Text="{Binding UnPaidCount}" />
                                 <StackPanel Grid.Row="2"
                                             Margin="16,0,16,8"
                                             HorizontalAlignment="Right"
@@ -157,13 +160,15 @@
                                     <GridViewColumn Header="STT"
                                                     DisplayMemberBinding="{Binding STT}" />
                                     <GridViewColumn Header="Mã sinh viên"
-                                                    DisplayMemberBinding="{Binding MSSV}" />
-                                    <GridViewColumn Header="Họ và tên"
-                                                    DisplayMemberBinding="{Binding DisplayName}" />
+                                                    DisplayMemberBinding="{Binding Id}" />
+                                    <GridViewColumn Header="Họ đệm"
+                                                    DisplayMemberBinding="{Binding HoDem}" />
+                                    <GridViewColumn Header="Tên"
+                                                    DisplayMemberBinding="{Binding Ten}" />
                                     <GridViewColumn Header="Lớp"
-                                                    DisplayMemberBinding="{Binding Class.DisplayName}" />
+                                                    DisplayMemberBinding="{Binding Lop}" />
                                     <GridViewColumn Header="Ngành"
-                                                    DisplayMemberBinding="{Binding MajoName.DisplayName}" />
+                                                    DisplayMemberBinding="{Binding Nganh}" />
                                     <GridViewColumn Header="QRCode"
                                                     DisplayMemberBinding="{Binding QRcode}" />
                                 </GridView>
