@@ -8,15 +8,33 @@ using System.Windows.Input;
 
 namespace APP_QLHocPhi.NVVM.ViewModel
 {
+    // 1. ĐỔI TÊN CLASS NÀY ĐỂ KHÔNG TRÙNG VỚI DASHBOARD
+    public class StudentDisplayItem
+    {
+        public int STT { get; set; }
+        public Student StudentInfo { get; set; }
+
+        // Các thuộc tính cầu nối để Binding
+        public string Id { get => StudentInfo.Id; }
+        public string DisplayName { get => StudentInfo.DisplayName; }
+        public string Lop { get => StudentInfo.Lop; }
+        public string Nganh { get => StudentInfo.Nganh; }
+        public string Phone { get => StudentInfo.Phone; }
+        public string Address { get => StudentInfo.Address; }
+        public string Email { get => StudentInfo.Email; }
+        public string GioiTinh { get => StudentInfo.GioiTinh; }
+        public DateOnly? NgaySinh { get => StudentInfo.NgaySinh; }
+    }
+
     public class AddStudentViewModel : BaseViewModel
     {
-        // Danh sách hiển thị lên ListView
-        private ObservableCollection<Student> _List;
-        public ObservableCollection<Student> List { get => _List; set { _List = value; OnPropertyChanged(); } }
+        // 2. Sửa kiểu dữ liệu List thành StudentDisplayItem
+        private ObservableCollection<StudentDisplayItem> _List;
+        public ObservableCollection<StudentDisplayItem> List { get => _List; set { _List = value; OnPropertyChanged(); } }
 
-        // Xử lý khi chọn 1 dòng trong danh sách
-        private Student _SelectedItem;
-        public Student SelectedItem
+        // 3. Sửa SelectedItem thành kiểu StudentDisplayItem
+        private StudentDisplayItem _SelectedItem;
+        public StudentDisplayItem SelectedItem
         {
             get => _SelectedItem;
             set
@@ -25,16 +43,27 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 OnPropertyChanged();
                 if (SelectedItem != null)
                 {
-                    MSSV = SelectedItem.Id;
-                    DisplayName = SelectedItem.DisplayName;
-                    ClassName = SelectedItem.Lop;
-                    MajorName = SelectedItem.Nganh;
-                    QrCode = SelectedItem.Phone; // Mình tạm dùng trường Phone làm QRCode/SĐT nhé
+                    // Lấy thông tin từ StudentInfo
+                    var s = SelectedItem.StudentInfo;
+
+                    MSSV = s.Id;
+                    DisplayName = s.DisplayName;
+                    ClassName = s.Lop;
+                    MajorName = s.Nganh;
+                    Phone = s.Phone;
+                    Address = s.Address;
+                    Email = s.Email;
+                    GioiTinh = s.GioiTinh;
+
+                    if (s.NgaySinh.HasValue)
+                        NgaySinh = s.NgaySinh.Value.ToDateTime(TimeOnly.MinValue);
+                    else
+                        NgaySinh = null;
                 }
             }
         }
 
-        // Các thuộc tính Binding với TextBox
+        // --- Các Property Binding (Giữ nguyên) ---
         private string _MSSV;
         public string MSSV { get => _MSSV; set { _MSSV = value; OnPropertyChanged(); } }
 
@@ -47,10 +76,23 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         private string _MajorName;
         public string MajorName { get => _MajorName; set { _MajorName = value; OnPropertyChanged(); } }
 
-        private string _QrCode;
-        public string QrCode { get => _QrCode; set { _QrCode = value; OnPropertyChanged(); } }
+        private string _Phone;
+        public string Phone { get => _Phone; set { _Phone = value; OnPropertyChanged(); } }
 
-        // Các Command (Lệnh)
+        private string _Address;
+        public string Address { get => _Address; set { _Address = value; OnPropertyChanged(); } }
+
+        private string _Email;
+        public string Email { get => _Email; set { _Email = value; OnPropertyChanged(); } }
+
+        private string _GioiTinh;
+        public string GioiTinh { get => _GioiTinh; set { _GioiTinh = value; OnPropertyChanged(); } }
+
+        private DateTime? _NgaySinh;
+        public DateTime? NgaySinh { get => _NgaySinh; set { _NgaySinh = value; OnPropertyChanged(); } }
+
+
+        // --- Commands ---
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand RemoveCommand { get; set; }
@@ -62,17 +104,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             // --- LỆNH THÊM ---
             AddCommand = new RelayCommand<object>((p) =>
             {
-                // Điều kiện: Các ô quan trọng không được trống
-                if (string.IsNullOrEmpty(MSSV) || string.IsNullOrEmpty(DisplayName))
-                    return false;
-
-                // Kiểm tra trùng MSSV trong Database
-                var displayList = DataProvider.Ins.DB.Students.Where(x => x.Id == MSSV);
-                if (displayList == null || displayList.Count() != 0)
-                    return false;
-
+                if (string.IsNullOrEmpty(MSSV) || string.IsNullOrEmpty(DisplayName)) return false;
+                var exist = DataProvider.Ins.DB.Students.Any(x => x.Id == MSSV);
+                if (exist) return false;
                 return true;
-
             }, (p) =>
             {
                 var student = new Student()
@@ -81,11 +116,16 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     DisplayName = DisplayName,
                     Lop = ClassName,
                     Nganh = MajorName,
-                    Phone = QrCode,
+                    Phone = Phone,
+                    Address = Address,
+                    Email = Email,
+                    GioiTinh = GioiTinh,
                     TrangThai = "Đang học"
                 };
 
-                // Tách họ tên (Vì DB bắt buộc có HoDem và Ten)
+                if (NgaySinh.HasValue)
+                    student.NgaySinh = DateOnly.FromDateTime(NgaySinh.Value);
+
                 SplitName(DisplayName, out string hoDem, out string ten);
                 student.HoDem = hoDem;
                 student.Ten = ten;
@@ -93,26 +133,34 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 DataProvider.Ins.DB.Students.Add(student);
                 DataProvider.Ins.DB.SaveChanges();
 
-                List.Add(student); // Cập nhật UI ngay lập tức
+                LoadList();
                 ClearInputs();
             });
 
             // --- LỆNH SỬA ---
             EditCommand = new RelayCommand<object>((p) =>
             {
-                if (SelectedItem == null || DataProvider.Ins.DB.Students.Where(x => x.Id == SelectedItem.Id).Count() == 0)
-                    return false;
+                if (SelectedItem == null) return false;
                 return true;
-
             }, (p) =>
             {
-                var student = DataProvider.Ins.DB.Students.Where(x => x.Id == SelectedItem.Id).SingleOrDefault();
+                var idCanSua = SelectedItem.StudentInfo.Id;
+                var student = DataProvider.Ins.DB.Students.SingleOrDefault(x => x.Id == idCanSua);
+
                 if (student != null)
                 {
                     student.DisplayName = DisplayName;
                     student.Lop = ClassName;
                     student.Nganh = MajorName;
-                    student.Phone = QrCode;
+                    student.Phone = Phone;
+                    student.Address = Address;
+                    student.Email = Email;
+                    student.GioiTinh = GioiTinh;
+
+                    if (NgaySinh.HasValue)
+                        student.NgaySinh = DateOnly.FromDateTime(NgaySinh.Value);
+                    else
+                        student.NgaySinh = null;
 
                     SplitName(DisplayName, out string hoDem, out string ten);
                     student.HoDem = hoDem;
@@ -120,44 +168,59 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
                     DataProvider.Ins.DB.SaveChanges();
 
-                    // Refresh lại list để hiển thị thông tin mới nhất
                     LoadList();
-                    ClearInputs(); // Sửa xong thì xóa trắng ô nhập
+                    ClearInputs();
                 }
             });
 
             // --- LỆNH XÓA ---
             RemoveCommand = new RelayCommand<object>((p) =>
             {
-                if (SelectedItem == null)
-                    return false;
+                if (SelectedItem == null) return false;
                 return true;
             }, (p) =>
             {
-                var student = DataProvider.Ins.DB.Students.Where(x => x.Id == SelectedItem.Id).SingleOrDefault();
-
+                var idCanXoa = SelectedItem.StudentInfo.Id;
+                var student = DataProvider.Ins.DB.Students.SingleOrDefault(x => x.Id == idCanXoa);
                 try
                 {
                     DataProvider.Ins.DB.Students.Remove(student);
                     DataProvider.Ins.DB.SaveChanges();
-                    List.Remove(student);
+                    LoadList();
                     ClearInputs();
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Không thể xóa sinh viên này vì đã có dữ liệu học phí/hóa đơn liên quan!", "Cảnh báo");
+                    MessageBox.Show("Không thể xóa sinh viên này vì đã có dữ liệu liên quan!", "Lỗi");
                 }
             });
         }
 
         void LoadList()
         {
-            List = new ObservableCollection<Student>(DataProvider.Ins.DB.Students);
+            var listFromDB = DataProvider.Ins.DB.Students.ToList();
+            // 4. Khởi tạo danh sách với kiểu mới StudentDisplayItem
+            var displayList = new ObservableCollection<StudentDisplayItem>();
+
+            int stt = 1;
+            foreach (var item in listFromDB)
+            {
+                displayList.Add(new StudentDisplayItem
+                {
+                    STT = stt,
+                    StudentInfo = item
+                });
+                stt++;
+            }
+
+            List = displayList;
         }
 
         void ClearInputs()
         {
-            MSSV = ""; DisplayName = ""; ClassName = ""; MajorName = ""; QrCode = "";
+            MSSV = ""; DisplayName = ""; ClassName = ""; MajorName = "";
+            Phone = ""; Address = ""; Email = ""; GioiTinh = ""; NgaySinh = null;
+            SelectedItem = null;
         }
 
         private void SplitName(string fullName, out string hoDem, out string ten)
