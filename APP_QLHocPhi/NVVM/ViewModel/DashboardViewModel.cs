@@ -1,6 +1,5 @@
 ﻿using APP_QLHocPhi.Models;
 using APP_QLHocPhi.ViewModel;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,33 +9,69 @@ using System.Threading.Tasks;
 
 namespace APP_QLHocPhi.NVVM.ViewModel
 {
+    // 1. Tạo một class Wrapper để hiển thị lên View
+    // Class này giúp ta có thêm STT mà không đụng vào Model gốc
+    public class StudentDisplay
+    {
+        public int STT { get; set; }
+        public Student StudentInfo { get; set; } 
+
+        
+        public string Id { get => StudentInfo.Id; }
+        public string HoDem { get => StudentInfo.HoDem; }
+        public string Ten { get => StudentInfo.Ten; }
+        public string Lop { get => StudentInfo.Lop; }
+        public string Nganh { get => StudentInfo.Nganh; }
+        public string QRcode { get; set; } // noted : sẽ thêm vào sau
+    }
+
     public class DashboardViewModel : BaseViewModel
     {
         private int _TotalStudents;
         public int TotalStudent { get => _TotalStudents; set { _TotalStudents = value; OnPropertyChanged(); } }
 
         private int _PaidCount;
-        public int PaidCount { get => _PaidCount; set {_PaidCount = value; OnPropertyChanged();} }
+        public int PaidCount { get => _PaidCount; set { _PaidCount = value; OnPropertyChanged(); } }
 
         private int _UnPaidCount;
         public int UnPaidCount { get => _UnPaidCount; set { _UnPaidCount = value; OnPropertyChanged(); } }
 
-        private ObservableCollection<Student> _List;
-        public ObservableCollection<Student> List { get => _List; set { _List = value; OnPropertyChanged(); } }
+        // 2. Sửa kiểu dữ liệu của List thành StudentDisplay
+        private ObservableCollection<StudentDisplay> _List;
+        public ObservableCollection<StudentDisplay> List { get => _List; set { _List = value; OnPropertyChanged(); } }
 
         public DashboardViewModel()
         {
             LoadDashBoardData();
         }
+
         void LoadDashBoardData()
         {
-            TotalStudent = DataProvider.Ins.DB.Students.Count(); // Tổng số học sinh
+            var db = DataProvider.Ins.DB; // Lấy DB context
 
-            PaidCount = DataProvider.Ins.DB.Students.Where(x => x.TrangThai == "Đã đóng").Count(); // Số học sinh đã đóng học phí
+            TotalStudent = db.Students.Count();
+            PaidCount = db.Students.Where(x => x.TrangThai == "Đã đóng").Count();
+            UnPaidCount = TotalStudent - PaidCount;
 
-            UnPaidCount = TotalStudent - PaidCount; // Số học sinh chưa đóng học phí
+            // Lấy danh sách gốc từ DB
+            var studentListFromDB = db.Students.ToList();
 
-            List = new ObservableCollection<Student>(DataProvider.Ins.DB.Students);
+            // 3. Chuyển đổi sang danh sách hiển thị và đánh số STT
+            var displayList = new ObservableCollection<StudentDisplay>();
+            int i = 1;
+
+            foreach (var item in studentListFromDB)
+            {
+                displayList.Add(new StudentDisplay
+                {
+                    STT = i, // Gán số thứ tự tăng dần
+                    StudentInfo = item, // Lưu thông tin gốc
+                    QRcode = "" // sẽ thêm vào sau
+                });
+                i++;
+            }
+
+            List = displayList;
         }
     }
 }
