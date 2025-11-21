@@ -11,6 +11,9 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         WindowStartupLocation="CenterScreen"
+        
+        DataContext="{StaticResource AddStudentVM}"
+        
         FontFamily="{materialDesign:MaterialDesignFont}"
         x:Name="window"
         ResizeMode="NoResize"
@@ -60,15 +63,31 @@
                                  VerticalAlignment="Center"
                                  materialDesign:HintAssist.Hint="Ngành"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5 5 15 5"
                                  VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Số tiền phải đóng"
+                                 materialDesign:HintAssist.Hint="Giới Tính"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Text="{Binding GioiTinh,UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Địa chỉ"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Text="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="SĐT"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Text="{Binding Email,UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="5 5 15 5"
+                                 VerticalAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Email"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
                         <DatePicker Width="120"
                                     Margin="5 5 15 5"
-                                    SelectedDate="{Binding MoneyDate,UpdateSourceTrigger=PropertyChanged}"
-                                    materialDesign:HintAssist.Hint="Ngày đóng"
+                                    SelectedDate="{Binding NgaySinh,UpdateSourceTrigger=PropertyChanged}"
+                                    materialDesign:HintAssist.Hint="Ngày Sinh"
                                     materialDesign:TextFieldAssist.HasClearButton="True"
                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                     </WrapPanel>
@@ -104,17 +123,16 @@
                                     <GridViewColumn Header="STT"
                                                     DisplayMemberBinding="{Binding STT,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Mã sinh viên"
-                                                    DisplayMemberBinding="{Binding MSSV,UpdateSourceTrigger=PropertyChanged}" />
+                                                    DisplayMemberBinding="{Binding Id,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Họ và tên"
                                                     DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Lớp"
-                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
+                                                    DisplayMemberBinding="{Binding Lop,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Ngành"
-                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Số tiền phải đóng"
-                                                    DisplayMemberBinding="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Ngày nộp"
-                                                    DisplayMemberBinding="{Binding MoneyDate,UpdateSourceTrigger=PropertyChanged}" />
+                                                    DisplayMemberBinding="{Binding Nganh,UpdateSourceTrigger=PropertyChanged}" />
+                                    <GridViewColumn Header="Ngày Sinh"
+                                                    DisplayMemberBinding="{Binding NgaySinh,UpdateSourceTrigger=PropertyChanged}" />
+          
 
                                 </GridView>
                             </ListView.View>
