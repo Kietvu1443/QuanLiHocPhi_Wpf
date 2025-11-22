@@ -15,7 +15,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Database\" />
     <Folder Include="NVVM\Model\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Database\QuanLiHocPhiDB.ldf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\QuanLiHocPhiDB.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
