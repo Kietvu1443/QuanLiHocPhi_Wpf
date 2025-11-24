@@ -24,6 +24,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public string Email { get => StudentInfo.Email; }
         public string GioiTinh { get => StudentInfo.GioiTinh; }
         public DateOnly? NgaySinh { get => StudentInfo.NgaySinh; }
+
+        public string TrangThai { get => StudentInfo.TrangThai; }
     }
 
     public class AddStudentViewModel : BaseViewModel
@@ -54,6 +56,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     Address = s.Address;
                     Email = s.Email;
                     GioiTinh = s.GioiTinh;
+                    TrangThai = s.TrangThai;
 
                     if (s.NgaySinh.HasValue)
                         NgaySinh = s.NgaySinh.Value.ToDateTime(TimeOnly.MinValue);
@@ -87,6 +90,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         private string _GioiTinh;
         public string GioiTinh { get => _GioiTinh; set { _GioiTinh = value; OnPropertyChanged(); } }
+
+        private string _TrangThai;
+        public string TrangThai { get => _TrangThai; set { _TrangThai = value; OnPropertyChanged(); } }
 
         private DateTime? _NgaySinh;
         public DateTime? NgaySinh { get => _NgaySinh; set { _NgaySinh = value; OnPropertyChanged(); } }
@@ -219,7 +225,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         void ClearInputs()
         {
             MSSV = ""; DisplayName = ""; ClassName = ""; MajorName = "";
-            Phone = ""; Address = ""; Email = ""; GioiTinh = ""; NgaySinh = null;
+            Phone = ""; Address = ""; Email = ""; GioiTinh = ""; NgaySinh = null; TrangThai = "";
             SelectedItem = null;
         }
 
