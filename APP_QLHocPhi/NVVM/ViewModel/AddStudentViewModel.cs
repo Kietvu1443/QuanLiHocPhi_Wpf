@@ -126,7 +126,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     Address = Address,
                     Email = Email,
                     GioiTinh = GioiTinh,
-                    TrangThai = string.IsNullOrEmpty(TrangThai) ? "Chưa Đóng" : TrangThai
+                   TrangThai = string.IsNullOrEmpty(TrangThai) ? "Chưa Đóng" : TrangThai
                 };
 
                 if (NgaySinh.HasValue)
@@ -162,6 +162,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     student.Address = Address;
                     student.Email = Email;
                     student.GioiTinh = GioiTinh;
+                    student.TrangThai = TrangThai;
 
                     if (NgaySinh.HasValue)
                         student.NgaySinh = DateOnly.FromDateTime(NgaySinh.Value);
