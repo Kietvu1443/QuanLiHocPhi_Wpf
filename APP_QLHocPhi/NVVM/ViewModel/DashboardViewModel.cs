@@ -43,6 +43,11 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public DashboardViewModel()
         {
             LoadDashBoardData();
+
+            DataProvider.Ins.OnDataBaseChanged += () =>
+            {
+                LoadDashBoardData();
+            };
         }
 
         void LoadDashBoardData()
