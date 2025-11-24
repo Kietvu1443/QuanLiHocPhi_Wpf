@@ -139,6 +139,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 DataProvider.Ins.DB.Students.Add(student);
                 DataProvider.Ins.DB.SaveChanges();
 
+                // Báo hiệu đã thay đổi
+                DataProvider.Ins.RefreshDataBase();
+
+
                 LoadList();
                 ClearInputs();
             });
@@ -175,6 +179,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
                     DataProvider.Ins.DB.SaveChanges();
 
+                    //Lệnh báo hiệu đã đổi thay
+
+                    DataProvider.Ins.RefreshDataBase();
+
                     LoadList();
                     ClearInputs();
                 }
@@ -193,6 +201,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 {
                     DataProvider.Ins.DB.Students.Remove(student);
                     DataProvider.Ins.DB.SaveChanges();
+
+                    DataProvider.Ins.RefreshDataBase();
+
                     LoadList();
                     ClearInputs();
                 }
