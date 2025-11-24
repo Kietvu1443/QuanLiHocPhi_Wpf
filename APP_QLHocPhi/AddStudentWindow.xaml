@@ -99,6 +99,21 @@
                                  materialDesign:HintAssist.Hint="Email"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
+                        <ComboBox materialDesign:HintAssist.Hint="Trạng Thái"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  Margin="5 5 15 5"
+                                  Width="100"
+                                  VerticalAlignment="Center"
+                                  SelectedValuePath="Content"
+                                  SelectedValue="{Binding TrangThai, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <ComboBoxItem Content="Đã Đóng" />
+                            <ComboBoxItem Content="Chưa Đóng" />
+                            
+
+
+                        </ComboBox>
+
                         <DatePicker Width="120"
                                     Margin="5 5 15 5"
                                     SelectedDate="{Binding NgaySinh,UpdateSourceTrigger=PropertyChanged}"
