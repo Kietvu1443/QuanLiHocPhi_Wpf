@@ -164,7 +164,8 @@
                                                     DisplayMemberBinding="{Binding Nganh,UpdateSourceTrigger=PropertyChanged}" />
                                     <GridViewColumn Header="Ngày Sinh"
                                                     DisplayMemberBinding="{Binding NgaySinh,UpdateSourceTrigger=PropertyChanged}" />
-          
+                                    <GridViewColumn Header="Đã đóng ?"
+                                                    DisplayMemberBinding="{Binding TrangThai,UpdateSourceTrigger=PropertyChanged}" />
 
                                 </GridView>
                             </ListView.View>

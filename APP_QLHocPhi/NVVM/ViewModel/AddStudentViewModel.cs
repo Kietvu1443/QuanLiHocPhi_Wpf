@@ -126,7 +126,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     Address = Address,
                     Email = Email,
                     GioiTinh = GioiTinh,
-                    TrangThai = "Đang học"
+                    TrangThai = string.IsNullOrEmpty(TrangThai) ? "Chưa Đóng" : TrangThai
                 };
 
                 if (NgaySinh.HasValue)
