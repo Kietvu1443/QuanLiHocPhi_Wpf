@@ -107,8 +107,8 @@
                                   SelectedValuePath="Content"
                                   SelectedValue="{Binding TrangThai, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
-                            <ComboBoxItem Content="Đang Học" />
-                            <ComboBoxItem Content="Thôi Học" />
+                            <ComboBoxItem Content="Đã Đóng" />
+                            <ComboBoxItem Content="Chưa Đóng" />
                             
 
 
