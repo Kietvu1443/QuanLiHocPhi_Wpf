@@ -59,16 +59,34 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             // 1. THÊM VÀO DANH SÁCH TẠM (Chưa tính tiền, chỉ hiện UI)
             AddTempCommand = new RelayCommand<object>((p) =>
             {
-                return SelectedSubject != null && SelectedStudent != null;
+                // Điều kiện để bấm nút: Phải chọn đủ 3 thứ
+                return SelectedSubject != null && SelectedStudent != null && SelectedSemester != null;
             }, (p) =>
             {
-                // Kiểm tra xem môn này đã có trong list tạm chưa
+                // 1. KIỂM TRA TRÙNG TRONG DANH SÁCH TẠM (Logic cũ)
+                // (Tránh trường hợp vừa thêm vào list tạm xong lại bấm thêm lần nữa)
                 if (ListDangKy.Any(x => x.SubjectInfo.Id == SelectedSubject.Id))
                 {
-                    MessageBox.Show("Môn này đã có trong danh sách chờ!");
+                    MessageBox.Show("Môn này đã có trong danh sách chờ bên dưới rồi!", "Trùng lặp", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
+                // 2. KIỂM TRA TRÙNG TRONG DATABASE (Logic MỚI 🌟)
+                // (Tránh trường hợp ông Nhạc đã đăng ký môn này từ trước rồi)
+                var db = DataProvider.Ins.DB;
+                var daDangKy = db.StudentRegistrations.Any(x =>
+                    x.StudentId == SelectedStudent.Id &&
+                    x.SubjectId == SelectedSubject.Id &&
+                    x.HocKy == SelectedSemester.HocKy); // Kiểm tra cả học kỳ nữa nhé
+
+                if (daDangKy)
+                {
+                    MessageBox.Show($"Sinh viên {SelectedStudent.DisplayName} ĐÃ ĐĂNG KÝ môn {SelectedSubject.DisplayName} trong học kỳ này rồi!",
+                                    "Đã đăng ký", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return; // Dừng lại, không cho thêm
+                }
+
+                // 3. NẾU VƯỢT QUA HẾT CÁC ẢI THÌ MỚI THÊM VÀO LIST
                 var item = new RegistrationItem
                 {
                     STT = ListDangKy.Count + 1,
