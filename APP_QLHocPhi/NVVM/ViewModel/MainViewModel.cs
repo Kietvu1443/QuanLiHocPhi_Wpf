@@ -25,6 +25,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand StudentCommand { get; set; }
 
+        public ICommand SubjectCommand { get; set; }
+
         public ICommand UserCommand { get; set; }
 
         //tất cả sẽ được sử lí trong đây    
@@ -69,6 +71,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             UserCommand = new RelayCommand<object>((p) => { return true; }, (p) => { UserWindow wd = new UserWindow(); wd.ShowDialog(); });
 
+            SubjectCommand = new RelayCommand<object>((p) => { return true; }, (p) => { SubjectWindow wd = new SubjectWindow(); wd.ShowDialog(); });
             //MessageBox.Show(DataProvider.Ins.DB.Users.First().Role);
         }
     }

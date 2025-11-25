@@ -138,26 +138,26 @@
                             </Grid>
                         </Button>
 
-                        <Button ToolTip="Học Sinh"
-                                Command="{Binding StudentCommand}">
+                        <Button ToolTip="Quản lí môn học"
+                                Command="{Binding SubjectCommand}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
-                                           Text="Học Sinh"
+                                           Text="Quản lí môn học"
                                            TextWrapping="Wrap"
                                            TextAlignment="Center"
                                            HorizontalAlignment="Center"></TextBlock>
                                 <materialDesign:PackIcon Grid.Row="1"
                                                          HorizontalAlignment="Center"
-                                                         Kind="Account" />
+                                                         Kind="Bookshelf" />
                             </Grid>
                         </Button>
 
-                        <Button ToolTip="Người dùng"
-                                Command="{Binding UserCommand}">
+                        <Button ToolTip="Quản lí học sinh"
+                                Command="{Binding StudentCommand}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
