@@ -164,7 +164,7 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
-                                           Text="Người dùng"
+                                           Text="Chọn môn học"
                                            HorizontalAlignment="Center"></TextBlock>
                                 <materialDesign:PackIcon Grid.Row="1"
                                                          HorizontalAlignment="Center"
