@@ -139,7 +139,7 @@
 
                         <materialDesign:DataGridTextColumn Binding="{Binding SubjectName}"
                                                            Header="Tên Môn Học"
-                                                           Width="*"
+                                                           Width="100"
                                                            IsReadOnly="True" />
 
                         <materialDesign:DataGridTextColumn Binding="{Binding TinChi}"
