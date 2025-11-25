@@ -6,6 +6,8 @@
     <viewmodel:LoginViewModel x:Key="LoginVM"></viewmodel:LoginViewModel>
     <viewmodel:DashboardViewModel x:Key="DashboardVM"></viewmodel:DashboardViewModel>
     <viewmodel:AddStudentViewModel x:Key="AddStudentVM"></viewmodel:AddStudentViewModel>
+    <viewmodel:StudentViewModel x:Key="StudentVM"></viewmodel:StudentViewModel>
+    <viewmodel:SubjectViewModel x:Key="SubjectVM"></viewmodel:SubjectViewModel>
 
 
 </ResourceDictionary>

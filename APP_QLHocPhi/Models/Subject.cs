@@ -26,4 +26,6 @@ public partial class Subject
 
     [InverseProperty("Subject")]
     public virtual ICollection<StudentRegistration> StudentRegistrations { get; set; } = new List<StudentRegistration>();
+
+    public decimal? DonGia { get; set; }
 }
