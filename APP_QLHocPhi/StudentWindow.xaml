@@ -21,13 +21,24 @@
         Width="850">
     <Grid>
       <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <materialDesign:Card Grid.Row="0" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+          
+            <Grid Grid.Row="0">
+                <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}"></uc:UserControlBarUC>
+            </Grid>
+          
+            <Grid Grid.Row="1">
+                <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                           Margin="10"
+                           Text="Đăng kí môn học" />
+            </Grid>
+                <materialDesign:Card Grid.Row="2" Margin="5">
                     <WrapPanel Margin="0 0 0 10">
                         
                         <ComboBox ItemsSource="{Binding StudentList}" 
@@ -45,7 +56,7 @@
                                   Width="200"
                                   Margin="5 5 15 5"
                                   VerticalAlignment="Center"
-                                  materialDesign:HintAssist.Hint="Chọn Môn Học"
+                                  materialDesign:HintAssist.Hint="Chọn Lớp"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
 
                         <ComboBox ItemsSource="{Binding SemesterList}" 
@@ -56,25 +67,25 @@
                                   VerticalAlignment="Center"
                                   materialDesign:HintAssist.Hint="Chọn Học Kỳ"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
-                        
+           
                     </WrapPanel>
                 </materialDesign:Card>
 
-                <materialDesign:Card Grid.Row="1" Margin="5">
+                <materialDesign:Card Grid.Row="3" Margin="5">
                     <WrapPanel>
                         <Button Command="{Binding AddCommand}"
                                 Content="Đăng Ký"
                                 Margin="5" Width="100"/>
                         
                         <Button Command="{Binding RemoveCommand}"
-                                Content="Hủy Môn"
+                                Content="Xuất Phiếu"
                                 Background="OrangeRed"
                                 BorderBrush="OrangeRed"
                                 Margin="5" Width="100"/>
                     </WrapPanel>
                 </materialDesign:Card>
 
-            <materialDesign:Card Grid.Row="2"
+            <materialDesign:Card Grid.Row="4"
                                  Margin="5"
                                  VerticalAlignment="Stretch">
                 <DataGrid ItemsSource="{Binding List}"
@@ -107,7 +118,7 @@
                         </DataGridCheckBoxColumn>
 
                         <materialDesign:DataGridTextColumn Binding="{Binding SubjectName}"
-                                                           Header="Môn Học"
+                                                           Header="Tên môn học"
                                                            IsReadOnly="True"
                                                            Width="150"
                                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" />
@@ -116,6 +127,7 @@
                                                            Header="Số TC"
                                                            IsReadOnly="True"
                                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+           
                             <DataGridTextColumn.HeaderStyle>
                                 <Style TargetType="{x:Type DataGridColumnHeader}"
                                        BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
@@ -131,30 +143,14 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </materialDesign:DataGridTextColumn>
-
-                        <materialDesign:DataGridTextColumn Binding="{Binding TongTien}"
-                                                           Header="Học Phí"
-                                                           IsReadOnly="True"
-                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
-                            <DataGridTextColumn.HeaderStyle>
-                                <Style TargetType="{x:Type DataGridColumnHeader}"
-                                       BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
-                                    <Setter Property="HorizontalContentAlignment"
-                                            Value="Right" />
-                                </Style>
-                            </DataGridTextColumn.HeaderStyle>
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}"
-                                       BasedOn="{StaticResource MaterialDesignDataGridTextColumnStyle}">
-                                    <Setter Property="HorizontalAlignment"
-                                            Value="Right" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </materialDesign:DataGridTextColumn>
-
                         <materialDesign:DataGridTextColumn Binding="{Binding HocKy}"
-                                                           Header="Học Kỳ"
+                                                           Header="Lớp"
                                                            IsReadOnly="True" />
+                        <materialDesign:DataGridTextColumn Binding="{Binding HocKy}"
+                                                           Header="Ngày đăng kí"
+                                                           IsReadOnly="True" />
+
+
 
                     </DataGrid.Columns>
                 </DataGrid>
