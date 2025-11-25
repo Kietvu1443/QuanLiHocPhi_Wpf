@@ -73,6 +73,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 {
                     STT = ListDangKy.Count + 1,
                     SubjectInfo = SelectedSubject,
+                    IsSelected = true,
                     GhiChu = "Đang chờ xác nhận"
                 };
                 ListDangKy.Add(item);
@@ -94,15 +95,18 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             // 3. XÁC NHẬN ĐĂNG KÝ (Lưu DB + Tính tiền ngầm)
             ConfirmCommand = new RelayCommand<object>((p) =>
             {
-                return ListDangKy.Count > 0 && SelectedStudent != null && SelectedSemester != null;
+               return SelectedStudent != null &&
+               SelectedSemester != null &&
+               ListDangKy.Any(x => x.IsSelected);
             }, (p) =>
             {
                 var db = DataProvider.Ins.DB;
                 decimal donGiaMacDinh = 500000; // Quy định cứng: 500k/1 tín
 
-                foreach (var item in ListDangKy)
+                var itemsToSave = ListDangKy.Where(x => x.IsSelected).ToList();
+
+                foreach (var item in itemsToSave)
                 {
-                    // Kiểm tra DB xem đã đăng ký chưa để tránh trùng lặp
                     bool exists = db.StudentRegistrations.Any(x =>
                         x.StudentId == SelectedStudent.Id &&
                         x.SubjectId == item.SubjectInfo.Id &&
@@ -110,9 +114,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
                     if (!exists)
                     {
-                        decimal donGiaMonHoc = item.SubjectInfo.DonGia?? 500000; // Lấy đơn giá từ môn học, nếu null thì dùng mặc định
-
-
+                        decimal donGiaMonHoc = item.SubjectInfo.DonGia ?? donGiaMacDinh;
 
                         var reg = new StudentRegistration()
                         {
@@ -120,7 +122,6 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                             SubjectId = item.SubjectInfo.Id,
                             HocKy = SelectedSemester.HocKy,
                             DonGiaTaiThoiDiemDangKi = donGiaMonHoc,
-                            // Tính tiền ngầm ở đây:
                             TongTienHoc = item.SubjectInfo.SoTinChi * donGiaMonHoc,
                             SoTienDaDong = 0,
                             TrangThai = "Chưa đóng"
@@ -130,7 +131,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 }
                 db.SaveChanges();
                 MessageBox.Show("Đã xác nhận đăng ký thành công vào hệ thống!");
-                ListDangKy.Clear(); // Xóa list tạm sau khi lưu xong
+                foreach (var item in itemsToSave)
+                {
+                    ListDangKy.Remove(item);
+                }
                 DataProvider.Ins.RefreshDataBase();
             });
 
