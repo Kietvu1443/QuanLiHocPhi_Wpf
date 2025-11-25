@@ -77,6 +77,19 @@
                                     ToolTip="Hủy toàn bộ lịch sử đóng tiền của SV này (Dùng để test lại)">
                                 <materialDesign:PackIcon Kind="DeleteRestore" />
                             </Button>
+
+
+
+                            <Button Command="{Binding RemoveCourseCommand}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    Foreground="Green"
+                                    BorderBrush="Green"
+                                    Margin="10 0 0 0"
+                                    ToolTip="Xóa sạch nợ (Coi như đã đóng đủ)">
+                                <materialDesign:PackIcon Kind="CreditCardCheck" />
+                            </Button>
+
+
                         </StackPanel>
 
                         <DataGrid Grid.Row="1"
