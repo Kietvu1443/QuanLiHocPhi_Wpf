@@ -59,7 +59,13 @@
                                   Width="200"
                                   Margin="5" />
 
-                        
+                        <ComboBox ItemsSource="{Binding SemesterList}"
+                                  SelectedItem="{Binding SelectedSemester}"
+                                  DisplayMemberPath="HocKy"
+                                  materialDesign:HintAssist.Hint="Chọn Học Kỳ"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  Width="150"
+                                  Margin="15 5 5 5" />
 
                         <ComboBox ItemsSource="{Binding SubjectList}"
                                   SelectedItem="{Binding SelectedSubject}"
