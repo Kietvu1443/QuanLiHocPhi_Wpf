@@ -64,6 +64,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand ResetCommand { get; set; } // Nút Đặt lại
 
+        public ICommand RemoveCourseCommand { get; set; } // Nút Xoá nợ (nếu cần)
+
 
 
         public SchoolFeeViewModel()
@@ -162,6 +164,54 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     catch (Exception ex)
                     {
                         MessageBox.Show("Có lỗi khi hủy: " + ex.Message);
+                    }
+                }
+            });
+
+           
+            // xoá toàn bộ nợ và học phần sinh viên
+
+            RemoveCourseCommand = new RelayCommand<object>((p) =>
+            {
+                // Phải chọn sinh viên mới xóa được
+                return SelectedItem != null;
+            }, (p) =>
+            {
+                var db = DataProvider.Ins.DB;
+                var svID = SelectedItem.StudentInfo.Id;
+
+                var result = MessageBox.Show($"CẢNH BÁO QUAN TRỌNG!\n\nBạn sắp xóa toàn bộ danh sách môn học đã đăng ký của sinh viên {SelectedItem.DisplayName}.\n\nSau khi xóa, sinh viên này sẽ không còn môn nào trong hệ thống.",
+                                             "Xác nhận hủy học phần", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        // BƯỚC 1: Dọn dẹp Hóa đơn cũ (Bắt buộc phải xóa trước nếu có)
+                        var listInvoice = db.Invoices.Where(x => x.StudentId == svID).ToList();
+                        if (listInvoice.Count > 0)
+                        {
+                            var listInvoiceId = listInvoice.Select(x => x.Id).ToList();
+                            var listDetail = db.InvoiceDetails.Where(x => listInvoiceId.Contains(x.InvoiceId)).ToList();
+
+                            db.InvoiceDetails.RemoveRange(listDetail);
+                            db.Invoices.RemoveRange(listInvoice);
+                        }
+
+                        // BƯỚC 2: Xóa Đăng ký môn học (Mục tiêu chính)
+                        var listReg = db.StudentRegistrations.Where(x => x.StudentId == svID).ToList();
+                        db.StudentRegistrations.RemoveRange(listReg);
+
+                        db.SaveChanges();
+
+                        MessageBox.Show("Đã xóa sạch hồ sơ đăng ký! Sinh viên này giờ trắng tinh.");
+
+                        // Load lại dữ liệu (Lúc này SV đó sẽ biến mất khỏi danh sách thu tiền vì không còn môn nào)
+                        LoadData();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi xóa: " + ex.Message);
                     }
                 }
             });
