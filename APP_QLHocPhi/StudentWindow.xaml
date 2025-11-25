@@ -20,108 +20,141 @@
         Height="450"
         Width="850">
     <Grid>
-        <Grid>
+      <Grid Grid.Row="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-
+          
             <Grid Grid.Row="0">
                 <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}"></uc:UserControlBarUC>
             </Grid>
-
+          
             <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <!--các elemenent biding trong selected item-->
-                <materialDesign:Card Grid.Row="0"
-                                     Margin="5">
+                <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                           Margin="10"
+                           Text="Đăng kí môn học" />
+            </Grid>
+                <materialDesign:Card Grid.Row="2" Margin="5">
                     <WrapPanel Margin="0 0 0 10">
-                        <TextBox Text="{Binding MSSV,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Mã sinh viên"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Họ và tên"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding ClassName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Lớp"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Ngành"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Số tiền phải đóng"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding QrCode,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Qr Code"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        
+                        <ComboBox ItemsSource="{Binding StudentList}" 
+                                  SelectedItem="{Binding SelectedStudent}"
+                                  DisplayMemberPath="DisplayName"
+                                  Width="200"
+                                  Margin="5 5 15 5"
+                                  VerticalAlignment="Center"
+                                  materialDesign:HintAssist.Hint="Chọn Sinh Viên"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+
+                        <ComboBox ItemsSource="{Binding SubjectList}" 
+                                  SelectedItem="{Binding SelectedSubject}"
+                                  DisplayMemberPath="DisplayName"
+                                  Width="200"
+                                  Margin="5 5 15 5"
+                                  VerticalAlignment="Center"
+                                  materialDesign:HintAssist.Hint="Chọn Lớp"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+
+                        <ComboBox ItemsSource="{Binding SemesterList}" 
+                                  SelectedItem="{Binding SelectedSemester}"
+                                  DisplayMemberPath="HocKy"
+                                  Width="150"
+                                  Margin="5 5 15 5"
+                                  VerticalAlignment="Center"
+                                  materialDesign:HintAssist.Hint="Chọn Học Kỳ"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+           
                     </WrapPanel>
                 </materialDesign:Card>
 
-                <materialDesign:Card Grid.Row="1"
-                                     Margin="5">
+                <materialDesign:Card Grid.Row="3" Margin="5">
                     <WrapPanel>
                         <Button Command="{Binding AddCommand}"
-                                Content="Thêm"
-                                Margin="5"
-                                Width="100"></Button>
+                                Content="Đăng Ký"
+                                Margin="5" Width="100"/>
+                        
                         <Button Command="{Binding RemoveCommand}"
-                                Content="Xoá"
-                                Margin="5"
-                                Width="100"></Button>
-                        <Button Command="{Binding EditCommand}"
-                                Content="Sửa"
-                                Margin="5"
-                                Width="100"></Button>
+                                Content="Xuất Phiếu"
+                                Background="OrangeRed"
+                                BorderBrush="OrangeRed"
+                                Margin="5" Width="100"/>
                     </WrapPanel>
                 </materialDesign:Card>
 
+            <materialDesign:Card Grid.Row="4"
+                                 Margin="5"
+                                 VerticalAlignment="Stretch">
+                <DataGrid ItemsSource="{Binding List}"
+                          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                          CanUserAddRows="False"
+                          AutoGenerateColumns="False"
+                          HeadersVisibility="All"
+                          SelectionUnit="FullRow"
+                          materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                          materialDesign:DataGridAssist.ColumnHeaderPadding="8">
 
-                <materialDesign:Card Grid.Row="2"
-                                     Margin="5"
-                                     VerticalAlignment="Stretch">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ListView ItemsSource="{Binding List}"
-                                  SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="STT"
-                                                    DisplayMemberBinding="{Binding STT,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Mã sinh viên"
-                                                    DisplayMemberBinding="{Binding MSSV,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Họ và tên"
-                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Lớp"
-                                                    DisplayMemberBinding="{Binding ClassName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Ngành"
-                                                    DisplayMemberBinding="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Số tiền phải đóng"
-                                                    DisplayMemberBinding="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="QrCode"
-                                                    DisplayMemberBinding="{Binding QrCode,UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGrid.Resources>
+                        <Style TargetType="CheckBox"
+                               BasedOn="{StaticResource MaterialDesignCheckBox}">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGrid.Resources>
 
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </ScrollViewer>
-                </materialDesign:Card>
-            </Grid>
+                    <DataGrid.Columns>
 
+                        <DataGridCheckBoxColumn Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                                                ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                                EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
+                            <DataGridCheckBoxColumn.Header>
+                                <Border Background="Transparent">
+                                    <CheckBox />
+                                </Border>
+                            </DataGridCheckBoxColumn.Header>
+                        </DataGridCheckBoxColumn>
+
+                        <materialDesign:DataGridTextColumn Binding="{Binding SubjectName}"
+                                                           Header="Tên môn học"
+                                                           IsReadOnly="True"
+                                                           Width="150"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" />
+
+                        <materialDesign:DataGridTextColumn Binding="{Binding SoTinChi}"
+                                                           Header="Số TC"
+                                                           IsReadOnly="True"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+           
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="{x:Type DataGridColumnHeader}"
+                                       BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                    <Setter Property="HorizontalContentAlignment"
+                                            Value="Right" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}"
+                                       BasedOn="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                                    <Setter Property="HorizontalAlignment"
+                                            Value="Right" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </materialDesign:DataGridTextColumn>
+                        <materialDesign:DataGridTextColumn Binding="{Binding HocKy}"
+                                                           Header="Lớp"
+                                                           IsReadOnly="True" />
+                        <materialDesign:DataGridTextColumn Binding="{Binding HocKy}"
+                                                           Header="Ngày đăng kí"
+                                                           IsReadOnly="True" />
+
+
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </materialDesign:Card>
         </Grid>
     </Grid>
 </Window>
