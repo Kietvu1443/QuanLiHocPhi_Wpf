@@ -11,6 +11,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         WindowStartupLocation="CenterScreen"
+        DataContext="{StaticResource SchoolFeeVM}"
         FontFamily="{materialDesign:MaterialDesignFont}"
         x:Name="window"
         ResizeMode="NoResize"
@@ -22,114 +23,158 @@
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
                 <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}"></uc:UserControlBarUC>
             </Grid>
 
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <!--các elemenent biding trong selected item-->
-                <materialDesign:Card Grid.Row="0"
-                                     Margin="5">
-                    <WrapPanel Margin="0 0 0 10">
-                        <TextBox Text="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Mã sinh viên"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding StudentName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Họ và tên"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding ClassName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Lớp"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding PhoneName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Điện thoại"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Ngành"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBox Text="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Số tiền phải đóng"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <DatePicker Width="120"
-                                    Margin="5 5 15 5"
-                                    SelectedDate="{Binding MoneyDate,UpdateSourceTrigger=PropertyChanged}"
-                                    materialDesign:HintAssist.Hint="Ngày đóng"
-                                    materialDesign:TextFieldAssist.HasClearButton="True"
-                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                    </WrapPanel>
-                </materialDesign:Card>
+            <Grid Grid.Row="1"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
 
-                <materialDesign:Card Grid.Row="1"
-                                     Margin="5">
-                    <WrapPanel>
-                        <Button Command="{Binding AddCommand}"
-                                Content="Thêm"
-                                Margin="5"
-                                Width="100"></Button>
-                        <Button Command="{Binding RemoveCommand}"
-                                Content="Xoá"
-                                Margin="5"
-                                Width="100"></Button>
-                        <Button Command="{Binding EditCommand}"
-                                Content="Sửa"
-                                Margin="5"
-                                Width="100"></Button>
-                    </WrapPanel>
-                </materialDesign:Card>
-
-
-                <materialDesign:Card Grid.Row="2"
-                                     Margin="5"
+                <materialDesign:Card Grid.Column="0"
+                                     Margin="0 0 10 0"
                                      VerticalAlignment="Stretch">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ListView ItemsSource="{Binding List}"
-                                  SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="STT"
-                                                    DisplayMemberBinding="{Binding STT,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Mã sinh viên"
-                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Họ và tên"
-                                                    DisplayMemberBinding="{Binding StudentName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Lớp"
-                                                    DisplayMemberBinding="{Binding ClassName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Điện thoại"
-                                                    DisplayMemberBinding="{Binding PhoneName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Ngành"
-                                                    DisplayMemberBinding="{Binding MajorName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Số tiền phải đóng"
-                                                    DisplayMemberBinding="{Binding MoneyName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Ngày nộp"
-                                                    DisplayMemberBinding="{Binding MoneyDate,UpdateSourceTrigger=PropertyChanged}" />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </ScrollViewer>
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="10">
+                            <TextBlock Text="DANH SÁCH CÔNG NỢ SINH VIÊN"
+                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                       VerticalAlignment="Center" />
+                            <Button Command="{Binding RefreshCommand}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    Margin="10 0 0 0"
+                                    Content="{materialDesign:PackIcon Kind=Refresh}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="10">
+                            <TextBlock Text="DANH SÁCH CÔNG NỢ SINH VIÊN"
+                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                       VerticalAlignment="Center" />
+
+                            <Button Command="{Binding RefreshCommand}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    Margin="10 0 0 0"
+                                    Content="{materialDesign:PackIcon Kind=Refresh}" />
+
+                            <Button Command="{Binding ResetCommand}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    Foreground="Red"
+                                    BorderBrush="Red"
+                                    Margin="10 0 0 0"
+                                    ToolTip="Hủy toàn bộ lịch sử đóng tiền của SV này (Dùng để test lại)">
+                                <materialDesign:PackIcon Kind="DeleteRestore" />
+                            </Button>
+                        </StackPanel>
+
+                        <DataGrid Grid.Row="1"
+                                  ItemsSource="{Binding ListStudentFee}"
+                                  SelectedItem="{Binding SelectedItem}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  CanUserAddRows="False"
+                                  SelectionUnit="FullRow"
+                                  HeadersVisibility="All">
+                            <DataGrid.Columns>
+                                <materialDesign:DataGridTextColumn Binding="{Binding MSSV}"
+                                                                   Header="MSSV" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding DisplayName}"
+                                                                   Header="Họ Tên"
+                                                                   Width="*" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding TongTienHoc, StringFormat=N0}"
+                                                                   Header="Tổng Học Phí" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding DaDong, StringFormat=N0}"
+                                                                   Header="Đã Đóng" />
+
+                                <materialDesign:DataGridTextColumn Binding="{Binding ConNo, StringFormat=N0}"
+                                                                   Header="CÒN NỢ"
+                                                                   FontWeight="Bold"
+                                                                   Foreground="Red" />
+
+                                <materialDesign:DataGridTextColumn Binding="{Binding TrangThai}"
+                                                                   Header="Trạng Thái" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card Grid.Column="1"
+                                     Padding="15"
+                                     VerticalAlignment="Top">
+                    <StackPanel>
+                        <TextBlock Text="THÔNG TIN THANH TOÁN"
+                                   Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0 0 0 20" />
+
+                        <TextBox Text="{Binding SelectedItem.DisplayName, Mode=OneWay}"
+                                 materialDesign:HintAssist.Hint="Sinh viên đang chọn"
+                                 IsReadOnly="True"
+                                 Margin="0 10" />
+
+                        <TextBox Text="{Binding SelectedItem.Lop, Mode=OneWay}"
+                                 materialDesign:HintAssist.Hint="Lớp"
+                                 IsReadOnly="True"
+                                 Margin="0 10" />
+
+                        <Separator Margin="0 10" />
+
+                        <TextBox Text="{Binding PaymentAmount, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 materialDesign:HintAssist.Hint="Số Tiền Đóng (VNĐ)"
+                                 FontSize="16"
+                                 FontWeight="Bold"
+                                 Foreground="Green"
+                                 Margin="0 10" />
+
+                        <TextBox Text="{Binding PaymentNote, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 materialDesign:HintAssist.Hint="Ghi chú (Nội dung thu)"
+                                 Height="60"
+                                 TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Auto"
+                                 Margin="0 10" />
+
+                        <Grid Margin="0 20 0 0"
+                              Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0"
+                                    Command="{Binding PayCommand}"
+                                    Content="TIỀN MẶT"
+                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                    materialDesign:ButtonAssist.CornerRadius="5 0 0 5"
+                                    Margin="0 0 1 0"
+                                    ToolTip="Thanh toán và in hóa đơn tiền mặt" />
+
+                            <Button Grid.Column="1"
+                                    Command="{Binding QRCommand}"
+                                    Content="QUÉT QR"
+                                    Background="#2196F3"
+                                    BorderBrush="#2196F3"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    materialDesign:ButtonAssist.CornerRadius="0 5 5 0"
+                                    Margin="1 0 0 0"
+                                    ToolTip="Tạo mã QR chuyển khoản ngân hàng" />
+                        </Grid>
+                    </StackPanel>
                 </materialDesign:Card>
             </Grid>
-
         </Grid>
     </Grid>
 </Window>

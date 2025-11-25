@@ -8,6 +8,7 @@
     <viewmodel:AddStudentViewModel x:Key="AddStudentVM"></viewmodel:AddStudentViewModel>
     <viewmodel:StudentViewModel x:Key="StudentVM"></viewmodel:StudentViewModel>
     <viewmodel:SubjectViewModel x:Key="SubjectVM"></viewmodel:SubjectViewModel>
+    <viewmodel:SchoolFeeViewModel x:Key="SchoolFeeVM"></viewmodel:SchoolFeeViewModel>
 
 
 </ResourceDictionary>
