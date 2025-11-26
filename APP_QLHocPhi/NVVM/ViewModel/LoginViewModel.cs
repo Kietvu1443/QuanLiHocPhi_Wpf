@@ -1,5 +1,6 @@
 ﻿using APP_QLHocPhi.Models;
 using APP_QLHocPhi.ViewModel;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand PasswordChangedCommand { get; set; }
 
+        public ICommand GuestLogin { get; set; }
+
 
 
         //tất cả sẽ được sử lí trong đây    
@@ -34,10 +37,16 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             IsLogin = false;
             LoginCommand = new RelayCommand<Window>((p) => { return true; }, (p) => { Login(p); });
+            GuestLogin = new RelayCommand<Window>((p) => { return true; }, (p) => { LoginG(p); });
             CloseCommand = new RelayCommand<Window>((p) => { return true; }, (p) => { p.Close(); });
             PasswordChangedCommand = new RelayCommand<PasswordBox>((p) => { return true; }, (p) => { Password = p.Password; });
             
-        } 
+        }
+        void LoginG(Window p)
+        {
+            IsLogin = true;
+            p.Close();
+        }
         void Login(Window p)
         {
             if (p == null)

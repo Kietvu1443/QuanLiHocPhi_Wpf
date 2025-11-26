@@ -19,7 +19,7 @@
     
     ResizeMode="NoResize"
     WindowStyle="None"
-    Title="Đăng nhập" Height="300" Width="300">
+    Title="Đăng nhập" Height="400" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -31,7 +31,7 @@
         </Grid>
         
 
-        <materialDesign:Card Grid.Row="1" Width="300" Height="260" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <materialDesign:Card Grid.Row="1" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Margin="4">
                 <Grid.Resources>
                     <Style TargetType="Grid">
@@ -42,7 +42,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -62,7 +63,8 @@
                                  materialDesign:HintAssist.Foreground="Green"
                                  materialDesign:HintAssist.Hint="Mật Khẩu"
                                  materialDesign:TextFieldAssist.UnderlineBrush="Green"
-                                 Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                                 Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                                 Height="40">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PasswordChanged">
                                 <i:InvokeCommandAction Command="{Binding PasswordChangedCommand}"
@@ -91,17 +93,28 @@
                         </Grid>
                         <Grid Grid.Column="1">
                             <Button Width="100"
-                                    Command="{Binding CloseCommand}"
+                                    Command="{Binding GuestLogin}"
                                     CommandParameter="{Binding ElementName=loginWindow}"
-                                    Content="Thoát"
+                                    Content="Khách"
                                
-                                    Background="Red"
+                                    Background="Cyan"
                                     HorizontalAlignment="Center"
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                     Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
                                     ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" />
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid Grid.Row="4">
+                    <Button Width="100"
+                            Command="{Binding CloseCommand}"
+                            CommandParameter="{Binding ElementName=loginWindow}"
+                            Content="Thoát"
+                            Background="Red"
+                            HorizontalAlignment="Center"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                            ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" />
                 </Grid>
             </Grid>
         </materialDesign:Card>
