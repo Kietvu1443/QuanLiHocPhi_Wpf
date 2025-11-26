@@ -66,6 +66,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand RemoveCourseCommand { get; set; } // Nút Xoá nợ (nếu cần)
 
+        public ICommand PrintCommand { get; set; } // Nút In hoá đơn
+
 
 
         public SchoolFeeViewModel()
@@ -213,6 +215,80 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     {
                         MessageBox.Show("Lỗi khi xóa: " + ex.Message);
                     }
+                }
+            });
+
+            PrintCommand = new RelayCommand<object>((p) =>
+            {
+                return SelectedItem != null;
+            }, (p) =>
+            {
+                try
+                {
+                    var db = DataProvider.Ins.DB;
+
+                    // Khai báo các biến để hứng dữ liệu in
+                    decimal printAmount = 0;
+                    string printNote = "";
+                    DateTime printDate = DateTime.Now;
+
+                    // --- LOGIC XỬ LÝ SỐ TIỀN IN ---
+
+                    // TRƯỜNG HỢP 1: Đang nhập số tiền vào ô (Chưa bấm thanh toán) 
+                    // -> In phiếu dự thu / báo giá
+                    if (PaymentAmount > 0)
+                    {
+                        printAmount = PaymentAmount;
+                        printNote = string.IsNullOrEmpty(PaymentNote) ? "Thu học phí (Tạm tính)" : PaymentNote;
+                        printDate = DateTime.Now;
+                    }
+                    // TRƯỜNG HỢP 2: Ô nhập tiền = 0 (Thường là đã bấm thanh toán xong rồi)
+                    // -> Tìm hóa đơn GẦN NHẤT trong lịch sử để in lại
+                    else
+                    {
+                        var lastInvoice = db.Invoices
+                            .Where(x => x.StudentId == SelectedItem.StudentInfo.Id)
+                            .OrderByDescending(x => x.NgayThu) // Sắp xếp ngày mới nhất lên đầu
+                            .FirstOrDefault(); // Lấy cái đầu tiên
+
+                        if (lastInvoice != null)
+                        {
+                            // Lấy thông tin từ hóa đơn cũ
+                            printAmount = lastInvoice.TongTienThu;
+                            printNote = lastInvoice.GhiChu;
+                            printDate = lastInvoice.NgayThu;
+                        }
+                        else
+                        {
+                            // Nếu chưa từng đóng đồng nào -> In phiếu báo tổng nợ
+                            printAmount = SelectedItem.ConNo;
+                            printNote = "Thông báo công nợ";
+                        }
+                    }
+
+                    // --- MAPPING DỮ LIỆU VÀO MẪU IN (Giữ nguyên phần này) ---
+                    InvoiceTemplate invoice = new InvoiceTemplate();
+                    invoice.txbTenSV.Text = SelectedItem.DisplayName;
+                    invoice.txbMSSV.Text = SelectedItem.MSSV;
+                    invoice.txbLop.Text = SelectedItem.Lop;
+
+                    // Gán dữ liệu đã xử lý ở trên vào
+                    invoice.txbSoTien.Text = string.Format("{0:N0} VNĐ", printAmount);
+                    invoice.txbNoiDung.Text = printNote;
+                    invoice.txbNgayThu.Text = $"Ngày {printDate.Day} tháng {printDate.Month} năm {printDate.Year}";
+
+                    // --- HIỆN CỬA SỔ IN ---
+                    System.Windows.Controls.PrintDialog printDialog = new System.Windows.Controls.PrintDialog();
+                    if (printDialog.ShowDialog() == true)
+                    {
+                        invoice.Measure(new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight));
+                        invoice.Arrange(new Rect(new Point(0, 0), invoice.DesiredSize));
+                        printDialog.PrintVisual(invoice, "Hoa Don Hoc Phi");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi in: " + ex.Message);
                 }
             });
         }

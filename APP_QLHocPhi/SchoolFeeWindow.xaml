@@ -165,6 +165,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
                             <Button Grid.Column="0"
@@ -184,6 +185,18 @@
                                     materialDesign:ButtonAssist.CornerRadius="0 5 5 0"
                                     Margin="1 0 0 0"
                                     ToolTip="Tạo mã QR chuyển khoản ngân hàng" />
+
+         
+
+                            <Button  Grid.Column="2"  Command="{Binding PrintCommand}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    Foreground="Red"
+                                    
+                                    Background="Orange"
+                                    Margin="10 0 0 0"
+                                    ToolTip="In phiếu thu (Biên lai)">
+                                <materialDesign:PackIcon Kind="Printer" />
+                            </Button>
                         </Grid>
                     </StackPanel>
                 </materialDesign:Card>
