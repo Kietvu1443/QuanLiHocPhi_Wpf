@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace APP_QLHocPhi.NVVM.ViewModel
 {
@@ -97,6 +99,18 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         private DateTime? _NgaySinh;
         public DateTime? NgaySinh { get => _NgaySinh; set { _NgaySinh = value; OnPropertyChanged(); } }
 
+        private string _SearchKeyword;
+        public string SearchKeyword
+        {
+            get => _SearchKeyword;
+            set
+            {
+                _SearchKeyword = value;
+                OnPropertyChanged();
+                FilterList(); // <--- QUAN TRỌNG: Gõ phím là Lọc ngay!
+            }
+        }
+
 
         // --- Commands ---
         public ICommand AddCommand { get; set; }
@@ -106,6 +120,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public AddStudentViewModel()
         {
             LoadList();
+            //  Đăng ký nhận thông báo khi Database thay đổi
+            // (Bất kỳ ai gọi RefreshDataBase thì hàm LoadList của tui sẽ tự chạy)
+            DataProvider.Ins.DatabaseChanged += LoadList;
 
             // --- LỆNH THÊM ---
             AddCommand = new RelayCommand<object>((p) =>
@@ -139,11 +156,11 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 DataProvider.Ins.DB.Students.Add(student);
                 DataProvider.Ins.DB.SaveChanges();
 
-                // Báo hiệu đã thay đổi
                 DataProvider.Ins.RefreshDataBase();
 
 
-                LoadList();
+
+
                 ClearInputs();
             });
 
@@ -190,7 +207,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     DataProvider.Ins.RefreshDataBase();
 
                     // Tải lại danh sách tại chỗ và xóa trắng ô nhập
-                    LoadList();
+                   
                     ClearInputs();
 
                     MessageBox.Show("Cập nhật thông tin thành công!");
@@ -243,7 +260,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                         db.SaveChanges();
 
                         // Cập nhật lại giao diện
-                        List.Remove(SelectedItem);
+                        DataProvider.Ins.RefreshDataBase();
                         MessageBox.Show("Đã xóa sinh viên và toàn bộ dữ liệu liên quan thành công!");
 
                         
@@ -274,6 +291,12 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             }
 
             List = displayList;
+
+            //Nếu đang tìm kiếm thì lọc lại ngay lập tức
+            if (!string.IsNullOrEmpty(SearchKeyword))
+            {
+                FilterList();
+            }
         }
 
         void ClearInputs()
@@ -296,6 +319,43 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             {
                 hoDem = "";
                 ten = fullName;
+            }
+        }
+        // 2. Hàm xử lý lọc danh sách
+        private void FilterList()
+        {
+            // Lấy View mặc định của danh sách List
+            ICollectionView view = CollectionViewSource.GetDefaultView(List);
+
+            if (view == null) return; // Kiểm tra an toàn
+
+            if (string.IsNullOrEmpty(SearchKeyword))
+            {
+                view.Filter = null; // Nếu không gõ gì thì hiện hết
+            }
+            else
+            {
+                view.Filter = (obj) =>
+                {
+                    // Ép kiểu object về StudentDisplayItem để kiểm tra
+                    var item = obj as StudentDisplayItem;
+                    if (item == null) return false;
+
+                    // Chuẩn hóa chữ thường để tìm không phân biệt hoa thường
+                    string keyword = SearchKeyword.ToLower();
+
+                    // Lấy dữ liệu để so sánh (Dùng ?. để tránh lỗi null)
+                    string ten = item.StudentInfo.Ten?.ToLower() ?? "";
+                    string hoDem = item.StudentInfo.HoDem?.ToLower() ?? "";
+                    string maSV = item.Id?.ToLower() ?? "";
+                    string hoTenDayDu = item.DisplayName?.ToLower() ?? "";
+
+                    // Logic: Tìm thấy trong Tên HOẶC Mã SV HOẶC Họ Đệm HOẶC Tên đầy đủ
+                    return ten.Contains(keyword)
+                        || maSV.Contains(keyword)
+                        || hoDem.Contains(keyword)
+                        || hoTenDayDu.Contains(keyword);
+                };
             }
         }
     }
