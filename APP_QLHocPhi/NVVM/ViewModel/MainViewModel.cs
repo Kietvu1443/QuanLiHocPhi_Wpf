@@ -98,10 +98,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             StudentInvoiceCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                // Cần tạo window này ở Bước 4
-                // StudentInvoiceWindow wd = new StudentInvoiceWindow(CurrentUser); 
-                // wd.ShowDialog(); 
-                MessageBox.Show("Chức năng đang phát triển: Xem hóa đơn của " + CurrentUser?.DisplayName);
+                // Gọi cửa sổ mới tạo
+                StudentInvoiceWindow wd = new StudentInvoiceWindow(CurrentUser);
+                wd.ShowDialog();
             });
             //MessageBox.Show(DataProvider.Ins.DB.Users.First().Role);
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
