@@ -3,40 +3,17 @@ using APP_QLHocPhi.ViewModel;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace APP_QLHocPhi.NVVM.ViewModel
 {
-    // Tạo một class Wrapper để hiển thị lên View
-    // Class này giúp ta có thêm STT mà không đụng vào Model gốc
-    public class StudentDisplay
-    {
-        public int STT { get; set; }
-        public Student StudentInfo { get; set; } 
-
-        
-        public string Id { get => StudentInfo.Id; }
-        public string HoDem { get => StudentInfo.HoDem; }
-        public string Ten { get => StudentInfo.Ten; }
-        public string Lop { get => StudentInfo.Lop; }
-        public string Nganh { get => StudentInfo.Nganh; }
-        public string QRcode { get; set; } // noted : sẽ thêm vào sau
-    }
-
     public class DashboardViewModel : BaseViewModel
     {
-        private int _TotalStudents;
-        public int TotalStudent { get => _TotalStudents; set { _TotalStudents = value; OnPropertyChanged(); } }
-
-        private int _PaidCount;
-        public int PaidCount { get => _PaidCount; set { _PaidCount = value; OnPropertyChanged(); } }
-
-        private int _UnPaidCount;
-        public int UnPaidCount { get => _UnPaidCount; set { _UnPaidCount = value; OnPropertyChanged(); } }
+        // --- CÁC BIẾN CHO THẺ TỔNG QUAN (GIỮ NGUYÊN) ---
+        private int _TotalStudent;
+        public int TotalStudent { get => _TotalStudent; set { _TotalStudent = value; OnPropertyChanged(); } }
 
         private decimal _TongDoanhThu;
         public decimal TongDoanhThu { get => _TongDoanhThu; set { _TongDoanhThu = value; OnPropertyChanged(); } }
@@ -44,92 +21,115 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         private decimal _TongCongNo;
         public decimal TongCongNo { get => _TongCongNo; set { _TongCongNo = value; OnPropertyChanged(); } }
 
-        // --- DỮ LIỆU BIỂU ĐỒ ---
-        public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; set; }
+        // --- CÁC BIẾN CHO BIỂU ĐỒ & LỌC ---
+        private SeriesCollection _SeriesCollection;
+        public SeriesCollection SeriesCollection { get => _SeriesCollection; set { _SeriesCollection = value; OnPropertyChanged(); } }
+
+        private string[] _Labels;
+        public string[] Labels { get => _Labels; set { _Labels = value; OnPropertyChanged(); } }
+
         public Func<double, string> Formatter { get; set; }
 
+        // Danh sách học kỳ để hiển thị lên ComboBox
+        private ObservableCollection<string> _Semesters;
+        public ObservableCollection<string> Semesters { get => _Semesters; set { _Semesters = value; OnPropertyChanged(); } }
 
-
-        //Sửa kiểu dữ liệu của List thành StudentDisplay
-        private ObservableCollection<StudentDisplay> _List;
-        public ObservableCollection<StudentDisplay> List { get => _List; set { _List = value; OnPropertyChanged(); } }
+        // Học kỳ đang được chọn
+        private string _SelectedSemester;
+        public string SelectedSemester
+        {
+            get => _SelectedSemester;
+            set
+            {
+                _SelectedSemester = value;
+                OnPropertyChanged();
+                LoadChartData(); // Chọn xong là vẽ lại biểu đồ ngay
+            }
+        }
 
         public DashboardViewModel()
         {
-            LoadDashBoardData();
+            LoadGlobalStats(); // Load số liệu tổng
+            LoadSemesters();   // Load danh sách học kỳ
 
-            DataProvider.Ins.DatabaseChanged += () =>
-            {
-                LoadDashBoardData();
-            };
+            // Định dạng tiền tệ cho biểu đồ
+            Formatter = value => value.ToString("N0");
         }
 
-        void LoadDashBoardData()
+        void LoadGlobalStats()
         {
-            var db = DataProvider.Ins.DB; // Lấy DB context
-            var allRegs = db.StudentRegistrations.ToList();//Tính tiền (Gán vào biến mới)
+            var db = DataProvider.Ins.DB;
 
-            // Tính tổng tiền
-            decimal daThu = allRegs.Sum(x => x.SoTienDaDong);
-            decimal tongPhaiThu = allRegs.Sum(x => x.TongTienHoc);
-            decimal conNo = tongPhaiThu - daThu;
-
-            // Gán dữ liệu hiển thị
-            TongDoanhThu = daThu;
-            TongCongNo = conNo;
-
+            // 1. Tổng sinh viên
             TotalStudent = db.Students.Count();
-            PaidCount = db.Students.Where(x => x.TrangThai == "Đã đóng").Count();
-            UnPaidCount = TotalStudent - PaidCount;
 
-            // Lấy danh sách gốc từ DB
-            var studentListFromDB = db.Students.ToList();
+            // 2. Tổng doanh thu (Toàn bộ hóa đơn)
+            TongDoanhThu = db.Invoices.Sum(x => x.TongTienThu);
 
-            //Chuyển đổi sang danh sách hiển thị và đánh số STT
-            var displayList = new ObservableCollection<StudentDisplay>();
-            int i = 1;
+            // 3. Tổng công nợ (Toàn bộ đăng ký)
+            TongCongNo = db.StudentRegistrations.Sum(x => x.TongTienHoc - x.SoTienDaDong);
+        }
 
-            foreach (var item in studentListFromDB)
+        void LoadSemesters()
+        {
+            var db = DataProvider.Ins.DB;
+
+            // Lấy danh sách học kỳ duy nhất từ bảng đăng ký môn học
+            var listHK = db.StudentRegistrations.Select(x => x.HocKy).Distinct().OrderBy(x => x).ToList();
+
+            Semesters = new ObservableCollection<string>(listHK);
+
+            // Thêm lựa chọn "Tất cả" lên đầu
+            Semesters.Insert(0, "Tất cả");
+
+            // Mặc định chọn "Tất cả"
+            SelectedSemester = "Tất cả";
+        }
+
+        void LoadChartData()
+        {
+            var db = DataProvider.Ins.DB;
+            decimal revenue = 0;
+            decimal debt = 0;
+
+            if (SelectedSemester == "Tất cả" || string.IsNullOrEmpty(SelectedSemester))
             {
-                displayList.Add(new StudentDisplay
-                {
-                    STT = i, // Gán số thứ tự tăng dần
-                    StudentInfo = item, // Lưu thông tin gốc
-                    QRcode = "" // sẽ thêm vào sau
-                });
-                i++;
+                // Tính toán toàn bộ
+                revenue = db.Invoices.Sum(x => x.TongTienThu);
+                debt = db.StudentRegistrations.Sum(x => x.TongTienHoc - x.SoTienDaDong);
+            }
+            else
+            {
+                // Tính toán theo học kỳ được chọn
+                // Lưu ý: Bảng Invoice cần có cột HocKy (như bạn đã thêm ở các bước trước)
+                revenue = db.Invoices.Where(x => x.HocKy == SelectedSemester).Sum(x => x.TongTienThu);
+
+                debt = db.StudentRegistrations
+                            .Where(x => x.HocKy == SelectedSemester)
+                            .Sum(x => x.TongTienHoc - x.SoTienDaDong);
             }
 
-            List = displayList;
-
-            Formatter = value => value.ToString("N0") + " đ";
-
-            // Cấu hình Biểu đồ CỘT (Column Chart)
-            // Trục Y hiện tiền Việt Nam
+            // Cập nhật biểu đồ: Vẽ 2 cột so sánh
             SeriesCollection = new SeriesCollection
             {
-                // Cột 1: Tiền đã thu (Màu Xanh)
                 new ColumnSeries
                 {
-                    Title = "Đã Thu",
-                    Values = new ChartValues<decimal> { daThu },
-                    Fill = System.Windows.Media.Brushes.Green,
-                    DataLabels = true,
-                    LabelPoint = point => point.Y.ToString("N0")
+                    Title = "Doanh Thu",
+                    Values = new ChartValues<decimal> { revenue },
+                    Fill = (Brush)new BrushConverter().ConvertFrom("#4CAF50"), // Màu Xanh
+                    DataLabels = true
                 },
-                // Cột 2: Tiền còn nợ (Màu Đỏ)
                 new ColumnSeries
                 {
-                    Title = "Còn Nợ",
-                    Values = new ChartValues<decimal> { conNo },
-                    Fill = System.Windows.Media.Brushes.Red, //Red
-                    DataLabels = true,
-                    LabelPoint = point => point.Y.ToString("N0")
+                    Title = "Công Nợ",
+                    Values = new ChartValues<decimal> { debt },
+                    Fill = (Brush)new BrushConverter().ConvertFrom("#F44336"), // Màu Đỏ
+                    DataLabels = true
                 }
             };
 
-            Labels = new[] { "Tổng quan tài chính" };
+            // Trục hoành hiển thị tên học kỳ đang xem
+            Labels = new[] { SelectedSemester };
         }
     }
 }
