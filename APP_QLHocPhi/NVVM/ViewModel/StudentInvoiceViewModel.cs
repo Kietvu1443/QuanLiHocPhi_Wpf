@@ -1,5 +1,6 @@
 ﻿using APP_QLHocPhi.Models;
 using APP_QLHocPhi.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -10,28 +11,22 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 {
     public class StudentInvoiceViewModel : BaseViewModel
     {
-        // 1. Danh sách hóa đơn tìm được
+        // Danh sách hóa đơn tìm được
         private ObservableCollection<Invoice> _ListInvoices;
         public ObservableCollection<Invoice> ListInvoices { get => _ListInvoices; set { _ListInvoices = value; OnPropertyChanged(); } }
 
-        // 2. Hóa đơn đang chọn để in
+        // Hóa đơn đang được chọn
         private Invoice _SelectedInvoice;
         public Invoice SelectedInvoice
         {
             get => _SelectedInvoice;
-            set
-            {
-                _SelectedInvoice = value;
-                OnPropertyChanged();
-                // Khi chọn hóa đơn, có thể hiện nút In
-            }
+            set { _SelectedInvoice = value; OnPropertyChanged(); }
         }
 
-        // 3. Từ khóa tìm kiếm (Tên hoặc MSSV)
+        // Từ khóa tìm kiếm
         private string _SearchText;
         public string SearchText { get => _SearchText; set { _SearchText = value; OnPropertyChanged(); } }
 
-        // --- Commands ---
         public ICommand SearchCommand { get; set; }
         public ICommand PrintCommand { get; set; }
         public ICommand CloseCommand { get; set; }
@@ -40,31 +35,30 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             ListInvoices = new ObservableCollection<Invoice>();
 
-            // Nếu là học sinh (Role != 1), tự động điền tên/mã của họ vào ô tìm kiếm và tìm luôn
-            // Giả sử bảng Student có liên kết với User, hoặc ta tìm theo User.DisplayName tạm
+            // Nếu là học sinh, tự động điền tên để tìm luôn cho tiện
             if (currentUser != null && currentUser.Role != "1")
             {
-                SearchText = currentUser.DisplayName; // Hoặc logic mapping từ User sang StudentId
+                SearchText = currentUser.DisplayName;
                 Search();
             }
 
-            // Lệnh Tìm kiếm
+            // Command Tìm kiếm
             SearchCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
                 Search();
             });
 
-            // Lệnh In hóa đơn
+            // Command In
             PrintCommand = new RelayCommand<object>((p) =>
             {
-                // Chỉ in được khi đã chọn hóa đơn
+                // Chỉ cho in khi đã chọn hóa đơn
                 return SelectedInvoice != null;
             }, (p) =>
             {
                 PrintInvoice();
             });
 
-            // Lệnh Đóng cửa sổ
+            // Command Đóng cửa sổ
             CloseCommand = new RelayCommand<Window>((p) => { return true; }, (p) => { p?.Close(); });
         }
 
@@ -72,39 +66,41 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             if (string.IsNullOrEmpty(SearchText)) return;
 
-            // Tìm trong DB: Hóa đơn của sinh viên có Tên hoặc ID chứa từ khóa
+            // Logic tìm kiếm: Tìm theo Tên SV, Họ Đệm hoặc Mã SV
+            // Dùng Include("Student") để lấy luôn thông tin sinh viên đi kèm hóa đơn
             var list = DataProvider.Ins.DB.Invoices
-                .Where(x => x.Student.Ten.Contains(SearchText) ||
-                            x.Student.HoDem.Contains(SearchText) ||
-                            x.StudentId.Contains(SearchText))
-                .OrderByDescending(x => x.NgayThu) // Hóa đơn mới nhất lên đầu
-                .ToList();
+                        .Include(x => x.Student)
+                        .Where(x => x.Student.Ten.Contains(SearchText) ||
+                                    x.Student.HoDem.Contains(SearchText) ||
+                                    x.StudentId.Contains(SearchText))
+                        .OrderByDescending(x => x.NgayThu)
+                        .ToList();
 
             ListInvoices = new ObservableCollection<Invoice>(list);
         }
 
         void PrintInvoice()
         {
-            // Sử dụng InvoiceTemplate đã có trong project
-            // Giả sử InvoiceTemplate có constructor nhận Invoice hoặc DataContext
             try
             {
+                // Gọi cửa sổ mẫu in (InvoiceTemplate)
                 InvoiceTemplate printWindow = new InvoiceTemplate();
-                // Gán dữ liệu cho cửa sổ in (bạn có thể cần tạo ViewModel cho InvoiceTemplate hoặc gán trực tiếp)
-                // Ví dụ: printWindow.DataContext = SelectedInvoice; 
 
-                // Show dialog in ấn
+                // Truyền dữ liệu hóa đơn vào DataContext của mẫu in
+                printWindow.DataContext = SelectedInvoice;
+
+                // Hiện hộp thoại in của Windows
                 PrintDialog printDialog = new PrintDialog();
                 if (printDialog.ShowDialog() == true)
                 {
-                    // In Visual của cửa sổ InvoiceTemplate (hoặc FlowDocument nếu bạn dùng Document)
-                    printDialog.PrintVisual(printWindow.Prin, "Hóa Đơn Học Phí");
-                    // Lưu ý: "PrintArea" là tên Grid chính trong InvoiceTemplate.xaml
+                    // Ẩn các nút không cần thiết trên template trước khi in (nếu có)
+                    // Ở đây ta in nguyên cái Grid chính của Window đó
+                    printDialog.PrintVisual(printWindow.Content as System.Windows.Media.Visual, "Hóa Đơn Học Phí");
                 }
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show("Lỗi in ấn: " + ex.Message);
+                MessageBox.Show("Có lỗi khi in: " + ex.Message);
             }
         }
     }

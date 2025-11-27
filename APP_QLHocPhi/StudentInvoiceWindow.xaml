@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:uc="clr-namespace:APP_QLHocPhi.UserControlSF"
         mc:Ignorable="d"
-        Name="studentInvoiceWindow"
+        Name="studentInvoiceWd"
         Title="Tra cứu hóa đơn"
         Height="600"
         Width="900"
@@ -21,22 +21,33 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="400" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0"
+        <Grid Grid.Row="0">
+            <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}"></uc:UserControlBarUC>
+        </Grid>
+
+        <Grid Grid.Row="1"
               Background="{DynamicResource PrimaryHueMidBrush}"
-              Height="40"
-              MouseDown="Grid_MouseDown">
-            <TextBlock Text="TRA CỨU &amp; IN HÓA ĐƠN"
-                       VerticalAlignment="Center"
-                       Margin="15 0"
-                       Foreground="White"
-                       FontWeight="Bold"
-                       FontSize="16" />
+              Height="40">
+            <StackPanel Orientation="Horizontal"
+                        Margin="10 0">
+                <materialDesign:PackIcon Kind="ReceiptTextCheck"
+                                         VerticalAlignment="Center"
+                                         Foreground="Black"
+                                         Width="25"
+                                         Height="25" />
+                <TextBlock Text="TRA CỨU &amp; IN HÓA ĐƠN"
+                           VerticalAlignment="Center"
+                           Margin="10 0"
+                           Foreground="Black"
+                           FontWeight="Bold"
+                           FontSize="16" />
+            </StackPanel>
             <Button Command="{Binding CloseCommand}"
-                    CommandParameter="{Binding ElementName=studentInvoiceWindow}"
+                    CommandParameter="{Binding ElementName=studentInvoiceWd}"
                     HorizontalAlignment="Right"
                     Style="{StaticResource MaterialDesignIconForegroundButton}"
                     Foreground="White"
@@ -45,23 +56,25 @@
             </Button>
         </Grid>
 
-        <materialDesign:Card Grid.Row="1"
-                             Margin="10"
-                             Padding="10"
-                             UniformCornerRadius="5">
+        <materialDesign:Card Grid.Row="2"
+                             Margin="20"
+                             Padding="15"
+                             UniformCornerRadius="10"
+                             >
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <materialDesign:PackIcon Kind="AccountSearch"
                                          VerticalAlignment="Bottom"
-                                         Margin="0 0 10 10"
-                                         Width="25"
-                                         Height="25" />
+                                         Margin="0 0 10 5"
+                                         Width="30"
+                                         Height="30"
+                                         Foreground="{DynamicResource PrimaryHueMidBrush}" />
 
                 <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                         Width="300"
-                         materialDesign:HintAssist.Hint="Nhập tên hoặc MSSV..."
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Width="350"
                          FontSize="16"
+                         materialDesign:HintAssist.Hint="Nhập tên hoặc MSSV để tìm..."
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          Margin="0 0 20 0">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter"
@@ -71,14 +84,14 @@
 
                 <Button Command="{Binding SearchCommand}"
                         Content="TÌM KIẾM"
-                        Width="120"
                         Style="{StaticResource MaterialDesignRaisedButton}"
-                        ToolTip="Tìm hóa đơn" />
+                        Width="120"
+                        ToolTip="Bấm để tìm" />
             </StackPanel>
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="2"
-                  Margin="10"
+        <DataGrid Grid.Row="3"
+                  Margin="10 0 10 10"
                   ItemsSource="{Binding ListInvoices}"
                   SelectedItem="{Binding SelectedInvoice}"
                   AutoGenerateColumns="False"
@@ -89,10 +102,10 @@
                   materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                   materialDesign:DataGridAssist.ColumnHeaderPadding="8">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Mã Hóa Đơn"
+                <DataGridTextColumn Header="Số HĐ"
                                     Binding="{Binding Id}"
                                     Width="80" />
-                <DataGridTextColumn Header="Mã SV"
+                <DataGridTextColumn Header="MSSV"
                                     Binding="{Binding StudentId}"
                                     Width="100" />
                 <DataGridTextColumn Header="Họ Tên"
@@ -103,46 +116,43 @@
                                     Width="120" />
                 <DataGridTextColumn Header="Học Kỳ"
                                     Binding="{Binding HocKy}"
-                                    Width="120" />
-                <DataGridTextColumn Header="Tổng Tiền"
+                                    Width="100" />
+                <DataGridTextColumn Header="Số Tiền"
                                     Binding="{Binding TongTienThu, StringFormat='N0'}"
                                     Width="120"
-                                    FontWeight="Bold" />
-
-                <DataGridTemplateColumn Header="Chi tiết">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <materialDesign:PackIcon Kind="Eye"
-                                                     HorizontalAlignment="Center"
-                                                     Foreground="Gray" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                    FontWeight="Bold"
+                                    Foreground="DarkRed" />
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Row="3"
-              Margin="10">
+        <Grid Grid.Row="4"
+              Margin="20">
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <TextBlock Text="Chọn một hóa đơn để in"
+                <TextBlock Text="Chọn hóa đơn để in ấn"
                            VerticalAlignment="Center"
-                           Margin="0 0 10 0"
+                           Margin="0 0 15 0"
                            FontStyle="Italic"
-                           Visibility="{Binding SelectedInvoice, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverted}" />
+                           Opacity="0.7" />
 
                 <Button Command="{Binding PrintCommand}"
-                        
-                        Width="150"
-                        Height="40"
-                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        IsEnabled="{Binding SelectedInvoice, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Printer"
-                                                 Margin="0 0 8 0"
-                                                 VerticalAlignment="Center" />
-                        <TextBlock Text="IN HÓA ĐƠN" />
-                    </StackPanel>
+                        Content="IN HÓA ĐƠN"
+                        Width="160"
+                        Height="45"
+                        FontSize="16"
+                        Background="#4CAF50"
+                        BorderBrush="#4CAF50"
+                        Style="{StaticResource MaterialDesignRaisedButton}">
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Printer"
+                                                         Margin="0 0 8 0"
+                                                         VerticalAlignment="Center" />
+                                <TextBlock Text="IN HÓA ĐƠN" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </Button.ContentTemplate>
                 </Button>
             </StackPanel>
         </Grid>

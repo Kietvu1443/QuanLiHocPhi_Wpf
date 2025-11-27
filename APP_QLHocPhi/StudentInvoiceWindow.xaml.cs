@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using APP_QLHocPhi.Models; // Cần dùng Model User
+using APP_QLHocPhi.NVVM.ViewModel; // Cần dùng ViewModel
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace APP_QLHocPhi
 {
@@ -19,9 +10,13 @@ namespace APP_QLHocPhi
     /// </summary>
     public partial class StudentInvoiceWindow : Window
     {
-        public StudentInvoiceWindow()
+        // 1. Sửa Constructor: Thêm tham số User vào đây
+        public StudentInvoiceWindow(User user)
         {
             InitializeComponent();
+
+            // 2. Gán DataContext: Tạo ViewModel và truyền User vào
+            this.DataContext = new StudentInvoiceViewModel(user);
         }
     }
 }
