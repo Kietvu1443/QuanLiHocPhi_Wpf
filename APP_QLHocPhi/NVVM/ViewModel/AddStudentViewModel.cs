@@ -150,66 +150,108 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             // --- LỆNH SỬA ---
             EditCommand = new RelayCommand<object>((p) =>
             {
-                if (SelectedItem == null) return false;
-                return true;
+                // Điều kiện để bấm nút Sửa: Phải đang chọn một sinh viên trong danh sách
+                return SelectedItem != null;
             }, (p) =>
             {
+                // Lấy ID của sinh viên đang chọn (Đây là ID gốc, không thể thay đổi)
                 var idCanSua = SelectedItem.StudentInfo.Id;
+
+                // Tìm sinh viên đó trong Database
                 var student = DataProvider.Ins.DB.Students.SingleOrDefault(x => x.Id == idCanSua);
 
                 if (student != null)
                 {
+                    // --- CẬP NHẬT THÔNG TIN (Trừ ID) ---
                     student.DisplayName = DisplayName;
-                    student.Lop = ClassName;
-                    student.Nganh = MajorName;
+                    student.Lop = ClassName;  // Lưu ý: Cậu kiểm tra lại biến Binding 'ClassName' hay 'Lop' nhé
+                    student.Nganh = MajorName; // Tương tự check lại biến Binding 'MajorName' hay 'Nganh'
                     student.Phone = Phone;
                     student.Address = Address;
                     student.Email = Email;
                     student.GioiTinh = GioiTinh;
                     student.TrangThai = TrangThai;
 
+                    // Xử lý Ngày sinh (Vì cậu dùng DateOnly nên cần convert)
                     if (NgaySinh.HasValue)
                         student.NgaySinh = DateOnly.FromDateTime(NgaySinh.Value);
                     else
                         student.NgaySinh = null;
 
+                    // Tách Họ Tên (Nếu cậu có dùng tính năng này để sắp xếp)
                     SplitName(DisplayName, out string hoDem, out string ten);
                     student.HoDem = hoDem;
                     student.Ten = ten;
 
+                    // Lưu vào Database
                     DataProvider.Ins.DB.SaveChanges();
 
-                    //Lệnh báo hiệu đã đổi thay
-
+                    // Rung chuông báo hiệu cho các màn hình khác (Dashboard, Thu phí...) biết
                     DataProvider.Ins.RefreshDataBase();
 
+                    // Tải lại danh sách tại chỗ và xóa trắng ô nhập
                     LoadList();
                     ClearInputs();
+
+                    MessageBox.Show("Cập nhật thông tin thành công!");
                 }
             });
 
             // --- LỆNH XÓA ---
             RemoveCommand = new RelayCommand<object>((p) =>
             {
-                if (SelectedItem == null) return false;
-                return true;
+                return SelectedItem != null;
             }, (p) =>
             {
-                var idCanXoa = SelectedItem.StudentInfo.Id;
-                var student = DataProvider.Ins.DB.Students.SingleOrDefault(x => x.Id == idCanXoa);
-                try
-                {
-                    DataProvider.Ins.DB.Students.Remove(student);
-                    DataProvider.Ins.DB.SaveChanges();
+                var db = DataProvider.Ins.DB;
+                var student = db.Students.Where(x => x.Id == SelectedItem.Id).SingleOrDefault();
 
-                    DataProvider.Ins.RefreshDataBase();
+                if (student == null) return;
 
-                    LoadList();
-                    ClearInputs();
-                }
-                catch (Exception)
+                var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa sinh viên {student.DisplayName}?\n\nTất cả dữ liệu điểm số, học phí, hóa đơn liên quan sẽ bị xóa vĩnh viễn!",
+                                             "Cảnh báo xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
                 {
-                    MessageBox.Show("Không thể xóa sinh viên này vì đã có dữ liệu liên quan!", "Lỗi");
+                    try
+                    {
+                        // XÓA HÓA ĐƠN & CHI TIẾT HÓA ĐƠN ---
+                        // Tìm tất cả hóa đơn của sinh viên này
+                        var invoices = db.Invoices.Where(x => x.StudentId == student.Id).ToList();
+
+                        if (invoices.Count > 0)
+                        {
+                            // Lấy danh sách ID hóa đơn
+                            var invoiceIds = invoices.Select(x => x.Id).ToList();
+
+                            // Xóa Chi tiết hóa đơn trước (Con của Hóa đơn)
+                            var details = db.InvoiceDetails.Where(x => invoiceIds.Contains(x.InvoiceId)).ToList();
+                            db.InvoiceDetails.RemoveRange(details);
+
+                            // Sau đó mới xóa Hóa đơn
+                            db.Invoices.RemoveRange(invoices);
+                        }
+
+                        //XÓA ĐĂNG KÝ MÔN HỌC ---
+                        var registrations = db.StudentRegistrations.Where(x => x.StudentId == student.Id).ToList();
+                        db.StudentRegistrations.RemoveRange(registrations);
+
+                        //XÓA SINH VIÊN
+                        db.Students.Remove(student);
+
+                        // Lưu tất cả thay đổi
+                        db.SaveChanges();
+
+                        // Cập nhật lại giao diện
+                        List.Remove(SelectedItem);
+                        MessageBox.Show("Đã xóa sinh viên và toàn bộ dữ liệu liên quan thành công!");
+
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Vẫn không xóa được. Lỗi chi tiết: " + ex.Message);
+                    }
                 }
             });
         }
