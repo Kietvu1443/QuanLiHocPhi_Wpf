@@ -1,12 +1,13 @@
 ﻿using APP_QLHocPhi.Models;
 using APP_QLHocPhi.ViewModel;
+using Microsoft.Win32; // Dùng cho hộp thoại lưu file
 using System;
 using System.Collections.ObjectModel;
 using System.IO; // Dùng để xuất file
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Win32; // Dùng cho hộp thoại lưu file
 
 namespace APP_QLHocPhi.NVVM.ViewModel
 {
@@ -163,16 +164,22 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "CSV file (*.csv)|*.csv";
+
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName))
+                    // 👉 SỬA DÒNG NÀY: Thêm 'false' (không append) và 'Encoding.UTF8'
+                    using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
                     {
                         // Ghi Header
                         sw.WriteLine("STT,Ma Mon,Ten Mon,So Tin Chi,Sinh Vien");
+
                         // Ghi Data
                         foreach (var item in ListDangKy)
                         {
-                            sw.WriteLine($"{item.STT},{item.SubjectInfo.Id},{item.SubjectName},{item.TinChi},{SelectedStudent.DisplayName}");
+                            // Lưu ý: Nếu tên môn học có dấu phẩy (,), file CSV sẽ bị lệch cột.
+                            // Để an toàn hơn, mình nên bọc các trường text trong dấu ngoặc kép ""
+                            string line = $"{item.STT},{item.SubjectInfo.Id},\"{item.SubjectName}\",{item.TinChi},\"{SelectedStudent.DisplayName}\"";
+                            sw.WriteLine(line);
                         }
                     }
                     MessageBox.Show("Xuất file thành công!");
