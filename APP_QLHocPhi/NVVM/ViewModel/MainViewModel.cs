@@ -14,6 +14,24 @@ namespace APP_QLHocPhi.NVVM.ViewModel
     public class MainViewModel : BaseViewModel
     {
         public bool Isloaded = false;
+        public User CurrentUser { get; private set; }  // Biến này để lưu user hiện tại
+
+        // --- PHẦN PHÂN QUYỀN (VISIBILITY) ---
+
+        // Admin thấy: Dashboard, Thêm HS, Thu học phí, Quản lý môn...
+        private Visibility _AdminVisibility = Visibility.Collapsed; // Mặc định ẩn cho an toàn
+        public Visibility AdminVisibility
+        {
+            get => _AdminVisibility;
+            set { _AdminVisibility = value; OnPropertyChanged(); }
+        }
+        // Học sinh thấy: Nút Student (nếu cần) và Nút In hóa đơn
+        private Visibility _StudentVisibility = Visibility.Collapsed;
+        public Visibility StudentVisibility
+        {
+            get => _StudentVisibility;
+            set { _StudentVisibility = value; OnPropertyChanged(); }
+        }
 
         public ICommand LoadedWindowCommand { get; set; }
 
@@ -28,6 +46,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public ICommand SubjectCommand { get; set; }
 
         public ICommand UserCommand { get; set; }
+        public ICommand StudentInvoiceCommand { get; set; }  // Command mới cho học sinh xem hóa đơn
 
         //tất cả sẽ được sử lí trong đây    
         public MainViewModel()
@@ -52,6 +71,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 }
                 if (LoginVM.IsLogin)
                 {
+                    SetUser(LoginVM.CurrentUser);
                     p.Show();
                 }
                 else
@@ -60,6 +80,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 }
              
             });
+
+
+
 
             AddStudentCommand = new RelayCommand<object>((p) => { return true; }, (p) => { AddStudentWindow wd = new AddStudentWindow(); wd.ShowDialog(); });
 
@@ -72,7 +95,37 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             UserCommand = new RelayCommand<object>((p) => { return true; }, (p) => { UserWindow wd = new UserWindow(); wd.ShowDialog(); });
 
             SubjectCommand = new RelayCommand<object>((p) => { return true; }, (p) => { SubjectWindow wd = new SubjectWindow(); wd.ShowDialog(); });
+
+            StudentInvoiceCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                // Cần tạo window này ở Bước 4
+                // StudentInvoiceWindow wd = new StudentInvoiceWindow(CurrentUser); 
+                // wd.ShowDialog(); 
+                MessageBox.Show("Chức năng đang phát triển: Xem hóa đơn của " + CurrentUser?.DisplayName);
+            });
             //MessageBox.Show(DataProvider.Ins.DB.Users.First().Role);
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+            {
+                AdminVisibility = Visibility.Visible;
+                StudentVisibility = Visibility.Visible;
+            }
         }
+        public void SetUser(User user)
+        {
+            CurrentUser = user;
+            if (CurrentUser == null) return;
+
+            if (CurrentUser.Role == "1") // 1 Là Admin
+            {
+                AdminVisibility = Visibility.Visible;
+                StudentVisibility = Visibility.Visible; // Admin có cần xem nút của HS ko? Tùy bạn, ở đây mình ẩn
+            }
+            else // 0 Là User (Học sinh)
+            {
+                AdminVisibility = Visibility.Collapsed; // Ẩn hết chức năng quản lý
+                StudentVisibility = Visibility.Visible; // Chỉ hiện chức năng cho HS
+            }
+        }
+
     }
 }
