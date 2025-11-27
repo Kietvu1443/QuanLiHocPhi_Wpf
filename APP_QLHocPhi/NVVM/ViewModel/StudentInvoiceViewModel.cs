@@ -35,67 +35,83 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             ListInvoices = new ObservableCollection<Invoice>();
 
-            // Nếu là học sinh, tự động điền tên để tìm luôn cho tiện
+            // 1. ĐĂNG KÝ SỰ KIỆN: Khi Database thay đổi -> Tự động chạy lại hàm Search
+            DataProvider.Ins.DatabaseChanged += Search;
+
             if (currentUser != null && currentUser.Role != "1")
             {
                 SearchText = currentUser.DisplayName;
                 Search();
             }
 
-            // Command Tìm kiếm
             SearchCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
                 Search();
             });
 
-            // Command In
             PrintCommand = new RelayCommand<object>((p) =>
             {
-                // Chỉ cho in khi đã chọn hóa đơn
                 return SelectedInvoice != null;
             }, (p) =>
             {
                 PrintInvoice();
             });
 
-            // Command Đóng cửa sổ
-            CloseCommand = new RelayCommand<Window>((p) => { return true; }, (p) => { p?.Close(); });
+            // 2. HỦY ĐĂNG KÝ KHI ĐÓNG: Quan trọng để tránh lỗi và tốn Ram
+            CloseCommand = new RelayCommand<Window>((p) => { return true; }, (p) =>
+            {
+                // Trước khi đóng cửa sổ, ta "rút dây" lắng nghe ra
+                DataProvider.Ins.DatabaseChanged -= Search;
+                p?.Close();
+            });
         }
 
         void Search()
         {
+            // Kiểm tra null để tránh lỗi nếu sự kiện bắn ra lúc chưa có SearchText
             if (string.IsNullOrEmpty(SearchText)) return;
 
-            // Logic tìm kiếm: Tìm theo Tên SV, Họ Đệm hoặc Mã SV
-            // Dùng Include("Student") để lấy luôn thông tin sinh viên đi kèm hóa đơn
-            var list = DataProvider.Ins.DB.Invoices
-                        .Include(x => x.Student)
-                        .Where(x => x.Student.Ten.Contains(SearchText) ||
-                                    x.Student.HoDem.Contains(SearchText) ||
-                                    x.StudentId.Contains(SearchText))
-                        .OrderByDescending(x => x.NgayThu)
-                        .ToList();
+            // Dùng Application.Current.Dispatcher để đảm bảo chạy trên luồng UI (an toàn tuyệt đối)
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                // Lấy lại dữ liệu mới nhất từ DB
+                var list = DataProvider.Ins.DB.Invoices
+                            .Include(x => x.Student)
+                            .Where(x => x.Student.Ten.Contains(SearchText) ||
+                                        x.Student.HoDem.Contains(SearchText) ||
+                                        x.StudentId.Contains(SearchText))
+                            .OrderByDescending(x => x.NgayThu)
+                            .ToList();
 
-            ListInvoices = new ObservableCollection<Invoice>(list);
+                ListInvoices = new ObservableCollection<Invoice>(list);
+            });
         }
 
         void PrintInvoice()
         {
             try
             {
-                // Gọi cửa sổ mẫu in (InvoiceTemplate)
-                InvoiceTemplate printWindow = new InvoiceTemplate();
+                if (SelectedInvoice == null) return;
 
-                // Truyền dữ liệu hóa đơn vào DataContext của mẫu in
-                printWindow.DataContext = SelectedInvoice;
+                //Tạo mẫu in
+                InvoiceTemplate invoiceTemplate = new InvoiceTemplate();
 
-                // Hiện hộp thoại in của Windows
+                //GỌI HÀM GÁN DỮ LIỆU VỪA TẠO (Đây là chìa khóa!)
+                // Cách này ép giao diện phải nhận dữ liệu ngay lập tức
+                invoiceTemplate.SetInvoiceData(SelectedInvoice);
+
+                //Chuẩn bị in
                 PrintDialog printDialog = new PrintDialog();
                 if (printDialog.ShowDialog() == true)
                 {
-                    // Ẩn các nút không cần thiết trên template trước khi in (nếu có)
-                    // Ở đây ta in nguyên cái Grid chính của Window đó
-                    printDialog.PrintVisual(printWindow.Content as System.Windows.Media.Visual, "Hóa Đơn Học Phí");
+                    // Cập nhật lại layout lần cuối cho chắc ăn
+                    // Tính toán kích thước cần thiết để hiển thị hết nội dung
+                    invoiceTemplate.Measure(new Size(printDialog.PrintableAreaWidth, double.PositiveInfinity));
+                    invoiceTemplate.Arrange(new Rect(new Point(0, 0), invoiceTemplate.DesiredSize));
+                    invoiceTemplate.UpdateLayout(); // Bắt buộc vẽ lại giao diện
+
+                    // Thực hiện in
+                    printDialog.PrintVisual(invoiceTemplate, "Hóa Đơn Học Phí - " + SelectedInvoice.StudentId);
                 }
             }
             catch (System.Exception ex)
