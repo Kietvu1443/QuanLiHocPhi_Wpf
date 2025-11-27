@@ -17,7 +17,7 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         mc:Ignorable="d"
-        Title="Thêm học sinh"
+        Title="Quản lí môn học"
         Height="450"
         Width="850">
     <Grid>

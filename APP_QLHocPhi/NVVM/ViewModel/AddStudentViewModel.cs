@@ -156,7 +156,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 DataProvider.Ins.DB.Students.Add(student);
                 DataProvider.Ins.DB.SaveChanges();
 
-                DataProvider.Ins.RefreshDataBase();
+                SystemLog.Log("THÊM SINH VIÊN", $"Đã thêm SV: {student.DisplayName} - MSSV: {student.Id}");
+
+                DataProvider.Ins.RefreshDataBase(); // Thông báo thay đổi Database
 
 
 
@@ -258,6 +260,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
                         // Lưu tất cả thay đổi
                         db.SaveChanges();
+                        //Ghi log
+                        SystemLog.Log("XOÁ SINH VIÊN", $"Đã xoá sinh viên: {student.DisplayName} - MSSV: {student.Id}");
+
 
                         // Cập nhật lại giao diện
                         DataProvider.Ins.RefreshDataBase();

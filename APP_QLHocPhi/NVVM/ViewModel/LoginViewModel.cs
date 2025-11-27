@@ -61,7 +61,13 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             {
                 IsLogin = true;
                 CurrentUser = acc; // lưu lại thông tin user để qua main
+
+                UserSession.CurrentUser = acc; // Lưu vào biến toàn cục
+                SystemLog.Log("LOGIN", "Đăng nhập vào hệ thống"); // Ghi log 
+
                 p.Close();
+
+
             }
             else
             {
