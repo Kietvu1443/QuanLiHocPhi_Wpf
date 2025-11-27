@@ -1,183 +1,167 @@
 ﻿<Window x:Class="APP_QLHocPhi.DashBoardWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:APP_QLHocPhi"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:uc="clr-namespace:APP_QLHocPhi.UserControlSF"
-        TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
-        Background="{DynamicResource MaterialDesign.Brush.Background}"
-        TextElement.FontWeight="Medium"
-        
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         DataContext="{StaticResource DashboardVM}"
-        
-        TextElement.FontSize="14"
+        Title="Dashboard"
+        Height="600"
+        Width="1000"
         WindowStartupLocation="CenterScreen"
-        FontFamily="{materialDesign:MaterialDesignFont}"
-        x:Name="window"
-        ResizeMode="NoResize"
         WindowStyle="None"
-        mc:Ignorable="d"
-        Title="Tổng quan"
-        Height="450"
-        Width="850">
-    <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+        ResizeMode="NoResize">
 
-            <Grid Grid.Row="0">
-                <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}"></uc:UserControlBarUC>
-            </Grid>
+    <Grid Background="#F0F2F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <!--các elemenent biding trong selected item-->
-                <materialDesign:Card Grid.Row="0"
-                                     Margin="5">
-                    <WrapPanel>
-                        <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                                   Text="Tổng Quan" />
-                    </WrapPanel>
-                </materialDesign:Card>
-
-                <materialDesign:Card Grid.Row="1"
-                                     Margin="5">
-                    <WrapPanel>
-                        <materialDesign:Card Width="200"
-                                             Padding="0"
-                                             Margin="10"
-                                             Background="#03a9f4"
-                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0"
-                                           Margin="16,16,16,4"
-                                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                           Text="Số lượng học sinh"
-                                           TextWrapping="Wrap" />
-                                <Separator Grid.Row="1"
-                                           Style="{StaticResource MaterialDesignLightSeparator}" />
-                                <TextBlock Grid.Row="2"
-                                           Margin="16,0,16,8"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                           Text="{Binding TotalStudent}" />
-                                <StackPanel Grid.Row="2"
-                                            Margin="16,0,16,8"
-                                            HorizontalAlignment="Right"
-                                            Orientation="Horizontal">
-                                </StackPanel>
-                            </Grid>
-                        </materialDesign:Card>
-
-                        <materialDesign:Card Width="200"
-                                             Padding="0"
-                                             Margin="10"
-                                             Background="#03a9f4"
-                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0"
-                                           Margin="16,16,16,4"
-                                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                           Text="Số lượng học sinh đã đóng"
-                                           TextWrapping="Wrap" />
-                                <Separator Grid.Row="1"
-                                           Style="{StaticResource MaterialDesignLightSeparator}" />
-                                <TextBlock Grid.Row="2"
-                                           Margin="16,0,16,8"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                           Text="{Binding PaidCount}" />
-                                <StackPanel Grid.Row="2"
-                                            Margin="16,0,16,8"
-                                            HorizontalAlignment="Right"
-                                            Orientation="Horizontal">
-                                </StackPanel>
-                            </Grid>
-                        </materialDesign:Card>
-                        <materialDesign:Card Width="200"
-                                             Padding="0"
-                                             Margin="10"
-                                             Background="#03a9f4"
-                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0"
-                                           Margin="16,16,16,4"
-                                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                           Text="Số lượng học sinh chưa đóng"
-                                           TextWrapping="Wrap" />
-                                <Separator Grid.Row="1"
-                                           Style="{StaticResource MaterialDesignLightSeparator}" />
-                                <TextBlock Grid.Row="2"
-                                           Margin="16,0,16,8"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                           Text="{Binding UnPaidCount}" />
-                                <StackPanel Grid.Row="2"
-                                            Margin="16,0,16,8"
-                                            HorizontalAlignment="Right"
-                                            Orientation="Horizontal">
-                                </StackPanel>
-                            </Grid>
-                        </materialDesign:Card>
-                    </WrapPanel>
-                </materialDesign:Card>
-
-
-                <materialDesign:Card Grid.Row="2"
-                                     Margin="5"
-                                     VerticalAlignment="Stretch">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ListView ItemsSource="{Binding List}"
-                                  SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="STT"
-                                                    DisplayMemberBinding="{Binding STT}" />
-                                    <GridViewColumn Header="Mã sinh viên"
-                                                    DisplayMemberBinding="{Binding Id}" />
-                                    <GridViewColumn Header="Họ đệm"
-                                                    DisplayMemberBinding="{Binding HoDem}" />
-                                    <GridViewColumn Header="Tên"
-                                                    DisplayMemberBinding="{Binding Ten}" />
-                                    <GridViewColumn Header="Lớp"
-                                                    DisplayMemberBinding="{Binding Lop}" />
-                                    <GridViewColumn Header="Ngành"
-                                                    DisplayMemberBinding="{Binding Nganh}" />
-                                    <GridViewColumn Header="QRCode"
-                                                    DisplayMemberBinding="{Binding QRcode}" />
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </ScrollViewer>
-                </materialDesign:Card>
-            </Grid>
-
+        <Grid Grid.Row="0">
+            <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}" />
         </Grid>
+
+        <Grid Grid.Row="1"
+              Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <materialDesign:Card Grid.Column="0"
+                                 Margin="10"
+                                 Padding="20"
+                                 Background="White"
+                                 UniformCornerRadius="10">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="TỔNG SINH VIÊN"
+                                   FontWeight="Bold"
+                                   Foreground="Gray" />
+                        <materialDesign:PackIcon Kind="AccountMultiple"
+                                                 HorizontalAlignment="Right"
+                                                 Width="30"
+                                                 Height="30"
+                                                 Foreground="#2196F3" />
+                    </Grid>
+                    <TextBlock Text="{Binding TotalStudent}"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Margin="0 10 0 0" />
+                    <TextBlock Text="sinh viên đang theo học"
+                               FontSize="12"
+                               Foreground="Gray" />
+                </StackPanel>
+            </materialDesign:Card>
+
+            <materialDesign:Card Grid.Column="1"
+                                 Margin="10"
+                                 Padding="20"
+                                 Background="White"
+                                 UniformCornerRadius="10">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="DOANH THU THỰC TẾ"
+                                   FontWeight="Bold"
+                                   Foreground="Gray" />
+                        <materialDesign:PackIcon Kind="CashMultiple"
+                                                 HorizontalAlignment="Right"
+                                                 Width="30"
+                                                 Height="30"
+                                                 Foreground="Green" />
+                    </Grid>
+                    <TextBlock Text="{Binding TongDoanhThu, StringFormat=N0}"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="Green"
+                               Margin="0 10 0 0" />
+                    <TextBlock Text="VNĐ (Tiền đã về két)"
+                               FontSize="12"
+                               Foreground="Gray" />
+                </StackPanel>
+            </materialDesign:Card>
+
+            <materialDesign:Card Grid.Column="2"
+                                 Margin="10"
+                                 Padding="20"
+                                 Background="White"
+                                 UniformCornerRadius="10">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="CÔNG NỢ CẦN THU"
+                                   FontWeight="Bold"
+                                   Foreground="Gray" />
+                        <materialDesign:PackIcon Kind="CurrencyUsdOff"
+                                                 HorizontalAlignment="Right"
+                                                 Width="30"
+                                                 Height="30"
+                                                 Foreground="Red" />
+                    </Grid>
+                    <TextBlock Text="{Binding TongCongNo, StringFormat=N0}"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="Red"
+                               Margin="0 10 0 0" />
+                    <TextBlock Text="VNĐ (Sinh viên còn nợ)"
+                               FontSize="12"
+                               Foreground="Gray" />
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+
+        <materialDesign:Card Grid.Row="2"
+                             Margin="20 10 20 20"
+                             Padding="20"
+                             UniformCornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="BIỂU ĐỒ TÀI CHÍNH (ĐÃ THU vs CÒN NỢ)"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Margin="0 0 0 20" />
+
+                    <lvc:CartesianChart Series="{Binding SeriesCollection}"
+                                        LegendLocation="Bottom"
+                                        Height="300">
+
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Danh mục"
+                                      Labels="{Binding Labels}" />
+                        </lvc:CartesianChart.AxisX>
+
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Số Tiền (VNĐ)"
+                                      LabelFormatter="{Binding Formatter}" />
+                        </lvc:CartesianChart.AxisY>
+
+                    </lvc:CartesianChart>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Margin="20 0 0 0">
+                    <TextBlock Text="Phân tích:"
+                               FontWeight="Bold"
+                               TextDecorations="Underline"
+                               Margin="0 0 0 10" />
+                    <TextBlock Text="- Cột Xanh: Tiền đã được thu."
+                               TextWrapping="Wrap"
+                               Margin="0 5"
+                               Foreground="Green" />
+                    <TextBlock Text="- Cột Đỏ: Tiền đang bị nợ."
+                               TextWrapping="Wrap"
+                               Margin="0 5"
+                               Foreground="Red" />
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
     </Grid>
 </Window>

@@ -149,6 +149,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 }
                 db.SaveChanges();
                 MessageBox.Show("Đã xác nhận đăng ký thành công vào hệ thống!");
+                //Rung chuông refresh data
+                DataProvider.Ins.RefreshDataBase();
                 foreach (var item in itemsToSave)
                 {
                     ListDangKy.Remove(item);
