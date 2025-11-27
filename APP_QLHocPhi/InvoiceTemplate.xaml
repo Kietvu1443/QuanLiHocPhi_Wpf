@@ -15,7 +15,7 @@
                        HorizontalAlignment="Center"
                        FontWeight="Bold"
                        FontSize="16" />
-            <TextBlock Text="Địc chỉ: Bình Dương"
+            <TextBlock Text="Địa chỉ: Bình Dương"
                        HorizontalAlignment="Center"
                        FontStyle="Italic"
                        FontSize="12" />
@@ -32,6 +32,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -68,6 +69,17 @@
                            Grid.Column="1"
                            x:Name="txbLop"
                            Text="CNTT K18"
+                           Margin="0 5" />
+
+                <TextBlock Grid.Row="3"
+                           Grid.Column="0"
+                           Text="Học kỳ:"
+                           FontWeight="Bold"
+                           Margin="0 5 10 5" />
+                <TextBlock Grid.Row="3"
+                           Grid.Column="1"
+                           x:Name="txbHocKy"
+                           Text="HK..."
                            Margin="0 5" />
             </Grid>
 
