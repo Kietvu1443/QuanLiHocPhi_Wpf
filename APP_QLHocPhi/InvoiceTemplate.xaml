@@ -11,11 +11,11 @@
             Margin="10"
             Padding="20">
         <StackPanel>
-            <TextBlock Text="TRƯỜNG ĐẠI HỌC ABC"
+            <TextBlock Text="TRƯỜNG ĐẠI HỌC"
                        HorizontalAlignment="Center"
                        FontWeight="Bold"
                        FontSize="16" />
-            <TextBlock Text="Địc chỉ: 123 Đường Code Dạo, Bình Dương"
+            <TextBlock Text="Địc chỉ: Bình Dương"
                        HorizontalAlignment="Center"
                        FontStyle="Italic"
                        FontSize="12" />
