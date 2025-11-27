@@ -14,12 +14,12 @@ namespace APP_QLHocPhi.Models
         public QuanLiHocPhiContext DB { get; set; }
 
         // Tạo sự kiện để các window khác lắng nghe
-        public event Action OnDataBaseChanged;
+        public event Action DatabaseChanged;
         // Hàm để kích hoạt sự kiện
         public void RefreshDataBase()
         {
-            //nếu có window listen thì báo
-            OnDataBaseChanged?.Invoke();
+            // Khi gọi hàm này, ai đang lắng nghe sẽ tự động chạy
+            DatabaseChanged?.Invoke();
         }
 
         private DataProvider()

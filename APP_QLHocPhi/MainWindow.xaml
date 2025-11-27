@@ -24,7 +24,8 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" />
+            <i:InvokeCommandAction Command="{Binding LoadedWindowCommand}"
+                                   CommandParameter="{Binding ElementName=mainWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -43,8 +44,8 @@
         <Grid Grid.Row="1">
             <!--Phân chia layout chính-->
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!--Thanh Submenu bar-->
 
@@ -168,39 +169,7 @@
                                            HorizontalAlignment="Center"></TextBlock>
                                 <materialDesign:PackIcon Grid.Row="1"
                                                          HorizontalAlignment="Center"
-                                                         Kind="Cog" />
-                            </Grid>
-                        </Button>
-
-                        <Button ToolTip="Thêm hoá đơn"
-                                Command="{Binding UserCommand}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0"
-                                           Text="Thêm hoá đơn"
-                                           HorizontalAlignment="Center"></TextBlock>
-                                <materialDesign:PackIcon Grid.Row="1"
-                                                         HorizontalAlignment="Center"
-                                                         Kind="Cog" />
-                            </Grid>
-                        </Button>
-
-                        <Button ToolTip="Xuất hoá đơn"
-                                Command="{Binding UserCommand}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0"
-                                           Text="Xuất hoá đơn"
-                                           HorizontalAlignment="Center"></TextBlock>
-                                <materialDesign:PackIcon Grid.Row="1"
-                                                         HorizontalAlignment="Center"
-                                                         Kind="Cog" />
+                                                         Kind="PlusCircle" />
                             </Grid>
                         </Button>
                     </WrapPanel>
