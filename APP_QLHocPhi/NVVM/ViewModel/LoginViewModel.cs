@@ -15,6 +15,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
     class LoginViewModel : BaseViewModel
     {
         public bool IsLogin { get; set; }
+        public User CurrentUser { get; set; } //Kiểm tra user hiện tại
+
         private string _Id;
         public string Id { get=> _Id; set { _Id = value;OnPropertyChanged(); } }
 
@@ -52,12 +54,13 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             if (p == null)
                 return;
 
-            var accCount = DataProvider.Ins.DB.Users.Where(x=> x.Id == Id && x.Password == Password).Count();
+            // Kiểm tra đăng nhập và lấy luôn đối tượng User
+            var acc = DataProvider.Ins.DB.Users.Where(x => x.Id == Id && x.Password == Password).FirstOrDefault();
 
-            if(accCount > 0)
+            if (acc != null)
             {
                 IsLogin = true;
-
+                CurrentUser = acc; // lưu lại thông tin user để qua main
                 p.Close();
             }
             else

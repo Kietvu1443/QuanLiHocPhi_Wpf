@@ -29,7 +29,6 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -40,15 +39,11 @@
             <uc:UserControlBarUC Tag="{Binding Title, ElementName=mainWindow}"></uc:UserControlBarUC>
         </Grid>
 
-
         <Grid Grid.Row="1">
-            <!--Phân chia layout chính-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <!--Thanh Submenu bar-->
-
 
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
@@ -58,7 +53,6 @@
 
                 <Grid Grid.Row="0"
                       Margin="5">
-
                     <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                                Text="Ứng dụng quản lí học phí"
                                HorizontalAlignment="Center">
@@ -69,7 +63,8 @@
                       HorizontalAlignment="Center">
                     <WrapPanel Background="Transparent"
                                Orientation="Horizontal"
-                               Width="1000">
+                               Width="1000"
+                               HorizontalAlignment="Center">
 
                         <WrapPanel.Resources>
                             <Style TargetType="Button">
@@ -83,14 +78,15 @@
                         </WrapPanel.Resources>
 
                         <Button ToolTip="Tổng Quan"
-                                Command="{Binding DashBoardCommand}">
+                                Command="{Binding DashBoardCommand}"
+                                Visibility="{Binding AdminVisibility}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
-                                           Text="Tông Quan"
+                                           Text="Tổng Quan"
                                            HorizontalAlignment="Center"></TextBlock>
                                 <materialDesign:PackIcon Grid.Row="1"
                                                          HorizontalAlignment="Center"
@@ -100,7 +96,7 @@
 
                         <Button ToolTip="Quản lí Học Sinh"
                                 Command="{Binding AddStudentCommand}"
-                                Height="auto">
+                                Visibility="{Binding AdminVisibility}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -108,7 +104,6 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
                                            TextWrapping="Wrap"
-                                           Height="auto"
                                            TextAlignment="Center"
                                            Text="Quản lí học Sinh"
                                            HorizontalAlignment="Center"></TextBlock>
@@ -121,8 +116,7 @@
 
                         <Button ToolTip="Quản Lí Học Phí"
                                 Command="{Binding SchoolFeeCommand}"
-                                Height="auto">
-
+                                Visibility="{Binding AdminVisibility}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -140,7 +134,8 @@
                         </Button>
 
                         <Button ToolTip="Quản lí môn học"
-                                Command="{Binding SubjectCommand}">
+                                Command="{Binding SubjectCommand}"
+                                Visibility="{Binding AdminVisibility}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -157,66 +152,48 @@
                             </Grid>
                         </Button>
 
-                        <Button ToolTip="Quản lí học sinh"
-                                Command="{Binding StudentCommand}">
+                        <Button ToolTip="Thông tin học sinh"
+                                Command="{Binding StudentCommand}"
+                                Visibility="{Binding StudentVisibility}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
-                                           Text="Chọn môn học"
+                                           Text="Thông tin &amp; Đăng ký"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center"
                                            HorizontalAlignment="Center"></TextBlock>
                                 <materialDesign:PackIcon Grid.Row="1"
                                                          HorizontalAlignment="Center"
-                                                         Kind="PlusCircle" />
+                                                         Kind="AccountBox" />
                             </Grid>
                         </Button>
+
+                        <Button ToolTip="Xem hóa đơn của tôi"
+                                Command="{Binding StudentInvoiceCommand}"
+                                Visibility="{Binding StudentVisibility}"
+                                Background="#FF4CAF50"
+                                BorderBrush="#FF4CAF50">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Text="Hóa đơn của tôi"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                                <materialDesign:PackIcon Grid.Row="1"
+                                                         HorizontalAlignment="Center"
+                                                         Kind="ReceiptTextCheck" />
+                            </Grid>
+                        </Button>
+
                     </WrapPanel>
                 </Grid>
-
-                <!--<Grid Grid.Row="1"
-                      Margin="10">
-
-                    <DataGrid Grid.Row="1"
-                              Margin="10"
-                              AutoGenerateColumns="False"
-                              Style="{StaticResource MaterialDesignDataGrid}"
-                              ItemsSource="{Binding Items4}">
-
-                        <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{Binding IsSelected}"
-                                                    Header="IsSelected"
-                                                    Width="SizeToHeader" />
-
-                            <DataGridTextColumn Binding="{Binding Code}"
-                                                Header="STT" />
-
-                            <DataGridTextColumn Binding="{Binding Name}"
-                                                Header="MSSV" />
-
-                            <DataGridTextColumn Binding="{Binding Description}"
-                                                Header="Họ" />
-
-                            <DataGridTextColumn Binding="{Binding Numeric}"
-                                                Header="Tên" />
-
-                            <DataGridTextColumn Binding="{Binding Food}"
-                                                Header="Số tiền cần đóng" />
-
-                            <DataGridTextColumn Binding="{Binding File}"
-                                                Header="Đã thanh toán" />
-
-                            -->
-                <!-- đơn giản hoá VehicleType: dùng combo string -->
-                <!--
-                            <DataGridComboBoxColumn Header="VehicleType"
-                                                    SelectedItemBinding="{Binding VehicleType}"
-                                                    ItemsSource="{Binding DataContext.VehicleTypes,
-                                                      RelativeSource={RelativeSource AncestorType=DataGrid}}" />
-                        </DataGrid.Columns>
-                    </DataGrid>-->
-                <!--</Grid>-->
             </Grid>
         </Grid>
     </Grid>
