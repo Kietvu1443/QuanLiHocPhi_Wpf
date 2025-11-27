@@ -37,6 +37,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <!--các elemenent biding trong selected item-->
@@ -141,33 +142,80 @@
                     </WrapPanel>
                 </materialDesign:Card>
 
+                <materialDesign:Card 
+                    Grid.Row="2"
+                    Margin="5 0 5 5"
+                                     Padding="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                <materialDesign:Card Grid.Row="2"
+                        <materialDesign:PackIcon Kind="Magnify"
+                                                 VerticalAlignment="Center"
+                                                 Width="25"
+                                                 Height="25"
+                                                 Foreground="Gray" />
+
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="Tìm kiếm theo Tên hoặc Mã SV..."
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="10 0 0 0"
+                                 BorderThickness="0" />
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card Grid.Row="3"
                                      Margin="5"
                                      VerticalAlignment="Stretch">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ListView ItemsSource="{Binding List}"
-                                  SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="STT"
-                                                    DisplayMemberBinding="{Binding STT,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Mã sinh viên"
-                                                    DisplayMemberBinding="{Binding Id,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Họ và tên"
-                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Giới Tính"
-                                                    DisplayMemberBinding="{Binding GioiTinh,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Lớp"
-                                                    DisplayMemberBinding="{Binding Lop,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Ngành"
-                                                    DisplayMemberBinding="{Binding Nganh,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Ngày Sinh"
-                                                    DisplayMemberBinding="{Binding NgaySinh,UpdateSourceTrigger=PropertyChanged}" />
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </ScrollViewer>
+                    <DataGrid ItemsSource="{Binding List}"
+                              SelectedItem="{Binding SelectedItem}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              HeadersVisibility="All"
+                              SelectionUnit="FullRow"
+                              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                              materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+
+                        <DataGrid.Columns>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Id}"
+                                                               Header="Mã SV"
+                                                               Width="100" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding DisplayName}"
+                                                               Header="Họ Tên"
+                                                               Width="180" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding NgaySinh, StringFormat='dd/MM/yyyy'}"
+                                                               Header="Ngày Sinh" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding GioiTinh}"
+                                                               Header="Giới Tính" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding Lop}"
+                                                               Header="Lớp" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding Nganh}"
+                                                               Header="Khoa/Ngành" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding Phone}"
+                                                               Header="SĐT" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding Email}"
+                                                               Header="Email"
+                                                               Width="150" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding Address}"
+                                                               Header="Địa Chỉ"
+                                                               Width="200" />
+
+                            <materialDesign:DataGridTextColumn Binding="{Binding TrangThai}"
+                                                               Header="Trạng Thái" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </materialDesign:Card>
             </Grid>
 
