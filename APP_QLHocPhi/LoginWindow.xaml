@@ -19,7 +19,7 @@
     
     ResizeMode="NoResize"
     WindowStyle="None"
-    Title="Đăng nhập" Height="400" Width="400">
+    Title="Đăng nhập" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -31,7 +31,7 @@
         </Grid>
         
 
-        <materialDesign:Card Grid.Row="1" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <materialDesign:Card Grid.Row="1" Width="300" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Margin="4">
                 <Grid.Resources>
                     <Style TargetType="Grid">
@@ -42,7 +42,6 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
@@ -93,28 +92,16 @@
                         </Grid>
                         <Grid Grid.Column="1">
                             <Button Width="100"
-                                    Command="{Binding GuestLogin}"
+                                    Command="{Binding CloseCommand}"
                                     CommandParameter="{Binding ElementName=loginWindow}"
-                                    Content="Khách"
-                               
-                                    Background="Cyan"
+                                    Content="Thoát"
+                                    Background="Red"
                                     HorizontalAlignment="Center"
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                     Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
                                     ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" />
                         </Grid>
                     </Grid>
-                </Grid>
-                <Grid Grid.Row="4">
-                    <Button Width="100"
-                            Command="{Binding CloseCommand}"
-                            CommandParameter="{Binding ElementName=loginWindow}"
-                            Content="Thoát"
-                            Background="Red"
-                            HorizontalAlignment="Center"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                            Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
-                            ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" />
                 </Grid>
             </Grid>
         </materialDesign:Card>

@@ -394,7 +394,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             db.SaveChanges();
             MessageBox.Show($"Thanh toán thành công {PaymentAmount:N0} VNĐ!");
-            DataProvider.Ins.RefreshDataBase();
+
+            SystemLog.Log("THU HỌC PHÍ", $"Thu {PaymentAmount:N0} VNĐ của SV {SelectedItem.DisplayName} ({SelectedItem.MSSV})");
+
 
             // Reset giao diện
             PaymentAmount = 0;

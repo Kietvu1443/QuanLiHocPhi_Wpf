@@ -25,7 +25,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         // Từ khóa tìm kiếm
         private string _SearchText;
-        public string SearchText { get => _SearchText; set { _SearchText = value; OnPropertyChanged(); } }
+        public string SearchText { get => _SearchText; set { _SearchText = value; OnPropertyChanged(); Search(); } }
 
         public ICommand SearchCommand { get; set; }
         public ICommand PrintCommand { get; set; }
@@ -68,22 +68,25 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         void Search()
         {
-            // Kiểm tra null để tránh lỗi nếu sự kiện bắn ra lúc chưa có SearchText
             if (string.IsNullOrEmpty(SearchText)) return;
 
-            // Dùng Application.Current.Dispatcher để đảm bảo chạy trên luồng UI (an toàn tuyệt đối)
             Application.Current.Dispatcher.Invoke(() =>
             {
-                // Lấy lại dữ liệu mới nhất từ DB
-                var list = DataProvider.Ins.DB.Invoices
-                            .Include(x => x.Student)
-                            .Where(x => x.Student.Ten.Contains(SearchText) ||
-                                        x.Student.HoDem.Contains(SearchText) ||
-                                        x.StudentId.Contains(SearchText))
-                            .OrderByDescending(x => x.NgayThu)
-                            .ToList();
+                // QUAN TRỌNG: Tạo 'using' context mới để ép buộc tải lại dữ liệu từ Database
+                // Thay vì dùng DataProvider.Ins.DB (cũ), ta dùng 'new QuanLiHocPhiContext()'
+                using (var context = new QuanLiHocPhiContext())
+                {
+                    var list = context.Invoices
+                                .Include(x => x.Student) // Nhớ Include Sinh viên
+                                .Where(x => x.Student.Ten.Contains(SearchText) ||
+                                            x.Student.HoDem.Contains(SearchText) ||
+                                            x.StudentId.Contains(SearchText))
+                                .OrderByDescending(x => x.NgayThu)
+                                .ToList();
 
-                ListInvoices = new ObservableCollection<Invoice>(list);
+                    // Gán vào ObservableCollection
+                    ListInvoices = new ObservableCollection<Invoice>(list);
+                }
             });
         }
 
