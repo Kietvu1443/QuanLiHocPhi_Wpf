@@ -29,8 +29,6 @@ namespace APP_QLHocPhi
         {
             if (invoice == null) return;
 
-            // Gán dữ liệu trực tiếp vào các ô TextBlock
-            // Đảm bảo tên biến (x:Name) khớp với trong file .xaml
             if (invoice.Student != null)
             {
                 txbTenSV.Text = invoice.Student.DisplayName;
@@ -38,10 +36,13 @@ namespace APP_QLHocPhi
             }
 
             txbMSSV.Text = invoice.StudentId;
+
+            // --- THÊM DÒNG NÀY ---
+            txbHocKy.Text = invoice.HocKy;
+            // ---------------------
+
             txbSoTien.Text = string.Format("{0:N0} VNĐ", invoice.TongTienThu);
             txbNoiDung.Text = invoice.GhiChu;
-
-            // Xử lý ngày tháng đẹp
             txbNgayThu.Text = $"Ngày {invoice.NgayThu.Day} tháng {invoice.NgayThu.Month} năm {invoice.NgayThu.Year}";
         }
     }

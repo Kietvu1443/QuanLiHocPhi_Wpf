@@ -227,57 +227,60 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 {
                     var db = DataProvider.Ins.DB;
 
-                    // Khai báo các biến để hứng dữ liệu in
                     decimal printAmount = 0;
                     string printNote = "";
+                    string printHocKy = ""; // <--- 1. Khai báo biến Học kỳ
                     DateTime printDate = DateTime.Now;
 
-                    // --- LOGIC XỬ LÝ SỐ TIỀN IN ---
-
-                    // TRƯỜNG HỢP 1: Đang nhập số tiền vào ô (Chưa bấm thanh toán) 
-                    // -> In phiếu dự thu / báo giá
+                    // TRƯỜNG HỢP 1: IN PHIẾU DỰ THU (Đang nhập tiền)
                     if (PaymentAmount > 0)
                     {
                         printAmount = PaymentAmount;
                         printNote = string.IsNullOrEmpty(PaymentNote) ? "Thu học phí (Tạm tính)" : PaymentNote;
-                        printDate = DateTime.Now;
+
+                        // Lấy thử học kỳ của môn đang nợ đầu tiên để hiển thị tạm
+                        var firstDebt = db.StudentRegistrations
+                            .FirstOrDefault(x => x.StudentId == SelectedItem.StudentInfo.Id && x.SoTienDaDong < x.TongTienHoc);
+                        printHocKy = firstDebt != null ? firstDebt.HocKy : "Tạm tính";
                     }
-                    // TRƯỜNG HỢP 2: Ô nhập tiền = 0 (Thường là đã bấm thanh toán xong rồi)
-                    // -> Tìm hóa đơn GẦN NHẤT trong lịch sử để in lại
+                    // TRƯỜNG HỢP 2: IN LẠI HÓA ĐƠN CŨ (Đã đóng xong)
                     else
                     {
                         var lastInvoice = db.Invoices
                             .Where(x => x.StudentId == SelectedItem.StudentInfo.Id)
-                            .OrderByDescending(x => x.NgayThu) // Sắp xếp ngày mới nhất lên đầu
-                            .FirstOrDefault(); // Lấy cái đầu tiên
+                            .OrderByDescending(x => x.NgayThu)
+                            .FirstOrDefault();
 
                         if (lastInvoice != null)
                         {
-                            // Lấy thông tin từ hóa đơn cũ
                             printAmount = lastInvoice.TongTienThu;
                             printNote = lastInvoice.GhiChu;
                             printDate = lastInvoice.NgayThu;
+                            printHocKy = lastInvoice.HocKy; // <--- 2. Lấy học kỳ từ hóa đơn cũ
                         }
                         else
                         {
-                            // Nếu chưa từng đóng đồng nào -> In phiếu báo tổng nợ
                             printAmount = SelectedItem.ConNo;
                             printNote = "Thông báo công nợ";
+                            printHocKy = "Tất cả";
                         }
                     }
 
-                    // --- MAPPING DỮ LIỆU VÀO MẪU IN (Giữ nguyên phần này) ---
+                    // --- MAPPING DỮ LIỆU ---
                     InvoiceTemplate invoice = new InvoiceTemplate();
                     invoice.txbTenSV.Text = SelectedItem.DisplayName;
                     invoice.txbMSSV.Text = SelectedItem.MSSV;
                     invoice.txbLop.Text = SelectedItem.Lop;
 
-                    // Gán dữ liệu đã xử lý ở trên vào
+                    // --- 3. GÁN HỌC KỲ VÀO MẪU IN ---
+                    invoice.txbHocKy.Text = printHocKy;
+                    // --------------------------------
+
                     invoice.txbSoTien.Text = string.Format("{0:N0} VNĐ", printAmount);
                     invoice.txbNoiDung.Text = printNote;
                     invoice.txbNgayThu.Text = $"Ngày {printDate.Day} tháng {printDate.Month} năm {printDate.Year}";
 
-                    // --- HIỆN CỬA SỔ IN ---
+                    // Hiện cửa sổ in...
                     System.Windows.Controls.PrintDialog printDialog = new System.Windows.Controls.PrintDialog();
                     if (printDialog.ShowDialog() == true)
                     {
