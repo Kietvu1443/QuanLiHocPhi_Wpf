@@ -5,10 +5,10 @@
         xmlns:uc="clr-namespace:APP_QLHocPhi.UserControlSF"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         DataContext="{StaticResource DashboardVM}"
-        Title="Dashboard"
+        Title="Tông quan"
         x:Name="window"
-        Height="600"
-        Width="1000"
+        Height="650"
+        Width="1100"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="NoResize">
@@ -52,7 +52,7 @@
                                FontSize="30"
                                FontWeight="Bold"
                                Margin="0 10 0 0" />
-                    <TextBlock Text="sinh viên đang theo học"
+                    <TextBlock Text="sinh viên toàn trường"
                                FontSize="12"
                                Foreground="Gray" />
                 </StackPanel>
@@ -65,7 +65,7 @@
                                  UniformCornerRadius="10">
                 <StackPanel>
                     <Grid>
-                        <TextBlock Text="DOANH THU THỰC TẾ"
+                        <TextBlock Text="TỔNG DOANH THU"
                                    FontWeight="Bold"
                                    Foreground="Gray" />
                         <materialDesign:PackIcon Kind="CashMultiple"
@@ -79,7 +79,7 @@
                                FontWeight="Bold"
                                Foreground="Green"
                                Margin="0 10 0 0" />
-                    <TextBlock Text="VNĐ (Tiền đã thu được)"
+                    <TextBlock Text="VNĐ (Tổng tích lũy)"
                                FontSize="12"
                                Foreground="Gray" />
                 </StackPanel>
@@ -92,7 +92,7 @@
                                  UniformCornerRadius="10">
                 <StackPanel>
                     <Grid>
-                        <TextBlock Text="CÔNG NỢ CẦN THU"
+                        <TextBlock Text="TỔNG CÔNG NỢ"
                                    FontWeight="Bold"
                                    Foreground="Gray" />
                         <materialDesign:PackIcon Kind="CurrencyUsdOff"
@@ -106,7 +106,7 @@
                                FontWeight="Bold"
                                Foreground="Red"
                                Margin="0 10 0 0" />
-                    <TextBlock Text="VNĐ (Số tiền còn nợ)"
+                    <TextBlock Text="VNĐ (Chưa thu được)"
                                FontSize="12"
                                Foreground="Gray" />
                 </StackPanel>
@@ -114,7 +114,7 @@
         </Grid>
 
         <materialDesign:Card Grid.Row="2"
-                             Margin="20 10 20 20"
+                             Margin="20 5 20 20"
                              Padding="20"
                              UniformCornerRadius="10">
             <Grid>
@@ -123,44 +123,100 @@
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="BIỂU ĐỒ TÀI CHÍNH (ĐÃ THU vs CÒN NỢ)"
-                               FontWeight="Bold"
-                               FontSize="16"
-                               Margin="0 0 0 20" />
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                    <lvc:CartesianChart Series="{Binding SeriesCollection}"
-                                        LegendLocation="Bottom"
-                                        Height="300">
+                    <Grid Grid.Row="0"
+                          Margin="0 0 0 20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
+                        <StackPanel>
+                            <TextBlock Text="PHÂN TÍCH TÀI CHÍNH"
+                                       FontWeight="Bold"
+                                       FontSize="18"
+                                       Foreground="#333" />
+                            <TextBlock Text="So sánh Doanh thu và Công nợ theo kỳ"
+                                       FontSize="12"
+                                       Foreground="Gray" />
+                        </StackPanel>
+
+                        <ComboBox Grid.Column="1"
+                                  Width="150"
+                                  ItemsSource="{Binding Semesters}"
+                                  SelectedItem="{Binding SelectedSemester}"
+                                  materialDesign:HintAssist.Hint="Chọn Học Kỳ"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                        </ComboBox>
+                    </Grid>
+
+                    <lvc:CartesianChart Grid.Row="1"
+                                        Series="{Binding SeriesCollection}"
+                                        LegendLocation="Bottom">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Title="Danh mục"
-                                      Labels="{Binding Labels}" />
+                            <lvc:Axis Title="Thời gian"
+                                      Labels="{Binding Labels}"
+                                      FontSize="14">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="1" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
-
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Số Tiền (VNĐ)"
-                                      LabelFormatter="{Binding Formatter}" />
+                                      LabelFormatter="{Binding Formatter}"
+                                      FontSize="12" />
                         </lvc:CartesianChart.AxisY>
-
                     </lvc:CartesianChart>
-                </StackPanel>
+                </Grid>
 
                 <StackPanel Grid.Column="1"
                             VerticalAlignment="Center"
-                            Margin="20 0 0 0">
-                    <TextBlock Text="Phân tích:"
+                            Margin="30 0 0 0">
+                    <TextBlock Text="Ghi chú:"
                                FontWeight="Bold"
                                TextDecorations="Underline"
-                               Margin="0 0 0 10" />
-                    <TextBlock Text="- Cột Xanh: Tiền đã được thu."
+                               Margin="0 0 0 15"
+                               FontSize="14" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0 5">
+                        <Border Width="15"
+                                Height="15"
+                                Background="#4CAF50"
+                                CornerRadius="2"
+                                Margin="0 0 10 0" />
+                        <TextBlock Text="Đã thu tiền"
+                                   Foreground="#4CAF50"
+                                   FontWeight="SemiBold" />
+                    </StackPanel>
+                    <TextBlock Text="Số tiền thực tế đã thu được trong học kỳ này."
                                TextWrapping="Wrap"
-                               Margin="0 5"
-                               Foreground="Green" />
-                    <TextBlock Text="- Cột Đỏ: Tiền đang bị nợ."
+                               FontSize="11"
+                               Foreground="Gray"
+                               Margin="25 0 0 10" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0 5">
+                        <Border Width="15"
+                                Height="15"
+                                Background="#F44336"
+                                CornerRadius="2"
+                                Margin="0 0 10 0" />
+                        <TextBlock Text="Còn nợ"
+                                   Foreground="#F44336"
+                                   FontWeight="SemiBold" />
+                    </StackPanel>
+                    <TextBlock Text="Số tiền sinh viên chưa đóng trong học kỳ này."
                                TextWrapping="Wrap"
-                               Margin="0 5"
-                               Foreground="Red" />
+                               FontSize="11"
+                               Foreground="Gray"
+                               Margin="25 0 0 0" />
                 </StackPanel>
             </Grid>
         </materialDesign:Card>
