@@ -12,7 +12,9 @@
         Background="{DynamicResource MaterialDesign.Brush.Background}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
+        Icon="/Assets/logo.png"
         WindowStartupLocation="CenterScreen"
+        
         FontFamily="{materialDesign:MaterialDesignFont}"
         Name="loginWindow"
         DataContext="{StaticResource LoginVM}"

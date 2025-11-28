@@ -5,6 +5,7 @@ using LiveCharts.Wpf;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 
 namespace APP_QLHocPhi.NVVM.ViewModel
@@ -54,6 +55,18 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             // Định dạng tiền tệ cho biểu đồ
             Formatter = value => value.ToString("N0");
+
+            DataProvider.Ins.DatabaseChanged += () =>
+            {
+                // Dùng Dispatcher để đảm bảo chạy trên luồng giao diện
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    // Reload lại toàn bộ thông tin
+                    LoadGlobalStats();
+                    LoadSemesters(); // Load lại nhỡ có học kỳ mới
+                    LoadChartData(); // Vẽ lại biểu đồ
+                });
+            };
         }
 
         void LoadGlobalStats()
