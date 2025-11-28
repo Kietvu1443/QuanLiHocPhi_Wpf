@@ -5,8 +5,7 @@ namespace APP_QLHocPhi.Models
 {
     public static class SystemLog
     {
-        // 1. Tạo đường dẫn vào thư mục AppData của máy tính
-        // Ví dụ: C:\Users\KietVu\AppData\Roaming\QuanLiHocPhi\ActivityLog.txt
+        // Tạo đường dẫn vào thư mục AppData của máy tính
         private static string GetLogPath()
         {
             // Lấy đường dẫn thư mục AppData
@@ -36,7 +35,7 @@ namespace APP_QLHocPhi.Models
 
                 string logContent = $"[{time}] - [{role}: {userName}] - {action.ToUpper()} - {detail}\n";
 
-                // 2. Ghi vào đường dẫn chuẩn
+                //Ghi vào đường dẫn chuẩn
                 File.AppendAllText(GetLogPath(), logContent);
             }
             catch (Exception)

@@ -16,10 +16,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public bool Isloaded = false;
         public User CurrentUser { get; private set; }  // Biến này để lưu user hiện tại
 
-        // --- PHẦN PHÂN QUYỀN (VISIBILITY) ---
+        // PHẦN PHÂN QUYỀN
 
-        // Admin thấy: Dashboard, Thêm HS, Thu học phí, Quản lý môn...
-        private Visibility _AdminVisibility = Visibility.Collapsed; // Mặc định ẩn cho an toàn
+        // Admin thấy: Dashboard, Thêm HS, Thu học phí, Quản lý môn, tất cả nút quản lý
+        private Visibility _AdminVisibility = Visibility.Collapsed; // Mặc định là ẩn
         public Visibility AdminVisibility
         {
             get => _AdminVisibility;
@@ -116,13 +116,13 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             if (CurrentUser.Role == "1") // 1 Là Admin
             {
-                AdminVisibility = Visibility.Visible;
-                StudentVisibility = Visibility.Visible; // Admin có cần xem nút của HS ko? Tùy bạn, ở đây mình ẩn
+                AdminVisibility = Visibility.Visible; // Hiện hết chức năng quản lý
+                StudentVisibility = Visibility.Visible; // Hiện cả chức năng của user
             }
             else // 0 Là User (Học sinh)
             {
                 AdminVisibility = Visibility.Collapsed; // Ẩn hết chức năng quản lý
-                StudentVisibility = Visibility.Visible; // Chỉ hiện chức năng cho HS
+                StudentVisibility = Visibility.Visible; // Chỉ hiện chức năng cho user
             }
         }
 

@@ -57,7 +57,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             LoadList();
 
-            // --- THÊM MÔN HỌC ---
+            // THÊM MÔN HỌC
             AddCommand = new RelayCommand<object>((p) =>
             {
                 if (string.IsNullOrEmpty(Id) || string.IsNullOrEmpty(DisplayName)) return false;
@@ -67,14 +67,14 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             }, (p) =>
             {
                 var db = DataProvider.Ins.DB;
-                var subject = new Subject() { Id = Id, DisplayName = DisplayName, SoTinChi = SoTinChi, DonGia = DonGia};
+                var subject = new Subject() { Id = Id, DisplayName = DisplayName, SoTinChi = SoTinChi, DonGia = DonGia };
                 db.Subjects.Add(subject);
                 db.SaveChanges();
                 LoadList();
                 MessageBox.Show("Thêm môn học thành công!");
             });
 
-            // --- SỬA MÔN HỌC ---
+            // SỬA MÔN HỌC
             EditCommand = new RelayCommand<object>((p) =>
             {
                 if (SelectedItem == null) return false;
@@ -92,7 +92,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 MessageBox.Show("Cập nhật thành công!");
             });
 
-            // --- XÓA MÔN HỌC ---
+            // XÓA MÔN HỌC 
             DeleteCommand = new RelayCommand<object>((p) => SelectedItem != null, (p) =>
             {
                 var db = DataProvider.Ins.DB;
@@ -128,7 +128,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 var newHK = new TutitionConfig()
                 {
                     HocKy = NewSemesterName,
-                    // Các giá trị mặc định khác nếu cần (ví dụ: DotThu = 1)
+
                 };
 
                 DataProvider.Ins.DB.TutitionConfigs.Add(newHK);

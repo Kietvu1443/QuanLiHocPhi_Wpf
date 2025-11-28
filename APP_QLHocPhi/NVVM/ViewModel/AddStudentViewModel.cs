@@ -10,7 +10,7 @@ using System.Windows.Data;
 
 namespace APP_QLHocPhi.NVVM.ViewModel
 {
-    // 1. ĐỔI TÊN CLASS NÀY ĐỂ KHÔNG TRÙNG VỚI DASHBOARD
+    
     public class StudentDisplayItem
     {
         public int STT { get; set; }
@@ -32,11 +32,11 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
     public class AddStudentViewModel : BaseViewModel
     {
-        // 2. Sửa kiểu dữ liệu List thành StudentDisplayItem
+        
         private ObservableCollection<StudentDisplayItem> _List;
         public ObservableCollection<StudentDisplayItem> List { get => _List; set { _List = value; OnPropertyChanged(); } }
 
-        // 3. Sửa SelectedItem thành kiểu StudentDisplayItem
+        
         private StudentDisplayItem _SelectedItem;
         public StudentDisplayItem SelectedItem
         {
@@ -68,7 +68,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             }
         }
 
-        // --- Các Property Binding (Giữ nguyên) ---
+        //Các Property Binding
         private string _MSSV;
         public string MSSV { get => _MSSV; set { _MSSV = value; OnPropertyChanged(); } }
 
@@ -107,7 +107,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             {
                 _SearchKeyword = value;
                 OnPropertyChanged();
-                FilterList(); // <--- QUAN TRỌNG: Gõ phím là Lọc ngay!
+                FilterList(); // QUAN TRỌNG: Gõ phím là Lọc 
             }
         }
 
@@ -173,7 +173,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 return SelectedItem != null;
             }, (p) =>
             {
-                // Lấy ID của sinh viên đang chọn (Đây là ID gốc, không thể thay đổi)
+                // Lấy ID của sinh viên đang chọn ( id cố định)
                 var idCanSua = SelectedItem.StudentInfo.Id;
 
                 // Tìm sinh viên đó trong Database
@@ -181,23 +181,23 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
                 if (student != null)
                 {
-                    // --- CẬP NHẬT THÔNG TIN (Trừ ID) ---
+                    // ẬP NHẬT THÔNG TIN (Trừ ID)
                     student.DisplayName = DisplayName;
-                    student.Lop = ClassName;  // Lưu ý: Cậu kiểm tra lại biến Binding 'ClassName' hay 'Lop' nhé
-                    student.Nganh = MajorName; // Tương tự check lại biến Binding 'MajorName' hay 'Nganh'
+                    student.Lop = ClassName;  
+                    student.Nganh = MajorName;
                     student.Phone = Phone;
                     student.Address = Address;
                     student.Email = Email;
                     student.GioiTinh = GioiTinh;
                     student.TrangThai = TrangThai;
 
-                    // Xử lý Ngày sinh (Vì cậu dùng DateOnly nên cần convert)
+                    // Xử lý Ngày sinh
                     if (NgaySinh.HasValue)
                         student.NgaySinh = DateOnly.FromDateTime(NgaySinh.Value);
                     else
                         student.NgaySinh = null;
 
-                    // Tách Họ Tên (Nếu cậu có dùng tính năng này để sắp xếp)
+                    // Tách Họ Tên
                     SplitName(DisplayName, out string hoDem, out string ten);
                     student.HoDem = hoDem;
                     student.Ten = ten;
@@ -281,7 +281,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         void LoadList()
         {
             var listFromDB = DataProvider.Ins.DB.Students.ToList();
-            // 4. Khởi tạo danh sách với kiểu mới StudentDisplayItem
+            //Khởi tạo danh sách với kiểu mới StudentDisplayItem
             var displayList = new ObservableCollection<StudentDisplayItem>();
 
             int stt = 1;
@@ -326,7 +326,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 ten = fullName;
             }
         }
-        // 2. Hàm xử lý lọc danh sách
+        //Hàm xử lý lọc danh sách
         private void FilterList()
         {
             // Lấy View mặc định của danh sách List

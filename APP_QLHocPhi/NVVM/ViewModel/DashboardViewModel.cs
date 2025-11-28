@@ -12,7 +12,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 {
     public class DashboardViewModel : BaseViewModel
     {
-        // --- CÁC BIẾN CHO THẺ TỔNG QUAN (GIỮ NGUYÊN) ---
+        //CÁC BIẾN CHO THẺ TỔNG QUAN
         private int _TotalStudent;
         public int TotalStudent { get => _TotalStudent; set { _TotalStudent = value; OnPropertyChanged(); } }
 
@@ -22,7 +22,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         private decimal _TongCongNo;
         public decimal TongCongNo { get => _TongCongNo; set { _TongCongNo = value; OnPropertyChanged(); } }
 
-        // --- CÁC BIẾN CHO BIỂU ĐỒ & LỌC ---
+        //CÁC BIẾN CHO BIỂU ĐỒ & LỌC
         private SeriesCollection _SeriesCollection;
         public SeriesCollection SeriesCollection { get => _SeriesCollection; set { _SeriesCollection = value; OnPropertyChanged(); } }
 
@@ -44,7 +44,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             {
                 _SelectedSemester = value;
                 OnPropertyChanged();
-                LoadChartData(); // Chọn xong là vẽ lại biểu đồ ngay
+                LoadChartData(); // Chọn xong là vẽ lại biểu đồ
             }
         }
 
@@ -114,7 +114,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             else
             {
                 // Tính toán theo học kỳ được chọn
-                // Lưu ý: Bảng Invoice cần có cột HocKy (như bạn đã thêm ở các bước trước)
+                // Lưu ý: Bảng Invoice cần có cột HocKy
                 revenue = db.Invoices.Where(x => x.HocKy == SelectedSemester).Sum(x => x.TongTienThu);
 
                 debt = db.StudentRegistrations

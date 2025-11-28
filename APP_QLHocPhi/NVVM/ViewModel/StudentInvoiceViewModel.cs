@@ -35,7 +35,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             ListInvoices = new ObservableCollection<Invoice>();
 
-            // 1. ĐĂNG KÝ SỰ KIỆN: Khi Database thay đổi -> Tự động chạy lại hàm Search
+            //ĐĂNG KÝ SỰ KIỆN: Khi Database thay đổi -> Tự động chạy lại hàm Search
             DataProvider.Ins.DatabaseChanged += Search;
 
             if (currentUser != null && currentUser.Role != "1")
@@ -57,7 +57,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 PrintInvoice();
             });
 
-            // 2. HỦY ĐĂNG KÝ KHI ĐÓNG: Quan trọng để tránh lỗi và tốn Ram
+            //HỦY ĐĂNG KÝ KHI ĐÓNG: Quan trọng để tránh lỗi và tốn Ram
             CloseCommand = new RelayCommand<Window>((p) => { return true; }, (p) =>
             {
                 // Trước khi đóng cửa sổ, ta "rút dây" lắng nghe ra

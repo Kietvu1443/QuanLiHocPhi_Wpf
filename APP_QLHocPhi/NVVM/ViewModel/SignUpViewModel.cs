@@ -37,7 +37,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             if (p == null) return;
 
-            // 1. Kiểm tra nhập thiếu
+            // Kiểm tra nhập thiếu
             if (string.IsNullOrEmpty(Id) || string.IsNullOrEmpty(DisplayName) || string.IsNullOrEmpty(SelectedRole))
             {
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin!", "Cảnh báo");
@@ -53,7 +53,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 return;
             }
 
-            // 2. Kiểm tra trùng ID
+            // Kiểm tra trùng ID
             var exist = DataProvider.Ins.DB.Users.Any(x => x.Id == Id);
             if (exist)
             {
@@ -61,7 +61,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 return;
             }
 
-            // 3. XỬ LÝ QUYỀN HẠN (QUAN TRỌNG)
+            // XỬ LÝ QUYỀN HẠN (QUAN TRỌNG)
             // MainViewModel check: "1" là Admin, còn lại là User
             string roleToSave = "0"; // Mặc định là 0 (Nhân viên)
 

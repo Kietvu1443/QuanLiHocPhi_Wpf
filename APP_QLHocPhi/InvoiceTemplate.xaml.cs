@@ -37,9 +37,9 @@ namespace APP_QLHocPhi
 
             txbMSSV.Text = invoice.StudentId;
 
-            // --- THÊM DÒNG NÀY ---
+          
             txbHocKy.Text = invoice.HocKy;
-            // ---------------------
+ 
 
             txbSoTien.Text = string.Format("{0:N0} VNĐ", invoice.TongTienThu);
             txbNoiDung.Text = invoice.GhiChu;
