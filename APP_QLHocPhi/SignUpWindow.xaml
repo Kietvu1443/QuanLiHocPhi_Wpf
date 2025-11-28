@@ -28,12 +28,11 @@
         <Grid Grid.Row="1"
               Margin="20">
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="TẠO TÀI KHOẢN MỚI"
-                           FontSize="24"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,20"
-                           Foreground="{DynamicResource PrimaryHueMidBrush}" />
+                <materialDesign:PackIcon Kind="AccountPlusOutline"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         Width="60"
+                                         Height="60" />
 
                 <TextBox Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}"
                          materialDesign:HintAssist.Hint="Tên đăng nhập"
