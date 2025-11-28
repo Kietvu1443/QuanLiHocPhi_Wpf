@@ -7,12 +7,12 @@ namespace APP_QLHocPhi.Models;
 
 public partial class QuanLiHocPhiContext : DbContext
 {
-    // Constructor mặc định đơn giản, không cấu hình cứng ở đây nữa
+  
     public QuanLiHocPhiContext()
     {
     }
 
-    // Constructor cho phép truyền options từ bên ngoài (ví dụ từ Dependency Injection)
+
     public QuanLiHocPhiContext(DbContextOptions<QuanLiHocPhiContext> options)
         : base(options)
     {
@@ -28,7 +28,6 @@ public partial class QuanLiHocPhiContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Kiểm tra xem đã có cấu hình chưa, nếu chưa thì mới thiết lập
         if (!optionsBuilder.IsConfigured)
         {
             // Thiết lập đường dẫn tới file database .mdf

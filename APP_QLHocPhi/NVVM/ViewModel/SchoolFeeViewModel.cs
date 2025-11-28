@@ -74,7 +74,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             LoadData();
 
-            // --- LỆNH THANH TOÁN ---
+            //LỆNH THANH TOÁN
             PayCommand = new RelayCommand<object>((p) =>
             {
                 // Điều kiện: Phải chọn SV, Tiền đóng > 0 và <= Tiền nợ
@@ -88,7 +88,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 DataProvider.Ins.RefreshDataBase();
             });
 
-            // --- LỆNH LÀM MỚI ---
+            //LỆNH LÀM MỚI
             RefreshCommand = new RelayCommand<object>((p) => true, (p) => LoadData());
 
             QRCommand = new RelayCommand<object>((p) =>
@@ -99,17 +99,17 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 return true;
             }, (p) =>
             {
-                // --- CẤU HÌNH TÀI KHOẢN NGÂN HÀNG CỦA CẬU Ở ĐÂY ---
-                string bankId = "MB";       // Mã ngân hàng (VD: MB, VCB, TPB, VPB...)
-                string accountNo = "0999999999"; // Số tài khoản người nhận (Thay bằng STK của cậu)
+                //CẤU HÌNH TÀI KHOẢN NGÂN HÀNG
+                string bankId = "MB";       // Mã ngân hàng
+                string accountNo = "0999999999"; // Số tài khoản người nhận
                 string template = "compact"; // Giao diện QR (compact, print, qr_only)
-                                             // ----------------------------------------------------
+                                             
 
                 long amount = (long)PaymentAmount;
                 string content = $"HP {SelectedItem.StudentInfo.Id} {SelectedItem.StudentInfo.DisplayName}";
 
-                // Xử lý tiếng Việt có dấu thành không dấu để tránh lỗi URL (Hoặc VietQR tự xử lý, nhưng nên cẩn thận)
-                // Ở đây mình dùng Uri.EscapeDataString để mã hóa nội dung cho an toàn
+                // Xử lý tiếng Việt có dấu thành không dấu để tránh lỗi URL 
+      
                 string addInfo = Uri.EscapeDataString(content);
 
                 // Tạo link API VietQR
@@ -120,7 +120,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 qrWindow.ShowDialog();
             });
 
-            // 2. Định nghĩa logic nút RESET (Hủy đóng tiền)
+            // nút RESET (Hủy đóng tiền)
             ResetCommand = new RelayCommand<object>((p) =>
             {
                 // Điều kiện: Phải chọn sinh viên mới cho reset
@@ -130,7 +130,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 var db = DataProvider.Ins.DB;
                 var svID = SelectedItem.StudentInfo.Id;
 
-                // Hỏi lại cho chắc ăn, nhỡ tay bấm nhầm thì toi
+                // Hỏi lại user có chắc không
                 var result = MessageBox.Show($"Bạn có chắc muốn HỦY TOÀN BỘ lịch sử đóng tiền của sinh viên {SelectedItem.DisplayName} không?\n\nHành động này không thể hoàn tác!",
                                              "Cảnh báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
@@ -138,20 +138,20 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 {
                     try
                     {
-                        // BƯỚC 1: Tìm tất cả hóa đơn của sinh viên này
+                        //Tìm tất cả hóa đơn của sinh viên này
                         var listInvoice = db.Invoices.Where(x => x.StudentId == svID).ToList();
 
                         // Lấy ra danh sách ID của các hóa đơn này để xóa chi tiết
                         var listInvoiceId = listInvoice.Select(x => x.Id).ToList();
 
-                        // BƯỚC 2: Xóa tất cả Chi tiết hóa đơn (InvoiceDetail) liên quan
+                        //Xóa tất cả Chi tiết hóa đơn (InvoiceDetail) liên quan
                         var listDetail = db.InvoiceDetails.Where(x => listInvoiceId.Contains(x.InvoiceId)).ToList();
                         db.InvoiceDetails.RemoveRange(listDetail);
 
-                        // BƯỚC 3: Xóa các Hóa đơn (Invoice)
+                        //Xóa các Hóa đơn (Invoice)
                         db.Invoices.RemoveRange(listInvoice);
 
-                        // BƯỚC 4: Reset trạng thái các môn học về "Chưa đóng"
+                        //Reset trạng thái các môn học về "Chưa đóng"
                         var listReg = db.StudentRegistrations.Where(x => x.StudentId == svID).ToList();
                         foreach (var item in listReg)
                         {
@@ -191,7 +191,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 {
                     try
                     {
-                        // BƯỚC 1: Dọn dẹp Hóa đơn cũ (Bắt buộc phải xóa trước nếu có)
+                        // Dọn dẹp Hóa đơn cũ (Bắt buộc phải xóa trước nếu có)
                         var listInvoice = db.Invoices.Where(x => x.StudentId == svID).ToList();
                         if (listInvoice.Count > 0)
                         {
@@ -202,7 +202,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                             db.Invoices.RemoveRange(listInvoice);
                         }
 
-                        // BƯỚC 2: Xóa Đăng ký môn học (Mục tiêu chính)
+                        // Xóa Đăng ký môn học (Mục tiêu chính)
                         var listReg = db.StudentRegistrations.Where(x => x.StudentId == svID).ToList();
                         db.StudentRegistrations.RemoveRange(listReg);
 
@@ -232,10 +232,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
                     decimal printAmount = 0;
                     string printNote = "";
-                    string printHocKy = ""; // <--- 1. Khai báo biến Học kỳ
+                    string printHocKy = ""; // Khai báo biến Học kỳ
                     DateTime printDate = DateTime.Now;
 
-                    // TRƯỜNG HỢP 1: IN PHIẾU DỰ THU (Đang nhập tiền)
+                    //  IN PHIẾU DỰ THU 
                     if (PaymentAmount > 0)
                     {
                         printAmount = PaymentAmount;
@@ -246,7 +246,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                             .FirstOrDefault(x => x.StudentId == SelectedItem.StudentInfo.Id && x.SoTienDaDong < x.TongTienHoc);
                         printHocKy = firstDebt != null ? firstDebt.HocKy : "Tạm tính";
                     }
-                    // TRƯỜNG HỢP 2: IN LẠI HÓA ĐƠN CŨ (Đã đóng xong)
+                    // IN LẠI HÓA ĐƠN CŨ (Đã đóng xong)
                     else
                     {
                         var lastInvoice = db.Invoices
@@ -259,7 +259,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                             printAmount = lastInvoice.TongTienThu;
                             printNote = lastInvoice.GhiChu;
                             printDate = lastInvoice.NgayThu;
-                            printHocKy = lastInvoice.HocKy; // <--- 2. Lấy học kỳ từ hóa đơn cũ
+                            printHocKy = lastInvoice.HocKy; // Lấy học kỳ từ hóa đơn cũ
                         }
                         else
                         {
@@ -269,21 +269,21 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                         }
                     }
 
-                    // --- MAPPING DỮ LIỆU ---
+                    //MAPPING DỮ LIỆU
                     InvoiceTemplate invoice = new InvoiceTemplate();
                     invoice.txbTenSV.Text = SelectedItem.DisplayName;
                     invoice.txbMSSV.Text = SelectedItem.MSSV;
                     invoice.txbLop.Text = SelectedItem.Lop;
 
-                    // --- 3. GÁN HỌC KỲ VÀO MẪU IN ---
+                    //GÁN HỌC KỲ VÀO MẪU IN
                     invoice.txbHocKy.Text = printHocKy;
-                    // --------------------------------
+                   
 
                     invoice.txbSoTien.Text = string.Format("{0:N0} VNĐ", printAmount);
                     invoice.txbNoiDung.Text = printNote;
                     invoice.txbNgayThu.Text = $"Ngày {printDate.Day} tháng {printDate.Month} năm {printDate.Year}";
 
-                    // Hiện cửa sổ in...
+                    // Hiện cửa sổ in
                     System.Windows.Controls.PrintDialog printDialog = new System.Windows.Controls.PrintDialog();
                     if (printDialog.ShowDialog() == true)
                     {
@@ -336,8 +336,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             var svID = SelectedItem.StudentInfo.Id;
             decimal moneyToPay = PaymentAmount;
 
-            // --- BƯỚC 1: LẤY DANH SÁCH MÔN CÒN NỢ ---
-            // (Lấy trước để biết Học kỳ nào mà điền vào hóa đơn)
+            //LẤY DANH SÁCH MÔN CÒN NỢ (Lấy trước để biết Học kỳ nào mà điền vào hóa đơn)
+ 
             var unpaidRegs = db.StudentRegistrations
                 .Where(x => x.StudentId == svID && x.SoTienDaDong < x.TongTienHoc)
                 .OrderBy(x => x.Id) // Ưu tiên trả môn đăng ký trước
@@ -352,7 +352,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             // Lấy học kỳ của khoản nợ đầu tiên
             string hocKyThanhToan = unpaidRegs.First().HocKy;
 
-            // --- BƯỚC 2: TẠO HÓA ĐƠN (INVOICE) ---
+            //TẠO HÓA ĐƠN (INVOICE)
             var invoice = new Invoice
             {
                 StudentId = svID,
@@ -360,14 +360,14 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 TongTienThu = moneyToPay,
                 GhiChu = PaymentNote ?? "Thu học phí",
                 UserId = db.Users.FirstOrDefault()?.Id,
-                HocKy = hocKyThanhToan // <--- Đã có thông tin học kỳ để điền vào
+                HocKy = hocKyThanhToan // Đã có thông tin học kỳ để điền vào
             };
 
             db.Invoices.Add(invoice);
             db.SaveChanges(); // Lưu Invoice để lấy ID
 
-            // --- BƯỚC 3: PHÂN BỔ TIỀN VÀO CÁC MÔN ---
-            // (Dùng lại biến unpaidRegs đã lấy ở Bước 1, không khai báo lại nữa)
+            //PHÂN BỔ TIỀN VÀO CÁC MÔN
+            // Dùng lại biến unpaidRegs
             foreach (var reg in unpaidRegs)
             {
                 if (moneyToPay <= 0) break;

@@ -13,7 +13,6 @@ namespace APP_QLHocPhi
     {
         public App()
         {
-            // --- THÊM ĐOẠN NÀY ĐỂ FIX LỖI ĐƯỜNG DẪN KHI CHẠY EXE ---
 
             // Lấy đường dẫn thư mục chứa file .exe đang chạy
             string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

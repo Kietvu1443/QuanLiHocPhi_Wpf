@@ -17,10 +17,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public bool IsLogin { get; set; }
         public User CurrentUser { get; set; } //Kiểm tra user hiện tại
 
-        private string _Id;
+        private string _Id; // Lưu Trữ id đăng nhập
         public string Id { get=> _Id; set { _Id = value;OnPropertyChanged(); } }
 
-        private string _Password;
+        private string _Password; // lưu lại pas khi đăng nhập
         public string Password { get => _Password; set { _Password = value; OnPropertyChanged(); } }
 
         public ICommand LoginCommand { get; set; }
@@ -81,7 +81,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             else
             {
                 IsLogin = false;
-                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu");
+                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu");  // báo lỗi
             }
         }
     } 

@@ -31,7 +31,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         private ObservableCollection<RegistrationItem> _ListDangKy;
         public ObservableCollection<RegistrationItem> ListDangKy { get => _ListDangKy; set { _ListDangKy = value; OnPropertyChanged(); } }
 
-        // --- Data Sources ---
+        //Data Sources
         private ObservableCollection<Student> _StudentList;
         public ObservableCollection<Student> StudentList { get => _StudentList; set { _StudentList = value; OnPropertyChanged(); } }
 
@@ -41,7 +41,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         private ObservableCollection<TutitionConfig> _SemesterList;
         public ObservableCollection<TutitionConfig> SemesterList { get => _SemesterList; set { _SemesterList = value; OnPropertyChanged(); } }
 
-        // --- Selected Items ---
+        //Selected Items
         private Student _SelectedStudent;
         public Student SelectedStudent { get => _SelectedStudent; set { _SelectedStudent = value; OnPropertyChanged(); } }
 
@@ -51,12 +51,12 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         private TutitionConfig _SelectedSemester;
         public TutitionConfig SelectedSemester { get => _SelectedSemester; set { _SelectedSemester = value; OnPropertyChanged(); } }
 
-        // --- Commands ---
+        //Commands 
         public ICommand AddTempCommand { get; set; } // Thêm vào list tạm trên UI
         public ICommand ConfirmCommand { get; set; } // Lưu vào DB (Tính tiền ngầm)
         public ICommand DeleteTempCommand { get; set; } // Xóa khỏi list tạm
         public ICommand ExportCommand { get; set; } // Xuất danh sách
-        public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshCommand { get; set; } // Làm mới dữ liệu
 
         public StudentViewModel()
         {
@@ -67,40 +67,38 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             RefreshCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
                 LoadData(); // Gọi hàm tải lại dữ liệu
-                            // MessageBox.Show("Đã làm mới dữ liệu!", "Thông báo"); // Bỏ comment nếu muốn hiện thông báo
+
             });
 
-            // 1. THÊM VÀO DANH SÁCH TẠM (Chưa tính tiền, chỉ hiện UI)
+            //THÊM VÀO DANH SÁCH TẠM (Chưa tính tiền, chỉ hiện UI)
             AddTempCommand = new RelayCommand<object>((p) =>
             {
                 // Điều kiện để bấm nút: Phải chọn đủ 3 thứ
                 return SelectedSubject != null && SelectedStudent != null && SelectedSemester != null;
             }, (p) =>
             {
-                // 1. KIỂM TRA TRÙNG TRONG DANH SÁCH TẠM (Logic cũ)
-                // (Tránh trường hợp vừa thêm vào list tạm xong lại bấm thêm lần nữa)
+                //KIỂM TRA TRÙNG TRONG DANH SÁCH TẠM (Logic cũ) (Tránh trường hợp vừa thêm vào list tạm xong lại bấm thêm lần nữa)
                 if (ListDangKy.Any(x => x.SubjectInfo.Id == SelectedSubject.Id))
                 {
                     MessageBox.Show("Môn này đã có trong danh sách chờ bên dưới rồi!", "Trùng lặp", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                // 2. KIỂM TRA TRÙNG TRONG DATABASE (Logic MỚI 🌟)
-                // (Tránh trường hợp ông Nhạc đã đăng ký môn này từ trước rồi)
+                // 2. KIỂM TRA TRÙNG TRONG DATABASE
                 var db = DataProvider.Ins.DB;
                 var daDangKy = db.StudentRegistrations.Any(x =>
                     x.StudentId == SelectedStudent.Id &&
                     x.SubjectId == SelectedSubject.Id &&
-                    x.HocKy == SelectedSemester.HocKy); // Kiểm tra cả học kỳ nữa nhé
+                    x.HocKy == SelectedSemester.HocKy); // Kiểm tra cả học kỳ
 
                 if (daDangKy)
                 {
                     MessageBox.Show($"Sinh viên {SelectedStudent.DisplayName} ĐÃ ĐĂNG KÝ môn {SelectedSubject.DisplayName} trong học kỳ này rồi!",
                                     "Đã đăng ký", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return; // Dừng lại, không cho thêm
+                    return;
                 }
 
-                // 3. NẾU VƯỢT QUA HẾT CÁC ẢI THÌ MỚI THÊM VÀO LIST
+                //NẾU VƯỢT QUA HẾT CÁC ẢI THÌ MỚI THÊM VÀO LIST
                 var item = new RegistrationItem
                 {
                     STT = ListDangKy.Count + 1,
@@ -111,7 +109,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 ListDangKy.Add(item);
             });
 
-            // 2. XÓA KHỎI DANH SÁCH TẠM
+            //XÓA KHỎI DANH SÁCH TẠM
             DeleteTempCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 // Xóa các item đang được tick chọn
@@ -124,7 +122,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 for (int i = 0; i < ListDangKy.Count; i++) ListDangKy[i].STT = i + 1;
             });
 
-            // 3. XÁC NHẬN ĐĂNG KÝ (Lưu DB + Tính tiền ngầm)
+            //XÁC NHẬN ĐĂNG KÝ (Lưu DB + Tính tiền ngầm)
             ConfirmCommand = new RelayCommand<object>((p) =>
             {
                 return SelectedStudent != null &&
@@ -133,7 +131,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             }, (p) =>
             {
                 var db = DataProvider.Ins.DB;
-                decimal donGiaMacDinh = 500000; // Quy định cứng: 500k/1 tín
+                decimal donGiaMacDinh = 500000; // Quy định chung: 500k/1 tín
 
                 var itemsToSave = ListDangKy.Where(x => x.IsSelected).ToList();
 
@@ -172,7 +170,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 DataProvider.Ins.RefreshDataBase();
             });
 
-            // 4. XUẤT DANH SÁCH (Export CSV đơn giản)
+            //XUẤT DANH SÁCH (Export CSV đơn giản)
             ExportCommand = new RelayCommand<object>((p) => ListDangKy.Count > 0, (p) =>
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -180,7 +178,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    // 👉 SỬA DÒNG NÀY: Thêm 'false' (không append) và 'Encoding.UTF8'
+
                     using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
                     {
                         // Ghi Header
@@ -189,8 +187,6 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                         // Ghi Data
                         foreach (var item in ListDangKy)
                         {
-                            // Lưu ý: Nếu tên môn học có dấu phẩy (,), file CSV sẽ bị lệch cột.
-                            // Để an toàn hơn, mình nên bọc các trường text trong dấu ngoặc kép ""
                             string line = $"{item.STT},{item.SubjectInfo.Id},\"{item.SubjectName}\",{item.TinChi},";
                             sw.WriteLine(line);
                         }
