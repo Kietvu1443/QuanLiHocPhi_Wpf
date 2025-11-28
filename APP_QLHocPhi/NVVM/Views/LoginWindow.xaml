@@ -21,7 +21,7 @@
     
     ResizeMode="NoResize"
     WindowStyle="None"
-    Title="Phần mềm  quản lí học phí (đăng nhập)" Height="400" Width="400">
+    Title="Đăng nhập" Height="400" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
