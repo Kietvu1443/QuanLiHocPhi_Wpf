@@ -42,11 +42,16 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         private decimal? _DonGia;
         public decimal? DonGia { get => _DonGia; set { _DonGia = value; OnPropertyChanged(); } }
 
+        private string _NewSemesterName;// Thêm học kì
+        public string NewSemesterName { get => _NewSemesterName; set { _NewSemesterName = value; OnPropertyChanged(); } }
+
 
 
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+
+        public ICommand AddSemesterCommand { get; set; }
 
         public SubjectViewModel()
         {
@@ -103,6 +108,36 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 db.Subjects.Remove(subject);
                 db.SaveChanges();
                 LoadList();
+            });
+            // Thêm học kì
+            AddSemesterCommand = new RelayCommand<object>((p) =>
+            {
+                // Điều kiện: Không được để trống
+                return !string.IsNullOrEmpty(NewSemesterName);
+            }, (p) =>
+            {
+                // Kiểm tra xem học kỳ này đã có trong Database chưa?
+                var exists = DataProvider.Ins.DB.TutitionConfigs.Any(x => x.HocKy == NewSemesterName);
+                if (exists)
+                {
+                    MessageBox.Show("Tên học kỳ này đã tồn tại!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Tạo mới object TutitionConfig (Bảng này lưu tên học kỳ)
+                var newHK = new TutitionConfig()
+                {
+                    HocKy = NewSemesterName,
+                    // Các giá trị mặc định khác nếu cần (ví dụ: DotThu = 1)
+                };
+
+                DataProvider.Ins.DB.TutitionConfigs.Add(newHK);
+                DataProvider.Ins.DB.SaveChanges();
+
+                MessageBox.Show($"Đã thêm học kỳ {NewSemesterName} thành công!");
+
+                // Reset ô nhập về trống
+                NewSemesterName = "";
             });
         }
 

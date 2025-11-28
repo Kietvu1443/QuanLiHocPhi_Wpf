@@ -31,6 +31,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand GuestLogin { get; set; }
 
+        public ICommand OpenSignUpCommand { get; set; }
+
 
 
         //tất cả sẽ được sử lí trong đây    
@@ -42,7 +44,14 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             GuestLogin = new RelayCommand<Window>((p) => { return true; }, (p) => { LoginG(p); });
             CloseCommand = new RelayCommand<Window>((p) => { return true; }, (p) => { p.Close(); });
             PasswordChangedCommand = new RelayCommand<PasswordBox>((p) => { return true; }, (p) => { Password = p.Password; });
-            
+            OpenSignUpCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                SignUpWindow signUp = new SignUpWindow();
+                // Gán DataContext thủ công nếu chưa khai báo Resource
+                signUp.DataContext = new SignUpViewModel();
+                signUp.ShowDialog(); // ShowDialog để bắt buộc xử lý xong mới quay lại Login
+            });
+
         }
         void LoginG(Window p)
         {

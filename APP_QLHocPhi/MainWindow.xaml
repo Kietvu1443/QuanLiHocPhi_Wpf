@@ -55,7 +55,7 @@
                 <Grid Grid.Row="0"
                       Margin="5">
                     <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                               Text="Ứng dụng quản lí học phí"
+                               Text="Phần mềm quản lí học phí"
                                HorizontalAlignment="Center">
                     </TextBlock>
                 </Grid>

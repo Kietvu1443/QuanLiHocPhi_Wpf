@@ -21,7 +21,7 @@
     
     ResizeMode="NoResize"
     WindowStyle="None"
-    Title="Đăng nhập" Height="300" Width="300">
+    Title="Phần mềm  quản lí học phí (đăng nhập)" Height="400" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -33,7 +33,7 @@
         </Grid>
         
 
-        <materialDesign:Card Grid.Row="1" Width="300" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <materialDesign:Card Grid.Row="1" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Margin="4">
                 <Grid.Resources>
                     <Style TargetType="Grid">
@@ -45,10 +45,11 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
-                    <materialDesign:PackIcon Kind="AccountKeyOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40" Height="40"/>
+                    <materialDesign:PackIcon Kind="AccountKeyOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60"/>
                 </Grid>
 
                 <Grid Grid.Row="1">
@@ -104,6 +105,15 @@
                                     ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" />
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Command="{Binding OpenSignUpCommand}"
+                            Content="Chưa có tài khoản? Đăng ký ngay"
+                            Foreground="Red"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Margin="0,10,0,0"
+                            Height="30"
+                            FontSize="12" />
                 </Grid>
             </Grid>
         </materialDesign:Card>
