@@ -1,0 +1,74 @@
+﻿<Window x:Class="APP_QLHocPhi.SignUpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:APP_QLHocPhi.UserControlSF"
+        Title="Đăng Ký Tài Khoản"
+        Height="450"
+        Width="400"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Name="signupWindow">
+
+    <Window.DataContext>
+        <Binding Path="SignUpVM"
+                 Source="{StaticResource SignUpVM}" />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <uc:UserControlBarUC Tag="{Binding Title, ElementName=signupWindow}"
+                             Grid.Row="0" />
+
+        <Grid Grid.Row="1"
+              Margin="20">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="TẠO TÀI KHOẢN MỚI"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"
+                           Foreground="{DynamicResource PrimaryHueMidBrush}" />
+
+                <TextBox Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Tên đăng nhập"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Margin="0,10" />
+
+                <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Tên hiển thị (VD: Nguyễn Văn A)"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Margin="0,10" />
+
+                <PasswordBox x:Name="FloatingPasswordBox"
+                             materialDesign:HintAssist.Hint="Mật khẩu"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                             Margin="0,10" />
+
+                <ComboBox ItemsSource="{Binding Roles}"
+                          SelectedItem="{Binding SelectedRole}"
+                          materialDesign:HintAssist.Hint="Chọn quyền hạn"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                          Margin="0,10">
+                </ComboBox>
+
+                <Button Content="ĐĂNG KÝ NGAY"
+                        Command="{Binding SignUpCommand}"
+                        CommandParameter="{Binding ElementName=signupWindow}"
+                        IsDefault="True"
+                        Margin="0,20,0,0" />
+
+                <Button Content="Hủy bỏ"
+                        Command="{Binding CloseCommand}"
+                        CommandParameter="{Binding ElementName=signupWindow}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Margin="0,5" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
