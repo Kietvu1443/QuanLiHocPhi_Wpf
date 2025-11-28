@@ -47,6 +47,8 @@ public partial class QuanLiHocPhiContext : DbContext
         optionsBuilder.UseSqlServer(connectionString);
     }
 
+        optionsBuilder.UseSqlServer(connectionString);
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Invoice>(entity =>
