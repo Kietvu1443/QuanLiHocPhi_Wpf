@@ -85,6 +85,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             }, (p) =>
             {
                 ProcessPayment();
+                DataProvider.Ins.RefreshDataBase();
             });
 
             // --- LỆNH LÀM MỚI ---
@@ -159,8 +160,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                         }
 
                         db.SaveChanges();
+                        DataProvider.Ins.RefreshDataBase();
 
-                        MessageBox.Show("Đã hủy thanh toán thành công! Sinh viên này lại nợ như chúa Chổm rồi nha :))");
+                        MessageBox.Show("Đã hủy thanh toán thành công!");
                         LoadData(); // Load lại danh sách để thấy nợ đỏ lòm
                     }
                     catch (Exception ex)
@@ -205,6 +207,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                         db.StudentRegistrations.RemoveRange(listReg);
 
                         db.SaveChanges();
+                        DataProvider.Ins.RefreshDataBase();
 
                         MessageBox.Show("Đã xóa sạch hồ sơ đăng ký! Sinh viên này giờ trắng tinh.");
 
@@ -399,6 +402,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             MessageBox.Show($"Thanh toán thành công {PaymentAmount:N0} VNĐ!");
 
             SystemLog.Log("THU HỌC PHÍ", $"Thu {PaymentAmount:N0} VNĐ của SV {SelectedItem.DisplayName} ({SelectedItem.MSSV})");
+
+            DataProvider.Ins.RefreshDataBase();
 
 
             // Reset giao diện

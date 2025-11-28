@@ -11,14 +11,17 @@ namespace APP_QLHocPhi
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        public App()
         {
-            base.OnStartup(e);
+            // --- THÊM ĐOẠN NÀY ĐỂ FIX LỖI ĐƯỜNG DẪN KHI CHẠY EXE ---
 
-            // Thiết lập đường dẫn DataDirectory về nơi file .exe đang chạy
-            string executable = Assembly.GetExecutingAssembly().Location;
-            string path = Path.GetDirectoryName(executable);
-            AppDomain.CurrentDomain.SetData("DataDirectory", path);
+            // Lấy đường dẫn thư mục chứa file .exe đang chạy
+            string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            // Gán nó vào biến |DataDirectory|
+            AppDomain.CurrentDomain.SetData("DataDirectory", executableLocation);
+
+            // --------------------------------------------------------
         }
     }
 

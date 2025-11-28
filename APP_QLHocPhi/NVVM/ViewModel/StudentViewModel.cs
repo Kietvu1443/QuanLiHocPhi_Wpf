@@ -171,14 +171,14 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
                     {
                         // Ghi Header
-                        sw.WriteLine("STT,Ma Mon,Ten Mon,So Tin Chi,Sinh Vien");
+                        sw.WriteLine("STT,Mã Môn,Tên Môn,Số Tín Chỉ");
 
                         // Ghi Data
                         foreach (var item in ListDangKy)
                         {
                             // Lưu ý: Nếu tên môn học có dấu phẩy (,), file CSV sẽ bị lệch cột.
                             // Để an toàn hơn, mình nên bọc các trường text trong dấu ngoặc kép ""
-                            string line = $"{item.STT},{item.SubjectInfo.Id},\"{item.SubjectName}\",{item.TinChi},\"{SelectedStudent.DisplayName}\"";
+                            string line = $"{item.STT},{item.SubjectInfo.Id},\"{item.SubjectName}\",{item.TinChi},";
                             sw.WriteLine(line);
                         }
                     }

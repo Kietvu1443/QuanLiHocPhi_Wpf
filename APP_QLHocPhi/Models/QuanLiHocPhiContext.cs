@@ -40,8 +40,12 @@ public partial class QuanLiHocPhiContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Chuỗi kết nối dùng LocalDB và trỏ vào file .mdf trong thư mục Database
+        // Chuỗi kết nối mới dùng file .mdf
+        // |DataDirectory| chính là cái đường dẫn ta vừa thiết lập ở Bước 1
         string connectionString = @"Server=(localdb)\mssqllocaldb;AttachDbFileName=|DataDirectory|\Database\QuanLiHocPhiDB.mdf;Database=QuanLiHocPhiDB;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+        optionsBuilder.UseSqlServer(connectionString);
+    }
 
         optionsBuilder.UseSqlServer(connectionString);
     }
