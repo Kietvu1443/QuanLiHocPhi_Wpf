@@ -32,9 +32,14 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public ObservableCollection<RegistrationItem> ListDangKy { get => _ListDangKy; set { _ListDangKy = value; OnPropertyChanged(); } }
 
         // --- Data Sources ---
-        public ObservableCollection<Student> StudentList { get; set; }
-        public ObservableCollection<Subject> SubjectList { get; set; }
-        public ObservableCollection<TutitionConfig> SemesterList { get; set; }
+        private ObservableCollection<Student> _StudentList;
+        public ObservableCollection<Student> StudentList { get => _StudentList; set { _StudentList = value; OnPropertyChanged(); } }
+
+        private ObservableCollection<Subject> _SubjectList;
+        public ObservableCollection<Subject> SubjectList { get => _SubjectList; set { _SubjectList = value; OnPropertyChanged(); } }
+
+        private ObservableCollection<TutitionConfig> _SemesterList;
+        public ObservableCollection<TutitionConfig> SemesterList { get => _SemesterList; set { _SemesterList = value; OnPropertyChanged(); } }
 
         // --- Selected Items ---
         private Student _SelectedStudent;
@@ -51,11 +56,19 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public ICommand ConfirmCommand { get; set; } // Lưu vào DB (Tính tiền ngầm)
         public ICommand DeleteTempCommand { get; set; } // Xóa khỏi list tạm
         public ICommand ExportCommand { get; set; } // Xuất danh sách
+        public ICommand RefreshCommand { get; set; }
 
         public StudentViewModel()
         {
             LoadData();
+
             ListDangKy = new ObservableCollection<RegistrationItem>();
+
+            RefreshCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                LoadData(); // Gọi hàm tải lại dữ liệu
+                            // MessageBox.Show("Đã làm mới dữ liệu!", "Thông báo"); // Bỏ comment nếu muốn hiện thông báo
+            });
 
             // 1. THÊM VÀO DANH SÁCH TẠM (Chưa tính tiền, chỉ hiện UI)
             AddTempCommand = new RelayCommand<object>((p) =>
@@ -114,9 +127,9 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             // 3. XÁC NHẬN ĐĂNG KÝ (Lưu DB + Tính tiền ngầm)
             ConfirmCommand = new RelayCommand<object>((p) =>
             {
-               return SelectedStudent != null &&
-               SelectedSemester != null &&
-               ListDangKy.Any(x => x.IsSelected);
+                return SelectedStudent != null &&
+                SelectedSemester != null &&
+                ListDangKy.Any(x => x.IsSelected);
             }, (p) =>
             {
                 var db = DataProvider.Ins.DB;
