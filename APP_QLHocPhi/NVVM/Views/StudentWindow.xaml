@@ -19,7 +19,7 @@
         mc:Ignorable="d"
         Title="Đăng kí môn học"
         Height="450"
-        Width="850">
+        Width="1000">
     <Grid>
       <Grid Grid.Row="1">
             <Grid.RowDefinitions>
