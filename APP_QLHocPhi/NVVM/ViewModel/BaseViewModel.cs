@@ -9,10 +9,12 @@ using System.Windows.Input;
 
 namespace APP_QLHocPhi.ViewModel
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    // Chịu trách nhiệm cập nhật dữ liệu lên giao diện
+    public class BaseViewModel : INotifyPropertyChanged 
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // Hàm này sẽ được gọi mỗi khi có thuộc tính (property) nào đó thay đổi giá trị
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

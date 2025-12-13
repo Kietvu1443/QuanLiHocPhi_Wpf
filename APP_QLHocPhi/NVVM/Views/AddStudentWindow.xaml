@@ -108,8 +108,8 @@
                                   SelectedValuePath="Content"
                                   SelectedValue="{Binding TrangThai, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
-                            <ComboBoxItem Content="Đã Đóng" />
-                            <ComboBoxItem Content="Chưa Đóng" />
+                            <ComboBoxItem Content="Đang học" />
+                            <ComboBoxItem Content="Đã nghỉ" />
                             
 
 
@@ -183,38 +183,46 @@
                         <DataGrid.Columns>
                             <materialDesign:DataGridTextColumn Binding="{Binding STT}"
                                                                Header="STT"
-                                                               Width="100" />
+                                                               Width="auto" />
 
                             <materialDesign:DataGridTextColumn Binding="{Binding Id}"
                                                                Header="Mã SV"
-                                                               Width="100" />
+                                                               Width="auto" />
 
                             <materialDesign:DataGridTextColumn Binding="{Binding DisplayName}"
                                                                Header="Họ Tên"
-                                                               Width="180" />
+                                                               Width="auto" />
 
                             <materialDesign:DataGridTextColumn Binding="{Binding NgaySinh, StringFormat='dd/MM/yyyy'}"
-                                                               Header="Ngày Sinh" />
+                                                               Header="Ngày Sinh"
+                                                               Width="auto"/>
 
                             <materialDesign:DataGridTextColumn Binding="{Binding GioiTinh}"
-                                                               Header="Giới Tính" />
+                                                               Header="Giới Tính"
+                                                               Width="auto"/>
 
                             <materialDesign:DataGridTextColumn Binding="{Binding Lop}"
-                                                               Header="Lớp" />
+                                                               Header="Lớp"
+                                                               Width="auto"/>
 
                             <materialDesign:DataGridTextColumn Binding="{Binding Nganh}"
-                                                               Header="Khoa/Ngành" />
+                                                               Header="Khoa/Ngành"
+                                                               Width="auto"/>
 
                             <materialDesign:DataGridTextColumn Binding="{Binding Phone}"
-                                                               Header="SĐT" />
+                                                               Header="SĐT"
+                                                               Width="auto"/>
 
                             <materialDesign:DataGridTextColumn Binding="{Binding Email}"
                                                                Header="Email"
-                                                               Width="150" />
+                                                               Width="auto" />
 
                             <materialDesign:DataGridTextColumn Binding="{Binding Address}"
                                                                Header="Địa Chỉ"
-                                                               Width="200" />
+                                                               Width="auto" />
+                            <materialDesign:DataGridTextColumn Binding="{Binding TrangThai}"
+                                                               Header="Trạng thái"
+                                                               Width="auto" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </materialDesign:Card>

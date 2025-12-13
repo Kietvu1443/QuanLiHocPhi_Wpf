@@ -21,8 +21,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         #endregion
 
-        public ControlBarViewModel()// navigate đến windows cuối cùng để xoá 
+        
+        public ControlBarViewModel()
         {
+            // navigate đến windows cuối cùng để xoá như kiểu tìm đến parent cuối cùng rồi tắt đấy
             CloseWindowCommand = new RelayCommand<UserControl>((p) => { return p == null ? false : true; }, (p) =>
             {
                 FrameworkElement window = GetWindowParent(p);
@@ -36,6 +38,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             {
                 FrameworkElement window = GetWindowParent(p);
                 var w = window as Window;
+                // Chuyển trạng thái window từ nhỏ sang toàn màn hình
                 if (w != null)
                 {
                     if(w.WindowState != WindowState.Maximized)
@@ -48,6 +51,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             {
                 FrameworkElement window = GetWindowParent(p);
                 var w = window as Window;
+                // Chuyển trạng thái window từ bình thường sang thu nhỏ
                 if (w != null)
                 {
                    if(w.WindowState != WindowState.Minimized)
@@ -60,6 +64,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             {
                 FrameworkElement window = GetWindowParent(p);
                 var w = window as Window;
+                // cho phép việc kéo thả window
                 if (w != null)
                 {
                     w.DragMove();

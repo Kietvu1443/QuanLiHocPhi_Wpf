@@ -49,7 +49,7 @@
                             Background="Black"
                             Foreground="White"
                             ToolTip="Đóng" ToolBar.OverflowMode="AsNeeded" >
-                        <materialDesign:PackIcon Kind="WindowClose" />
+                        <materialDesign:PackIcon Kind="Heart" />
                     </Button>
                 </StackPanel>
 

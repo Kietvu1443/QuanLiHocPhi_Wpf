@@ -130,10 +130,10 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 ListDangKy.Any(x => x.IsSelected);
             }, (p) =>
             {
-                var db = DataProvider.Ins.DB;
+                var db = DataProvider.Ins.DB; // nếu không có sẵn thì lấy đơn giá mặc định
                 decimal donGiaMacDinh = 500000; // Quy định chung: 500k/1 tín
 
-                var itemsToSave = ListDangKy.Where(x => x.IsSelected).ToList();
+                var itemsToSave = ListDangKy.Where(x => x.IsSelected).ToList(); // Lấy thông tin của các môn học mà học sinh chọn
 
                 foreach (var item in itemsToSave)
                 {
@@ -144,7 +144,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
                     if (!exists)
                     {
-                        decimal donGiaMonHoc = item.SubjectInfo.DonGia ?? donGiaMacDinh;
+                        decimal donGiaMonHoc = item.SubjectInfo.DonGia ?? donGiaMacDinh; 
 
                         var reg = new StudentRegistration()
                         {

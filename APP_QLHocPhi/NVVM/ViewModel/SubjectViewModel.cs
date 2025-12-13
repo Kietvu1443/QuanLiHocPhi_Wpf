@@ -116,7 +116,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 return !string.IsNullOrEmpty(NewSemesterName);
             }, (p) =>
             {
-                // Kiểm tra xem học kỳ này đã có trong Database chưa?
+                // Kiểm tra xem học kỳ này đã có trong Database 
                 var exists = DataProvider.Ins.DB.TutitionConfigs.Any(x => x.HocKy == NewSemesterName);
                 if (exists)
                 {

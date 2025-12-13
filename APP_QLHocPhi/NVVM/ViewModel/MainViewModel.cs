@@ -13,7 +13,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public bool Isloaded = false;
+        public bool Isloaded = false; // đã được load chưa ?
         public User CurrentUser { get; private set; }  // Biến này để lưu user hiện tại
 
         // PHẦN PHÂN QUYỀN
@@ -46,6 +46,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public ICommand SubjectCommand { get; set; }
 
         public ICommand UserCommand { get; set; }
+
+        public ICommand LogoutCommand { get; set; }
         public ICommand StudentInvoiceCommand { get; set; }  // Command mới cho học sinh xem hóa đơn
 
         //tất cả sẽ được sử lí trong đây    
@@ -108,6 +110,48 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 AdminVisibility = Visibility.Visible;
                 StudentVisibility = Visibility.Visible;
             }
+
+
+
+            LogoutCommand = new RelayCommand<Window>((p) => { return true; }, (p) =>
+            {
+                if (p == null) return;
+
+                // 1. Đóng các cửa sổ con và dọn dữ liệu user cũ
+                foreach (Window window in Application.Current.Windows.OfType<Window>().ToList())
+                {
+                    if (window != p) window.Close();
+                }
+                CurrentUser = null;
+
+                // Ẩn MainWindow
+                p.Hide();
+
+                // Tạo LoginWindow mới
+                LoginWindow loginWindow = new LoginWindow();
+
+           
+                // Dòng này đảm bảo IsLogin = false, xóa sạch trạng thái đăng nhập cũ
+                loginWindow.DataContext = new LoginViewModel();
+             
+
+                loginWindow.ShowDialog();
+
+                //Kiểm tra kết quả từ ViewModel MỚI này
+                var loginVM = loginWindow.DataContext as LoginViewModel;
+
+                if (loginVM != null && loginVM.IsLogin)
+                {
+                    // Đăng nhập lại thành công
+                    SetUser(loginVM.CurrentUser);
+                    p.Show();
+                }
+                else
+                {
+                    // Vì là ViewModel mới nên IsLogin mặc định là false -> Vào đây -> Đóng App
+                    p.Close();
+                }
+            });
         }
         public void SetUser(User user)
         {
