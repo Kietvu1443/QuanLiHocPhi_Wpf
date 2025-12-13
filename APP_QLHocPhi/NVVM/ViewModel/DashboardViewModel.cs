@@ -63,7 +63,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                 {
                     // Reload lại toàn bộ thông tin
                     LoadGlobalStats();
-                    LoadSemesters(); // Load lại nhỡ có học kỳ mới
+                    LoadSemesters(); // Load khi học kỳ mới
                     LoadChartData(); // Vẽ lại biểu đồ
                 });
             };
@@ -73,13 +73,14 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             var db = DataProvider.Ins.DB;
 
-            // 1. Tổng sinh viên
-            TotalStudent = db.Students.Count();
+            // Tổng sinh viên
+            //TotalStudent = db.Students.Count();
+            TotalStudent = db.Students.Count(x => x.TrangThai == "Đang học");
 
-            // 2. Tổng doanh thu (Toàn bộ hóa đơn)
+            // Tổng doanh thu (Toàn bộ hóa đơn)
             TongDoanhThu = db.Invoices.Sum(x => x.TongTienThu);
 
-            // 3. Tổng công nợ (Toàn bộ đăng ký)
+            //Tổng công nợ (Toàn bộ đăng ký)
             TongCongNo = db.StudentRegistrations.Sum(x => x.TongTienHoc - x.SoTienDaDong);
         }
 
@@ -107,14 +108,13 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             if (SelectedSemester == "Tất cả" || string.IsNullOrEmpty(SelectedSemester))
             {
-                // Tính toán toàn bộ
+                // Tính toán toàn bọ tiền nợ và doanh thu toàn học kì
                 revenue = db.Invoices.Sum(x => x.TongTienThu);
                 debt = db.StudentRegistrations.Sum(x => x.TongTienHoc - x.SoTienDaDong);
             }
             else
             {
-                // Tính toán theo học kỳ được chọn
-                // Lưu ý: Bảng Invoice cần có cột HocKy
+                // Tính toán theo tiền nợ và doanh thu theo học kì được chọn
                 revenue = db.Invoices.Where(x => x.HocKy == SelectedSemester).Sum(x => x.TongTienThu);
 
                 debt = db.StudentRegistrations

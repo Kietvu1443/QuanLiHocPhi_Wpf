@@ -39,7 +39,7 @@
                                  UniformCornerRadius="10">
                 <StackPanel>
                     <Grid>
-                        <TextBlock Text="TỔNG SINH VIÊN"
+                        <TextBlock Text="TỔNG SINH VIÊN ĐANG THEO HỌC"
                                    FontWeight="Bold"
                                    Foreground="Gray" />
                         <materialDesign:PackIcon Kind="AccountMultiple"
@@ -52,7 +52,7 @@
                                FontSize="30"
                                FontWeight="Bold"
                                Margin="0 10 0 0" />
-                    <TextBlock Text="sinh viên toàn trường"
+                    <TextBlock Text="tổng sinh viên toàn trường"
                                FontSize="12"
                                Foreground="Gray" />
                 </StackPanel>

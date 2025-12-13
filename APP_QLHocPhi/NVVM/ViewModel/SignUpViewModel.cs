@@ -26,7 +26,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public SignUpViewModel()
         {
-            // Hiển thị tên tiếng Việt cho dễ hiểu
+           
             Roles = new ObservableCollection<string>() { "Quản trị viên (Admin)", "Nhân viên (Staff)" };
 
             SignUpCommand = new RelayCommand<Window>((p) => { return true; }, (p) => { Register(p); });

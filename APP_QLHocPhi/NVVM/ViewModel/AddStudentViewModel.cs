@@ -112,7 +112,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         }
 
 
-        // --- Commands ---
+        // Command
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand RemoveCommand { get; set; }
@@ -124,7 +124,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
             // (Bất kỳ ai gọi RefreshDataBase thì hàm LoadList của tui sẽ tự chạy)
             DataProvider.Ins.DatabaseChanged += LoadList;
 
-            // --- LỆNH THÊM ---
+            // Lệnh thêm
             AddCommand = new RelayCommand<object>((p) =>
             {
                 if (string.IsNullOrEmpty(MSSV) || string.IsNullOrEmpty(DisplayName)) return false;
@@ -143,7 +143,7 @@ namespace APP_QLHocPhi.NVVM.ViewModel
                     Address = Address,
                     Email = Email,
                     GioiTinh = GioiTinh,
-                   TrangThai = string.IsNullOrEmpty(TrangThai) ? "Chưa Đóng" : TrangThai
+                   TrangThai = string.IsNullOrEmpty(TrangThai) ? "Đang học" : TrangThai
                 };
 
                 if (NgaySinh.HasValue)

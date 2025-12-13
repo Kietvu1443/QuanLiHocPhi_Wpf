@@ -40,7 +40,7 @@ namespace APP_QLHocPhi.Models
             }
             catch (Exception)
             {
-                // Im lặng nếu lỗi, không làm phiền người dùng
+
             }
         }
 

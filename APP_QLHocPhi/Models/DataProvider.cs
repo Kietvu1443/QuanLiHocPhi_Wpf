@@ -13,6 +13,12 @@ namespace APP_QLHocPhi.Models
 
         public QuanLiHocPhiContext DB { get; set; }
 
+        //Tạo ra một lớp để ánh xạ truy cập database dễ dàng hơn thông qua DataProvider
+        //DataProvider.Ins.DB.Students 
+
+
+
+
         // Tạo sự kiện để các window khác lắng nghe
         public event Action DatabaseChanged;
         // Hàm để kích hoạt sự kiện
