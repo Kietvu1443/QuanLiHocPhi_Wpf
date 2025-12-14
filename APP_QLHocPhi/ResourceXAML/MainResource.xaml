@@ -12,6 +12,7 @@
     <viewmodel:SubjectViewModel x:Key="SubjectVM"></viewmodel:SubjectViewModel>
     <viewmodel:SchoolFeeViewModel x:Key="SchoolFeeVM"></viewmodel:SchoolFeeViewModel>
     <viewmodel:SignUpViewModel x:Key="SignUpVM"></viewmodel:SignUpViewModel>
+    <viewmodel:UserViewModel x:Key="UserVM"></viewmodel:UserViewModel>
 
 
 

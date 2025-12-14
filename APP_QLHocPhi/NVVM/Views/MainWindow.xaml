@@ -46,209 +46,239 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0" Grid.Column="0"
-                      Margin="5">
-                    <TextBlock Text="Phần mềm quản lí học phí"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                               Foreground="{DynamicResource PrimaryHueMidBrush}"
-                               FontWeight="Bold"
-                               Margin="0 20 0 20">
-                        <TextBlock.Effect>
-                            <DropShadowEffect ShadowDepth="2"
-                                              Direction="320"
-                                              Color="Gray"
-                                              Opacity="0.3"
-                                              BlurRadius="5" />
-                        </TextBlock.Effect>
-                    </TextBlock>
+                <TextBlock Grid.Column="0"
+                           Text="Phần mềm quản lí học phí"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                           Foreground="{DynamicResource PrimaryHueMidBrush}"
+                           FontWeight="Bold"
+                           Margin="0 20 0 20">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="2"
+                                          Direction="320"
+                                          Color="Gray"
+                                          Opacity="0.3"
+                                          BlurRadius="5" />
+                    </TextBlock.Effect>
+                </TextBlock>
 
-                    <Button Grid.Column="1"
-                            Command="{Binding LogoutCommand}"
-                            CommandParameter="{Binding ElementName=mainWindow}"
-                            HorizontalAlignment="Right"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                            Style="{StaticResource MaterialDesignFloatingActionLightButton}"
-                            ToolTip="Đăng xuất"
-                            Background="Red">
-                        <materialDesign:PackIcon Kind="Logout" />
+                <Button Grid.Column="1"
+                        Command="{Binding LogoutCommand}"
+                        CommandParameter="{Binding ElementName=mainWindow}"
+                        HorizontalAlignment="Right"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                        ToolTip="Đăng xuất"
+                        Background="Red"
+                        Margin="0,0,10,0">
+                    <materialDesign:PackIcon Kind="Logout" />
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <WrapPanel Background="Transparent"
+                           Orientation="Horizontal"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Margin="0,20,0,0">
+
+                    <WrapPanel.Resources>
+                        <Style TargetType="Button"
+                               BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                            <Setter Property="Margin"
+                                    Value="15"></Setter>
+                            <Setter Property="Width"
+                                    Value="160"></Setter>
+                            <Setter Property="Height"
+                                    Value="120"></Setter>
+                            <Setter Property="materialDesign:ButtonAssist.CornerRadius"
+                                    Value="15"></Setter>
+                            <Setter Property="materialDesign:ElevationAssist.Elevation"
+                                    Value="Dp3" />
+                        </Style>
+
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping"
+                                    Value="Wrap" />
+                            <Setter Property="TextAlignment"
+                                    Value="Center" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="FontWeight"
+                                    Value="SemiBold" />
+                            <Setter Property="Margin"
+                                    Value="0,0,0,5" />
+                        </Style>
+
+                        <Style TargetType="materialDesign:PackIcon">
+                            <Setter Property="Width"
+                                    Value="35" />
+                            <Setter Property="Height"
+                                    Value="35" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </WrapPanel.Resources>
+
+                    <Button ToolTip="Tổng Quan"
+                            Background="#2196F3"
+                            BorderBrush="#2196F3"
+                            Command="{Binding DashBoardCommand}"
+                            Visibility="{Binding AdminVisibility}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon Kind="ViewDashboard"
+                                                     VerticalAlignment="Bottom"
+                                                     Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="Tổng Quan"
+                                       VerticalAlignment="Top" />
+                        </Grid>
                     </Button>
-                </Grid>
-            
-                   
-                   
-               
-                
 
-                <Grid Grid.Row="1"
-                      HorizontalAlignment="Center">
-                    <WrapPanel Background="Transparent"
-                               Orientation="Horizontal"
-                               Width="1000"
-                               HorizontalAlignment="Center">
+                    <Button ToolTip="Quản lí Học Sinh"
+                            Background="#2196F3"
+                            BorderBrush="#2196F3"
+                            Command="{Binding AddStudentCommand}"
+                            Visibility="{Binding AdminVisibility}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon Kind="AccountSchool"
+                                                     VerticalAlignment="Bottom"
+                                                     Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="Quản lí Học Sinh"
+                                       VerticalAlignment="Top" />
+                        </Grid>
+                    </Button>
 
-                        <WrapPanel.Resources>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource MaterialDesignRaisedButton}">
-                                <Setter Property="Margin"
-                                        Value="15"></Setter>
-                                <Setter Property="Width"
-                                        Value="160"></Setter>
-                                <Setter Property="Height"
-                                        Value="120"></Setter>
-                                <Setter Property="materialDesign:ButtonAssist.CornerRadius"
-                                        Value="15"></Setter>
-                                <Setter Property="materialDesign:ElevationAssist.Elevation"
-                                        Value="Dp3" />
-                            </Style>
+                    <Button ToolTip="Quản Lí Học Phí"
+                            Background="#2196F3"
+                            BorderBrush="#2196F3"
+                            Command="{Binding SchoolFeeCommand}"
+                            Visibility="{Binding AdminVisibility}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon Kind="CashMultiple"
+                                                     VerticalAlignment="Bottom"
+                                                     Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="Quản lí Học Phí"
+                                       VerticalAlignment="Top" />
+                        </Grid>
+                    </Button>
 
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextWrapping"
-                                        Value="Wrap" />
-                                <Setter Property="TextAlignment"
-                                        Value="Center" />
-                                <Setter Property="HorizontalAlignment"
-                                        Value="Center" />
-                                <Setter Property="FontWeight"
-                                        Value="SemiBold" />
-                                <Setter Property="Margin"
-                                        Value="0,0,0,5" />
-                            </Style>
+                    <Button ToolTip="Quản lí môn học"
+                            Background="#2196F3"
+                            BorderBrush="#2196F3"
+                            Command="{Binding SubjectCommand}"
+                            Visibility="{Binding AdminVisibility}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon Kind="Bookshelf"
+                                                     VerticalAlignment="Bottom"
+                                                     Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="Quản lí Môn Học"
+                                       VerticalAlignment="Top" />
+                        </Grid>
+                    </Button>
 
-                            <Style TargetType="materialDesign:PackIcon">
-                                <Setter Property="Width"
-                                        Value="35" />
-                                <Setter Property="Height"
-                                        Value="35" />
-                                <Setter Property="HorizontalAlignment"
-                                        Value="Center" />
-                            </Style>
-                        </WrapPanel.Resources>
+                    <Button ToolTip="Thông tin học sinh"
+                            Command="{Binding StudentCommand}"
+                            Visibility="{Binding StudentVisibility}"
+                            Background="#2196F3"
+                            BorderBrush="#2196F3">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon Kind="AccountBox"
+                                                     VerticalAlignment="Bottom"
+                                                     Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="Thông tin &amp; Đăng ký"
+                                       VerticalAlignment="Top" />
+                        </Grid>
+                    </Button>
 
-                        <Button ToolTip="Tổng Quan"
-                                Command="{Binding DashBoardCommand}"
-                                Visibility="{Binding AdminVisibility}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <materialDesign:PackIcon Grid.Row="0"
-                                                         Kind="ViewDashboard"
-                                                         VerticalAlignment="Bottom"
-                                                         Margin="0,0,0,10" />
-                                <TextBlock Grid.Row="1"
-                                           Text="Tổng Quan"
-                                           VerticalAlignment="Top" />
-                            </Grid>
-                        </Button>
+                    <Button ToolTip="Xem hóa đơn của tôi"
+                            Command="{Binding StudentInvoiceCommand}"
+                            Visibility="{Binding StudentVisibility}"
+                            Background="#4CAF50"
+                            BorderBrush="#4CAF50">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon Kind="ReceiptTextCheck"
+                                                     VerticalAlignment="Bottom"
+                                                     Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="Hóa đơn của tôi"
+                                       VerticalAlignment="Top" />
+                        </Grid>
+                    </Button>
 
-                        <Button ToolTip="Quản lí Học Sinh"
-                                Command="{Binding AddStudentCommand}"
-                                Visibility="{Binding AdminVisibility}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <materialDesign:PackIcon Grid.Row="0"
-                                                         Kind="AccountSchool"
-                                                         VerticalAlignment="Bottom"
-                                                         Margin="0,0,0,10" />
-                                <TextBlock Grid.Row="1"
-                                           Text="Quản lí Học Sinh"
-                                           VerticalAlignment="Top" />
-                            </Grid>
-                        </Button>
+                    <Button ToolTip="Quản lý Tài khoản"
+                            Background="#2196F3"
+                            BorderBrush="#2196F3"
+                            Command="{Binding UserCommand}"
+                            Visibility="{Binding AdminVisibility}"
+                            Margin="5">
+                        <StackPanel>
+                            <materialDesign:PackIcon Kind="AccountCog"
+                                                     Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center" />
+                            <TextBlock Text="Quản lí tài khoản"
+                                       HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </WrapPanel>
 
-                        <Button ToolTip="Quản Lí Học Phí"
-                                Command="{Binding SchoolFeeCommand}"
-                                Visibility="{Binding AdminVisibility}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <materialDesign:PackIcon Grid.Row="0"
-                                                         Kind="CashMultiple"
-                                                         VerticalAlignment="Bottom"
-                                                         Margin="0,0,0,10" />
-                                <TextBlock Grid.Row="1"
-                                           Text="Quản lí Học Phí"
-                                           VerticalAlignment="Top" />
-                            </Grid>
-                        </Button>
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="10">
+                    <materialDesign:PackIcon Kind="HandWave"
+                                             VerticalAlignment="Center"
+                                             Margin="0,0,5,0"
+                                             Foreground="Gray" />
 
-                        <Button ToolTip="Quản lí môn học"
-                                Command="{Binding SubjectCommand}"
-                                Visibility="{Binding AdminVisibility}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <materialDesign:PackIcon Grid.Row="0"
-                                                         Kind="Bookshelf"
-                                                         VerticalAlignment="Bottom"
-                                                         Margin="0,0,0,10" />
-                                <TextBlock Grid.Row="1"
-                                           Text="Quản lí Môn Học"
-                                           VerticalAlignment="Top" />
-                            </Grid>
-                        </Button>
+                    <TextBlock VerticalAlignment="Center"
+                               FontStyle="Italic"
+                               Foreground="Gray">
 
-                        <Button ToolTip="Thông tin học sinh"
-                                Command="{Binding StudentCommand}"
-                                Visibility="{Binding StudentVisibility}"
-                                Background="#2196F3"
-                                BorderBrush="#2196F3">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <materialDesign:PackIcon Grid.Row="0"
-                                                         Kind="AccountBox"
-                                                         VerticalAlignment="Bottom"
-                                                         Margin="0,0,0,10" />
-                                <TextBlock Grid.Row="1"
-                                           Text="Thông tin &amp; Đăng ký"
-                                           VerticalAlignment="Top" />
-                            </Grid>
-                        </Button>
-
-                        <Button ToolTip="Xem hóa đơn của tôi"
-                                Command="{Binding StudentInvoiceCommand}"
-                                Visibility="{Binding StudentVisibility}"
-                                Background="#4CAF50"
-                                BorderBrush="#4CAF50">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <materialDesign:PackIcon Grid.Row="0"
-                                                         Kind="ReceiptTextCheck"
-                                                         VerticalAlignment="Bottom"
-                                                         Margin="0,0,0,10" />
-                                <TextBlock Grid.Row="1"
-                                           Text="Hóa đơn của tôi"
-                                           VerticalAlignment="Top" />
-                            </Grid>
-                        </Button>
-
-                    </WrapPanel>
-                </Grid>
+                        <TextBlock.Text>
+                            <Binding Path="DisplayName"
+                                     StringFormat="Chào mừng ngày mới tốt lành, {0}!" />
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

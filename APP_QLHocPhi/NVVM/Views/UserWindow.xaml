@@ -8,6 +8,7 @@
         xmlns:uc="clr-namespace:APP_QLHocPhi.UserControlSF"
         TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
         Background="{DynamicResource MaterialDesign.Brush.Background}"
+        DataContext="{StaticResource UserVM}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         WindowStartupLocation="CenterScreen"
@@ -16,92 +17,117 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         mc:Ignorable="d"
-        Title="Quản lí học phí"
-        Height="450"
-        Width="850">
+        Title="Quản lí Tài Khoản"
+        Height="500"
+        Width="800">
     <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}"></uc:UserControlBarUC>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <!--các elemenent biding trong selected item-->
-                <materialDesign:Card Grid.Row="0"
-                                     Margin="5">
-                    <WrapPanel Margin="0 0 0 10">
-           
-                        <TextBox Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Tên đăng nhập"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <ComboBox Margin="5 5 15 0" ItemsSource="{Binding Role}" SelectedItem="{Binding SelectedRole,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Quyền"></ComboBox>
-                        <TextBox Text="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="5 5 15 5"
-                                 VerticalAlignment="Center"
-                                 materialDesign:HintAssist.Hint="Tên hiển thị"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                    </WrapPanel>
-                </materialDesign:Card>
-
-                <materialDesign:Card Grid.Row="1"
-                                     Margin="5">
-                    <WrapPanel>
-                        <Button Command="{Binding AddCommand}"
-                                Content="Thêm"
-                                Margin="5"
-                                Width="100"></Button>
-                        <Button Command="{Binding RemoveCommand}"
-                                Content="Xoá"
-                                Margin="5"
-                                Width="100"></Button>
-                        <Button Command="{Binding EditCommand}"
-                                Content="Sửa"
-                                Margin="5"
-                                Width="100"></Button>
-                        <Button Command="{Binding EditCommand}"
-                                Content="Đổi MK"
-                                Margin="5"
-                                Width="100"></Button>
-                    </WrapPanel>
-                </materialDesign:Card>
-
-
-                <materialDesign:Card Grid.Row="2"
-                                     Margin="5"
-                                     VerticalAlignment="Stretch">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ListView ItemsSource="{Binding List}"
-                                  SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="STT"
-                                                    DisplayMemberBinding="{Binding STT,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Tên đăng nhập"
-                                                    Width="150"
-                                                    DisplayMemberBinding="{Binding UserName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Vai Trò"
-                                                    DisplayMemberBinding="{Binding Role.DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                    <GridViewColumn Header="Tên hiền thị"
-                                                    DisplayMemberBinding="{Binding DisplayName,UpdateSourceTrigger=PropertyChanged}" />
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </ScrollViewer>
-                </materialDesign:Card>
-            </Grid>
-
+        <Grid Grid.Row="0">
+            <uc:UserControlBarUC Tag="{Binding Title, ElementName=window}"></uc:UserControlBarUC>
         </Grid>
+
+        <materialDesign:Card Grid.Row="1"
+                             Margin="10"
+                             Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <WrapPanel Grid.Column="0">
+                    <TextBox Text="{Binding UserName, Mode=OneWay}"
+                             IsReadOnly="True"
+                             materialDesign:HintAssist.Hint="Tên đăng nhập (ID)"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             Width="150"
+                             Margin="5 5 20 5" />
+
+                    <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"
+                             materialDesign:HintAssist.Hint="Tên hiển thị"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             Width="200"
+                             Margin="5 5 20 5" />
+
+                    <ComboBox ItemsSource="{Binding RoleList}"
+                              SelectedItem="{Binding Role, UpdateSourceTrigger=PropertyChanged}"
+                              materialDesign:HintAssist.Hint="Quyền hạn"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              Width="150"
+                              Margin="5 5 20 5">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}"
+                                               FontWeight="Bold"
+                                               Margin="0,0,5,0" />
+                                    <TextBlock Text="(1: Admin - 0: User)"
+                                               FontStyle="Italic"
+                                               Opacity="0.6" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </WrapPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom">
+                    <Button Command="{Binding EditCommand}"
+                            Content="Cập Nhật"
+                            Margin="5"
+                            Width="100"
+                            ToolTip="Lưu thay đổi quyền hoặc tên hiển thị" />
+
+                    <Button Command="{Binding DeleteCommand}"
+                            Content="Xóa"
+                            Margin="5"
+                            Width="80"
+                            Background="OrangeRed"
+                            BorderBrush="OrangeRed"
+                            ToolTip="Xóa tài khoản vĩnh viễn" />
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+
+        <materialDesign:Card Grid.Row="2"
+                             Margin="10"
+                             VerticalAlignment="Stretch">
+            <DataGrid ItemsSource="{Binding List}"
+                      SelectedItem="{Binding SelectedItem}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="All"
+                      materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                      materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+                <DataGrid.Columns>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Id}"
+                                                       Header="Tên Đăng Nhập"
+                                                       Width="150" />
+                    <materialDesign:DataGridTextColumn Binding="{Binding DisplayName}"
+                                                       Header="Tên Hiển Thị"
+                                                       Width="250" />
+                    <materialDesign:DataGridTextColumn Binding="{Binding Role}"
+                                                       Header="Quyền (Role)"
+                                                       Width="100" />
+                    <materialDesign:DataGridTextColumn Binding="{Binding Password}"
+                                                       Header="Mật khẩu"
+                                                       Width="*">
+                        <materialDesign:DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text"
+                                        Value="******" />
+                            </Style>
+                        </materialDesign:DataGridTextColumn.ElementStyle>
+                    </materialDesign:DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </materialDesign:Card>
     </Grid>
 </Window>
