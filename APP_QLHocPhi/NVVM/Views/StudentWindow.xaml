@@ -21,7 +21,20 @@
         Height="450"
         Width="1000">
     <Grid>
-      <Grid Grid.Row="1">
+        <materialDesign:PackIcon Kind="Book"
+                                 Grid.RowSpan="5"
+                                 Width="400"
+                                 Height="400"
+                                 VerticalAlignment="Bottom"
+                                 HorizontalAlignment="Right"
+                                 Margin="0,0,-40,-60"
+                                 Opacity="0.1"
+                                 Foreground="{DynamicResource MaterialDesignBody}">
+            <materialDesign:PackIcon.RenderTransform>
+                <RotateTransform Angle="-20" />
+            </materialDesign:PackIcon.RenderTransform>
+        </materialDesign:PackIcon>
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />

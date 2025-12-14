@@ -16,6 +16,13 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         public bool Isloaded = false; // đã được load chưa ?
         public User CurrentUser { get; private set; }  // Biến này để lưu user hiện tại
 
+        private string _DisplayName;
+        public string DisplayName
+        {
+            get => _DisplayName;
+            set { _DisplayName = value; OnPropertyChanged(); }
+        }
+
         // PHẦN PHÂN QUYỀN
 
         // Admin thấy: Dashboard, Thêm HS, Thu học phí, Quản lý môn, tất cả nút quản lý
@@ -49,6 +56,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
         public ICommand LogoutCommand { get; set; }
         public ICommand StudentInvoiceCommand { get; set; }  // Command mới cho học sinh xem hóa đơn
+
+       
 
         //tất cả sẽ được sử lí trong đây    
         public MainViewModel()
@@ -94,9 +103,14 @@ namespace APP_QLHocPhi.NVVM.ViewModel
 
             StudentCommand = new RelayCommand<object>((p) => { return true; }, (p) => { StudentWindow wd = new StudentWindow(); wd.ShowDialog(); });
 
-            UserCommand = new RelayCommand<object>((p) => { return true; }, (p) => { UserWindow wd = new UserWindow(); wd.ShowDialog(); });
+            
 
             SubjectCommand = new RelayCommand<object>((p) => { return true; }, (p) => { SubjectWindow wd = new SubjectWindow(); wd.ShowDialog(); });
+
+            UserCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
+                UserWindow wd = new UserWindow();
+                wd.ShowDialog();
+            });
 
             StudentInvoiceCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
@@ -157,6 +171,8 @@ namespace APP_QLHocPhi.NVVM.ViewModel
         {
             CurrentUser = user;
             if (CurrentUser == null) return;
+
+            DisplayName = CurrentUser.DisplayName;
 
             if (CurrentUser.Role == "1") // 1 Là Admin
             {
