@@ -22,7 +22,7 @@ public partial class QuanLiHocPhiContext : DbContext
     public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
     public virtual DbSet<Student> Students { get; set; }
     public virtual DbSet<StudentRegistration> StudentRegistrations { get; set; }
-    public virtual DbSet<Subject> Subjects { get; set; }
+    public virtual DbSet<Subject> Subjects { get; set; }D
     public virtual DbSet<TutitionConfig> TutitionConfigs { get; set; }
     public virtual DbSet<User> Users { get; set; }
 
@@ -30,8 +30,8 @@ public partial class QuanLiHocPhiContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            // Thiết lập đường dẫn tới file database .mdf
-            // |DataDirectory| sẽ trỏ tới thư mục bin/Debug/net8.0-windows/Database khi chạy
+            
+            // kết nối với database .mdf
             string connectionString = @"Server=(localdb)\mssqllocaldb;AttachDbFileName=|DataDirectory|\Database\QuanLiHocPhiDB.mdf;Trusted_Connection=True;MultipleActiveResultSets=true";
 
             optionsBuilder.UseSqlServer(connectionString);
